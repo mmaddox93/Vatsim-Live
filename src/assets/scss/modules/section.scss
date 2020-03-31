@@ -1,0 +1,63 @@
+section {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  background-color: $secondary;
+  border: 1px solid $border;
+  padding: 1rem;
+  border-radius: 10px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1.5rem;
+}
+
+header {
+  // position: absolute;
+  font-size: 1.25rem;
+  margin-top: -2rem;
+  position: absolute;
+  font-weight: 800;
+}
+
+label {
+  color: var(--lighter);
+  font-weight: 800;
+}
+
+.four-item-row {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.25rem;
+}
+
+.two-item-row {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.four-item {
+  flex: 1 0 21%;
+}
+
+.info-group {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 0 0.5rem;
+}
+
+.scroller {
+  max-height: 100px;
+  // text-align: center;
+  overflow: auto;
+  padding: 0.25rem;
+}
+
+.section-message {
+  font-weight: 800;
+}
