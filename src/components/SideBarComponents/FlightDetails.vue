@@ -178,7 +178,7 @@ export default {
           if (feature) {
             this.$store.state.map.flyTo({
               center: feature[0].geometry.coordinates,
-              offset: [-150, 0],
+              offset: [150, 0],
               speed: 0.2,
               essential: true,
             });

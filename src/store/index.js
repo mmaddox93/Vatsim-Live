@@ -5,7 +5,11 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    options: {},
+    options: {
+      sigmets: false,
+      aircraftLabels: false,
+      weather: true,
+    },
     map: {},
     pilotsData: {},
     sidebarContent: null,

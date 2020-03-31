@@ -53,14 +53,10 @@ export default {
     return {
       isDropped: false,
       animComplete: false,
-      options: {
-        sigmets: false,
-        aircraftLabels: false,
-        weather: true,
-      },
+      options: {},
     };
   },
-  created() {
+  mounted() {
     this.getOptions();
   },
   watch: {
@@ -75,7 +71,7 @@ export default {
   },
   methods: {
     getOptions() {
-      if (this.$store.state.options) {
+      if (this.$store.state.options.weather) {
         this.options = this.$store.state.options;
       }
     },

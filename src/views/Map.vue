@@ -38,7 +38,10 @@ export default {
   computed: {
     showWxRadar() {
       const options = JSON.parse(this.$store.state.options);
-      return options.weather;
+      if (typeof options.weather !== 'undefined') {
+        return options.weather;
+      }
+      return false;
     },
   },
   components: {

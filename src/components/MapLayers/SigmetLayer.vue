@@ -13,7 +13,10 @@ export default {
   computed: {
     showSigmets() {
       const options = JSON.parse(this.$store.state.options);
-      return options.sigmets;
+      if (typeof options.sigmets !== 'undefined') {
+        return options.sigmets;
+      }
+      return false;
     },
   },
   data() {

@@ -19,7 +19,10 @@ export default {
   computed: {
     showLabels() {
       const options = JSON.parse(this.$store.state.options);
-      return options.aircraftLabels;
+      if (typeof options.aircraftLabels !== 'undefined') {
+        return options.aircraftLabels;
+      }
+      return false;
     },
   },
   data() {
