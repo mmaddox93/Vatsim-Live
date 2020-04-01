@@ -5,7 +5,6 @@
     <MglMap :token="token" :mapStyle="mapStyle">
       <div v-if="$store.state.mapLoaded">
         <MapSearch />
-
         <!-- <OnlineCenters /> -->
         <ControllerLayers />
         <PilotsLayer />

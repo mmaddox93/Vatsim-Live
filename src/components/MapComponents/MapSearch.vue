@@ -76,13 +76,13 @@ export default {
   background-color: var(--secondary);
 
   &:hover {
-    background-color: var(--secondary) Hov;
+    background-color: var(--secondaryHov);
     color: var(--white);
   }
 }
 
 .mapboxgl-ctrl-geocoder .suggestions > .active > a {
-  background-color: var(--secondary) Act;
+  background-color: var(--secondaryAct);
   color: var(--white);
 }
 

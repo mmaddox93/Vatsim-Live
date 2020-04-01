@@ -22,7 +22,6 @@ export default {
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   mounted() {
-    console.log(this.content.properties);
     if (this.content.properties.flightplan) this.flyToFeature();
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
