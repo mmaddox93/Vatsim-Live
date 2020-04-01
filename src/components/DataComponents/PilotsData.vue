@@ -1,7 +1,12 @@
 <template>
   <div class="data-details">
-    <div class="data-header">Currently Online {{$route.name}}</div>
-    <DataScroller v-if="pilots[0]" :data="this.$store.state.pilotsData.data.features" />
+    <div class="data-header">
+      <div class="title">Currently Online {{$route.name}}</div>
+      <div class="search">
+        <input placeholder="Search..." type="text" v-model="search" />
+      </div>
+    </div>
+    <DataScroller v-if="pilots[0]" :data="filteredList" />
   </div>
 </template>
 
@@ -10,19 +15,32 @@ import DataScroller from '@/components/DataComponents/DataScroller.vue';
 
 export default {
   components: { DataScroller },
-  created() {
-    if (!this.$store.state.pilotsData.data) this.fetchPilots();
+  data() {
+    return {
+      pilots: [],
+      search: '',
+    };
   },
   computed: {
-    pilots() {
-      return (this.$store.state.pilotsData.data ? this.$store.state.pilotsData.data.features : '');
+    filteredList() {
+      // eslint-disable-next-line arrow-body-style
+      return this.pilots.filter((pilot) => {
+        if (pilot.properties.callsign.toLowerCase().includes(this.search.toLowerCase())) return pilot;
+        if (pilot.properties.realname.toLowerCase().includes(this.search.toLowerCase())) return pilot;
+      });
     },
+  },
+  created() {
+    if (!this.$store.state.pilotsData.data) this.fetchPilots();
+    else this.pilots = this.$store.state.pilotsData.data.features;
   },
   methods: {
     async fetchPilots() {
       const response = await fetch('https://map-dev.vatsim.net/api/v1/network/online/pilots');
       const data = await response.json();
       this.$store.commit('setPilotsData', data);
+      console.log(data);
+      this.pilots = data.data.features;
     },
   },
 };
@@ -40,8 +58,20 @@ export default {
   border-bottom: 1px solid transparent;
   display: flex;
   align-items: center;
-  padding: 0 1rem;
-  height: 2.5rem;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
   background-color: var(--tertiary);
+}
+
+input {
+  color: white;
+  background-color: #38383a;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  padding: 10px 15px;
+
+  &:focus {
+    outline: solid thin var(--blue);
+  }
 }
 </style>

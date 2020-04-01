@@ -62,7 +62,7 @@ export default {
   border-radius: 4px 4px 0 0;
   padding: 0.75rem;
   border: 1px solid var(--border);
-  border-bottom-color: var(--border)-dark;
+  border-bottom-color: var(--borderDark);
 }
 
 ol {

@@ -32,8 +32,8 @@ export default {
       const matchingFeatures = [];
       for (let i = 0; i < this.$store.state.pilotsData.data.features.length; i++) {
         const feature = this.$store.state.pilotsData.data.features[i];
-        if (feature.properties.callsign.toLowerCase().search(query.toLowerCase()) !== -1) {
-          feature.place_name = feature.properties.callsign;
+        if (feature.properties.callsign.toLowerCase().search(query.toLowerCase()) !== -1 || feature.properties.realname.toLowerCase().search(query.toLowerCase()) !== -1) {
+          feature.place_name = `${feature.properties.callsign} - ${feature.properties.realname}`;
           feature.center = feature.geometry.coordinates;
           matchingFeatures.push(feature);
         }
@@ -51,6 +51,7 @@ export default {
 }
 
 .mapboxgl-ctrl-geocoder--input {
+  font-family: 'Poppins', sans-serif;
   color: var(--white);
 
   &:focus {
@@ -91,7 +92,12 @@ export default {
   color: var(--lighter);
 }
 
+div > .suggestions {
+  background-color: var(--secondary) !important;
+}
+
 ::placeholder {
   color: var(--lighter);
+  font-family: 'Poppins', sans-serif;
 }
 </style>

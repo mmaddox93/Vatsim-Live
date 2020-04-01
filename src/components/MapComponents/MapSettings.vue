@@ -79,8 +79,8 @@ export default {
   max-width: 500px;
   z-index: 4;
   position: absolute;
-  right: 0.75rem;
-  top: 0.75rem;
+  right: 10px;
+  top: 10px;
   height: calc(100% - 2rem);
 }
 

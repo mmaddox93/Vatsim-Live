@@ -28,16 +28,16 @@
           <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Map.svg')"></inline-svg>Map
         </div>
       </router-link>
-      <!-- <router-link to="/data"> -->
-      <div @click="toggleNav()" class="route disabled">
+      <router-link to="/data">
+      <div @click="toggleNav()" class="route">
         <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Data.svg')"></inline-svg>Data
       </div>
-      <!-- </router-link> -->
-      <!-- <router-link to="/weather"> -->
-      <div @click="toggleNav()" class="route disabled">
+      </router-link>
+      <router-link to="/weather">
+      <div @click="toggleNav()" class="route">
         <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Weather.svg')"></inline-svg>Weather/ATIS
       </div>
-      <!-- </router-link> -->
+      </router-link>
     </div>
   </div>
 </template>

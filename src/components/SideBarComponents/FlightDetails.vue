@@ -203,7 +203,7 @@ export default {
 };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .FlightDetails {
   max-width: 500px;
   margin: 2rem;
@@ -275,18 +275,18 @@ button {
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: var(--secondary) Hov;
+    background-color: var(--secondaryHov);
 
     .button-control-icon {
-      background-color: var(--secondary) Hov;
+      background-color: var(--secondaryHov);
     }
   }
 
   &:active {
-    background-color: var(--secondary) Act;
+    background-color: var(--secondaryAct);
 
     .button-control-icon {
-      background-color: var(--secondary) Hov;
+      background-color: var(--secondaryHov);
     }
   }
 }
