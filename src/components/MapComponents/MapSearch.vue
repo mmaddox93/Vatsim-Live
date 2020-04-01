@@ -47,7 +47,7 @@ export default {
 <style lang="scss">
 .mapboxgl-ctrl-geocoder {
   color: var(--white);
-  background-color: $secondary;
+  background-color: var(--secondary);
 }
 
 .mapboxgl-ctrl-geocoder--input {
@@ -59,7 +59,7 @@ export default {
 }
 
 .mapboxgl-ctrl-geocoder--button {
-  background-color: $secondary;
+  background-color: var(--secondary);
 }
 
 .mapboxgl-ctrl-geocoder--icon-search,
@@ -73,21 +73,21 @@ export default {
 
 .mapboxgl-ctrl-geocoder .suggestions > li > a {
   color: var(--white);
-  background-color: $secondary;
+  background-color: var(--secondary);
 
   &:hover {
-    background-color: $secondaryHov;
+    background-color: var(--secondary) Hov;
     color: var(--white);
   }
 }
 
 .mapboxgl-ctrl-geocoder .suggestions > .active > a {
-  background-color: $secondaryAct;
+  background-color: var(--secondary) Act;
   color: var(--white);
 }
 
 .mapbox-gl-geocoder--error {
-  background-color: $secondary;
+  background-color: var(--secondary);
   color: var(--lighter);
 }
 

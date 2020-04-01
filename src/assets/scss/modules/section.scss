@@ -2,8 +2,8 @@ section {
   height: 100%;
   width: 100%;
   position: relative;
-  background-color: $secondary;
-  border: 1px solid $border;
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
   padding: 1rem;
   border-radius: 10px;
   box-sizing: border-box;

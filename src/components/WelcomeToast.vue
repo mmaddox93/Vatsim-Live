@@ -46,7 +46,7 @@ export default {
 .toast {
   cursor: pointer;
   min-width: 600px;
-  background-color: $secondary;
+  background-color: var(--secondary);
   color: white;
   padding: 1rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);

@@ -32,12 +32,7 @@
       </div>
       <div class="setting-group">
         <span class="setting">Weather Radar</span>
-        <toggle-button
-          v-model="options.weather"
-          color="#50fa7b"
-          :sync="false"
-          :labels="false"
-        />
+        <toggle-button v-model="options.weather" color="#50fa7b" :sync="false" :labels="false" />
       </div>
     </div>
   </div>
@@ -113,7 +108,7 @@ export default {
 
 .header {
   cursor: pointer;
-  background-color: $secondary;
+  background-color: var(--secondary);
   border-radius: 7px;
   padding: 0.75rem;
   display: flex;
@@ -146,6 +141,6 @@ export default {
   transform-origin: top;
   transition: transform 0.4s ease-in-out;
   overflow: hidden;
-  background: $secondary;
+  background: var(--secondary);
 }
 </style>

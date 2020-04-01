@@ -31,7 +31,7 @@ export default {
 
 body {
   color: white;
-  background-color: $primary;
+  background-color: var(--primary);
   margin: 0;
 }
 
@@ -47,12 +47,6 @@ h4,
 h5,
 h6 {
   margin: 0;
-}
-
-:root {
-  --lighter: #818384;
-  --dark: #202225;
-  --white: #ffffff;
 }
 
 * {

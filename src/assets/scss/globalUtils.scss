@@ -5,8 +5,8 @@
 }
 
 .highlight {
-  stroke: $highlight !important;
-  fill: $highlight !important;
+  stroke: var(--highlight) !important;
+  fill: var(--highlight) !important;
 }
 
 .center-align {

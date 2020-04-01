@@ -6,7 +6,7 @@
     z-index: 10000;
   
   .tooltip-inner {
-    background: $dark-modifier;
+    background: var(--darkModifier);
     color: white;
     border-radius: 10px;
     font-size: 14px;
@@ -19,7 +19,7 @@
     border-style: solid;
     position: absolute;
     margin: 5px;
-    border-color: $dark-modifier;
+    border-color: var(--darkModifier);
     z-index: 1;
   }
 

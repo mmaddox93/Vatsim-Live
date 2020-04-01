@@ -1,13 +1,17 @@
-$primary: #030303;
-$secondary: #1a1a1b;
-$secondaryHov: #272729;
-$secondaryAct: #2f2f31;
-$tertiary: #272729;
-$active: #202124;
-$highlight: #50fa7b;
-$dark-modifier: #171717;
-$border: #474748;
-$border-dark: #343536;
+:root {
+  --lighter: #818384;
+  --white: #ffffff;
+  --primary: #030303;
+  --secondary: #1a1a1b;
+  --secondaryHov: #272729;
+  --secondaryAct: #2f2f31;
+  --tertiary: #272729;
+  --active: #202124;
+  --highlight: #50fa7b;
+  --darkModifier: #171717;
+  --border: #474748;
+  --borderDark: #343536;
+}
 
 // imports
 @import './globalUtils.scss';

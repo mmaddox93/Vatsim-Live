@@ -58,16 +58,16 @@ export default {
 
 .category-title {
   position: sticky;
-  background-color: $tertiary;
+  background-color: var(--tertiary);
   border-radius: 4px 4px 0 0;
   padding: 0.75rem;
-  border: 1px solid $border;
-  border-bottom-color: $border-dark;
+  border: 1px solid var(--border);
+  border-bottom-color: var(--border)-dark;
 }
 
 ol {
-  background-color: $secondary;
-  border: 1px solid $border;
+  background-color: var(--secondary);
+  border: 1px solid var(--border);
   border-top: none;
   border-radius: 0 0 4px 4px;
 }

@@ -29,14 +29,14 @@
         </div>
       </router-link>
       <!-- <router-link to="/data"> -->
-        <div @click="toggleNav()" class="route disabled">
-          <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Data.svg')"></inline-svg>Data
-        </div>
+      <div @click="toggleNav()" class="route disabled">
+        <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Data.svg')"></inline-svg>Data
+      </div>
       <!-- </router-link> -->
       <!-- <router-link to="/weather"> -->
-        <div @click="toggleNav()" class="route disabled">
-          <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Weather.svg')"></inline-svg>Weather/ATIS
-        </div>
+      <div @click="toggleNav()" class="route disabled">
+        <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Weather.svg')"></inline-svg>Weather/ATIS
+      </div>
       <!-- </router-link> -->
     </div>
   </div>
@@ -121,7 +121,7 @@ export default {
 
 .routes {
   z-index: 7;
-  background-color: $secondary;
+  background-color: var(--secondary);
   position: absolute;
   box-sizing: border-box;
   border: 1px solid #343536;
@@ -175,7 +175,7 @@ export default {
 .active-icon > path,
 .active-icon > ellipse,
 .active-icon > line {
-  stroke: $highlight;
-  fill: $highlight;
+  stroke: var(--highlight);
+  fill: var(--highlight);
 }
 </style>

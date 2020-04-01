@@ -249,7 +249,7 @@ export default {
 .button-control-icon {
   height: 2rem;
   width: auto;
-  background-color: $secondary;
+  background-color: var(--secondary);
 }
 
 .left-margin {
@@ -264,7 +264,7 @@ button {
   outline: none;
   border: none;
   padding: 0.25rem 1rem;
-  background-color: $secondary;
+  background-color: var(--secondary);
   display: flex;
   align-items: center;
   border-radius: 4px;
@@ -275,18 +275,18 @@ button {
   transition: background-color 100ms ease-in-out;
 
   &:hover {
-    background-color: $secondaryHov;
+    background-color: var(--secondary) Hov;
 
     .button-control-icon {
-      background-color: $secondaryHov;
+      background-color: var(--secondary) Hov;
     }
   }
 
   &:active {
-    background-color: $secondaryAct;
+    background-color: var(--secondary) Act;
 
     .button-control-icon {
-      background-color: $secondaryHov;
+      background-color: var(--secondary) Hov;
     }
   }
 }

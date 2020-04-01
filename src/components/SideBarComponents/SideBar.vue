@@ -48,7 +48,7 @@ export default {
   overflow: hidden;
   height: 100%;
   position: relative;
-  background-color: $primary;
+  background-color: var(--primary);
   width: min-content;
   z-index: 4;
   min-width: 400px;

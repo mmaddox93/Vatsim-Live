@@ -36,12 +36,12 @@ export default {
 }
 
 .data-header {
-  border: 1px solid $border;
+  border: 1px solid var(--border);
   border-bottom: 1px solid transparent;
   display: flex;
   align-items: center;
   padding: 0 1rem;
   height: 2.5rem;
-  background-color: $tertiary;
+  background-color: var(--tertiary);
 }
 </style>
