@@ -10,13 +10,20 @@
     >
       <template v-slot="props">
         <div class="list-item">
-          <div class="main-details">
+          <div class="item">
             {{props.item.properties.callsign}}
-            <span
-              class="name"
-            >-{{props.item.properties.realname}} </span>
+            <span class="name">-{{props.item.properties.realname}}</span>
           </div>
-          <button class="map-btn" @click="openMap(props.item)">View on map</button>
+          <div class="item route" v-if="props.item.properties.flightplan">
+            <span class="bold">{{props.item.properties.flightplan.arrival}}</span>
+            <span class="lighter">-</span>
+            <span class="bold">{{props.item.properties.flightplan.departure}}</span>
+          </div>
+          <span
+            v-if="props.item.properties.flightplan"
+            class="item lighter"
+          >{{props.item.properties.flightplan.aircraft}}</span>
+          <button class="map-btn item" @click="openMap(props.item)">View on map</button>
         </div>
       </template>
     </RecycleScroller>
@@ -54,11 +61,29 @@ export default {
   position: relative;
   padding: 1rem;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   background-color: var(--secondary);
   height: 64px;
   border: 1px solid var(--border);
   border-top: 1px solid transparent;
+}
+
+.item {
+  &:first-child {
+    width: 40%;
+    justify-content: start;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 16.66%
+}
+
+.route {
+  span:first-child {
+    font-weight: 800;
+  }
 }
 
 .map-btn {
@@ -69,7 +94,6 @@ export default {
   border: none;
   border-radius: 7px;
   color: var(--white);
-  position: absolute;
   right: 1rem;
   padding: 10px 16px;
   top: 12px;

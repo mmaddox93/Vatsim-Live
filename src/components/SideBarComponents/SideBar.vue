@@ -33,7 +33,7 @@ export default {
       this.$store.state.map.flyTo({
         center: this.content.geometry.coordinates,
         offset: [+150, 0],
-        speed: 0.5,
+        speed: 1,
         essential: true,
       });
     },

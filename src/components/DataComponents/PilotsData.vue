@@ -65,8 +65,8 @@ export default {
 
 input {
   color: white;
-  background-color: #38383a;
   border: 1px solid var(--border);
+  background-color: var(--secondary);
   border-radius: 7px;
   padding: 10px 15px;
 
