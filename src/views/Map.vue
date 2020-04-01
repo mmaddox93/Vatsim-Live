@@ -4,6 +4,8 @@
     <SideBarManager class="SideBarManager" />
     <MglMap :token="token" :mapStyle="mapStyle">
       <div v-if="$store.state.mapLoaded">
+        <MapSearch />
+
         <!-- <OnlineCenters /> -->
         <ControllerLayers />
         <PilotsLayer />
@@ -18,6 +20,7 @@
 <script>
 /* eslint-disable vue/no-unused-components */
 import MglMap from '@/components/MapComponents/MglMap.vue';
+import MapSearch from '@/components/MapComponents/MapSearch.vue';
 import PilotsLayer from '@/components/MapLayers/PilotsLayer.vue';
 import ControllerLayers from '@/components/MapLayers/ControllerLayers.vue';
 import TrailLayer from '@/components/MapLayers/TrailLayer.vue';
@@ -54,6 +57,7 @@ export default {
     ControllerLayers,
     OnlineCenters,
     SigmetLayer,
+    MapSearch,
   },
 };
 </script>

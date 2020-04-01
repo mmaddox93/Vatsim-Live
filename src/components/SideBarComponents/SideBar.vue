@@ -1,6 +1,6 @@
 <template>
   <div class="sidebar">
-    <FlightDetails v-if="content.properties.flightplan" :content="content" />
+    <FlightDetails v-if="content.properties.heading" :content="content" />
     <ControllerDetails v-else :content="content.properties" />
   </div>
 </template>
@@ -17,12 +17,14 @@ export default {
   mixins: [AddTrail],
   props: ['content'],
   updated() {
-    if (this.content.layer.id !== 'onlineFirboundsLayer') this.flyToFeature();
-    if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
+    // only pilots have a flightplan
+    if (this.content.properties.flightplan) this.flyToFeature();
+    // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   mounted() {
-    if (this.content.layer.id !== 'onlineFirboundsLayer') this.flyToFeature();
-    if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
+    console.log(this.content.properties);
+    if (this.content.properties.flightplan) this.flyToFeature();
+    // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   methods: {
     closeSidebar() {

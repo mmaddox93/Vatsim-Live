@@ -81,6 +81,7 @@ export default {
       const newData = await this.fetchPilots();
       this.lastFetch = newData;
       this.predictiveSource = newData;
+      this.$store.commit('setPilotsData', newData);
       this.$store.state.map.getSource('pilots').setData(newData.data);
     },
     async initPilots() {

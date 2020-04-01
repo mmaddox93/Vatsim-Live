@@ -130,12 +130,25 @@ export default {
   computed: {
     fpl() {
       const { flightplan } = this.content.properties;
-      return JSON.parse(flightplan) || 'No flight plan';
+      if (flightplan === null) return { err: 'No flightplan filed' };
+      if (typeof flightplan === 'string') {
+        return JSON.parse(flightplan) || 'No flight plan';
+      }
+      return flightplan;
     },
     route() {
       // syntax highlight a route
-      const { route } = JSON.parse(this.content.properties.flightplan);
-      if (route) {
+      let route;
+      let { flightplan } = this.content.properties;
+      if (flightplan) {
+        if (flightplan.route) {
+          route = flightplan.route;
+        } else if (typeof flightplan === 'string') {
+          flightplan = JSON.parse(flightplan);
+          route = flightplan.route;
+        } else {
+          return [{ word: 'Flightplan does not contain a valid route' }];
+        }
         const output = route.split(' ').map((word) => {
           const point = word.split('/')[0];
           if (point === 'DCT') return { word: point, class: 'DCT' };
