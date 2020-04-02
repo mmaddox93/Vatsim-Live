@@ -48,6 +48,7 @@ export default {
 .mapboxgl-ctrl-geocoder {
   color: var(--white);
   background-color: var(--secondary);
+  border-radius: 7px;
 }
 
 .mapboxgl-ctrl-geocoder--input {

@@ -1,5 +1,5 @@
 <template>
-  <div class="data-details">
+  <div class="data-details" v-bind:style="{ height: height }">
     <div class="data-header">
       <div class="title">Currently Online {{$route.name}}</div>
       <div class="search">
@@ -7,6 +7,9 @@
       </div>
     </div>
     <DataScroller v-if="pilots[0]" :data="filteredList" />
+    <div v-else class="loader">
+      Loading data...
+    </div>
   </div>
 </template>
 
@@ -29,6 +32,9 @@ export default {
         if (pilot.properties.realname.toLowerCase().includes(this.search.toLowerCase())) return pilot;
       });
     },
+    height() {
+      return `${this.pilots.length * 64}px`;
+    },
   },
   created() {
     if (!this.$store.state.pilotsData.data) this.fetchPilots();
@@ -49,11 +55,13 @@ export default {
 <style lang="scss" scoped>
 .data-details {
   width: 100%;
-  height: 100%;
   margin: 0 2rem;
 }
 
 .data-header {
+  position: sticky;
+  top: 0;
+  z-index: 3;
   border: 1px solid var(--border);
   border-bottom: 1px solid transparent;
   display: flex;

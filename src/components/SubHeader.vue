@@ -14,7 +14,6 @@ export default {
 <style lang="scss" scoped>
 .SubHeader {
   background-color: var(--secondary);
-  border-top: 1px solid var(--border);
   padding: 1rem 3rem;
   width: 100vw;
 }

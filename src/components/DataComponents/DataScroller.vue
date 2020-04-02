@@ -12,12 +12,12 @@
         <div class="list-item">
           <div class="item">
             {{props.item.properties.callsign}}
-            <span class="name">-{{props.item.properties.realname}}</span>
+            <span class="name"> - {{props.item.properties.realname}}</span>
           </div>
           <div class="item route" v-if="props.item.properties.flightplan">
-            <span class="bold">{{props.item.properties.flightplan.arrival}}</span>
-            <span class="lighter">-</span>
-            <span class="bold">{{props.item.properties.flightplan.departure}}</span>
+            <span class="bold">{{props.item.properties.flightplan.arrival}} </span>
+            <span class="lighter"> - </span>
+            <span class="bold"> {{props.item.properties.flightplan.departure}}</span>
           </div>
           <span
             v-if="props.item.properties.flightplan"
@@ -87,6 +87,7 @@ export default {
 }
 
 .map-btn {
+  transition: background-color 200ms linear;
   font-weight: 800;
   cursor: pointer;
   outline: none;
