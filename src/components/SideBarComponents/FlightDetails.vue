@@ -149,15 +149,17 @@ export default {
         } else {
           return [{ word: 'Flightplan does not contain a valid route' }];
         }
-        const output = route.split(' ').map((word) => {
-          const point = word.split('/')[0];
-          if (point === 'DCT') return { word: point, class: 'DCT' };
-          if (point.match(/\d/) && (['N', 'S'].includes(point.charAt(2))) && (['E', 'W'].includes(point.charAt(6)))) return { word: point, class: 'latlong' };
-          if (point.match(/\d/) && (point.length >= 6 && point.length <= 7)) return { word: point, class: 'sidstar' };
-          if (point.match(/\d/)) return { word: point, class: 'airway' };
-          return { word: point, class: 'num' };
-        });
-        return output;
+        if (route) {
+          const output = route.split(' ').map((word) => {
+            const point = word.split('/')[0];
+            if (point === 'DCT') return { word: point, class: 'DCT' };
+            if (point.match(/\d/) && (['N', 'S'].includes(point.charAt(2))) && (['E', 'W'].includes(point.charAt(6)))) return { word: point, class: 'latlong' };
+            if (point.match(/\d/) && (point.length >= 6 && point.length <= 7)) return { word: point, class: 'sidstar' };
+            if (point.match(/\d/)) return { word: point, class: 'airway' };
+            return { word: point, class: 'num' };
+          });
+          return output;
+        }
       }
       return [{ word: 'Flightplan does not contain a valid route' }];
     },
@@ -228,7 +230,7 @@ export default {
 }
 
 .airway {
-  color: #1fa9e9;
+  color: var(--blue);
 }
 
 .DCT {

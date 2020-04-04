@@ -21,6 +21,7 @@ export default {
   background-color: var(--secondary);
   z-index: 4;
   position: relative;
+  border-bottom: 1px solid var(--border);
 }
 
 .vatsim-img-logo {

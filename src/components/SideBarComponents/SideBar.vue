@@ -17,12 +17,11 @@ export default {
   mixins: [AddTrail],
   props: ['content'],
   updated() {
-    // only pilots have a flightplan
-    if (this.content.properties.flightplan) this.flyToFeature();
+    if (this.content.properties.heading) this.flyToFeature();
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   mounted() {
-    if (this.content.properties.flightplan) this.flyToFeature();
+    if (this.content.properties.heading) this.flyToFeature();
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   methods: {
@@ -71,5 +70,17 @@ export default {
 .close-icon {
   width: 2rem;
   height: 2rem;
+}
+
+@media (max-width: 620px) {
+  .sidebar {
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    min-width: 0;
+    height: min-content;
+    min-height: 100vh;
+  }
 }
 </style>
