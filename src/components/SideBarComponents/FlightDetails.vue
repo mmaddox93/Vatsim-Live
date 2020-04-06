@@ -25,24 +25,24 @@
     </div>
     <section>
       <header>{{content.properties.callsign}}</header>
-      <div v-if="fpl.aircraft" class="arr-dep">
+      <div class="arr-dep" v-if="hasFlightPlan">
         <div class="info-group arr-dep-info">
           <label for="departure">DEPARTURE</label>
-          <span class="large" id="departure">{{fpl.departure}}</span>
+          <span class="large" id="departure">{{content.properties.planned_depairport}}</span>
         </div>
         <div class="info-group arr-dep-info">
           <label for="departure">DEPARTURE</label>
-          <span class="large" id="departure">{{fpl.arrival}}</span>
+          <span class="large" id="departure">{{content.properties.planned_destairport}}</span>
         </div>
       </div>
       <div class="four-item-row">
-        <div v-if="fpl.aircraft" class="info-group four-item" title="The aircraft type">
+        <div class="info-group four-item" v-if="hasFlightPlan" title="The aircraft type">
           <label for="aircraft">AIRCRAFT</label>
-          <span id="aircraft">{{fpl.aircraft}}</span>
+          <span id="aircraft">{{content.properties.planned_aircraft}}</span>
         </div>
         <div class="info-group four-item" title="The aircraft's current altitude">
           <label for="altitude">ALTITUDE</label>
-          <span id="altitude">{{content.properties.altMslFt}}</span>
+          <span id="altitude">{{content.properties.altitude}}</span>
         </div>
         <div class="info-group four-item" title="The aircraft's current heading">
           <label for="heading">HEADING</label>
@@ -50,7 +50,7 @@
         </div>
         <div class="info-group four-item" title="The aircraft's current speed">
           <label for="speed">SPEED</label>
-          <span id="speed">{{content.properties.speed}}</span>
+          <span id="speed">{{content.properties.groundspeed}}</span>
         </div>
       </div>
     </section>
@@ -67,43 +67,43 @@
         </div>
       </div>
     </section>
-    <section v-if="fpl.aircraft">
+    <section v-if="hasFlightPlan">
       <header>Flight Plan Info</header>
       <div class="four-item-row">
-        <div class="info-group four-item" title="The aircraft type">
+        <div class="info-group four-item" title="The aircraft's filed flight rules">
           <label for="aircraft">RULES</label>
-          <span id="aircraft">{{fpl.flight_rules}}</span>
+          <span id="aircraft">{{content.properties.planned_flighttype}}</span>
         </div>
-        <div class="info-group four-item" title="The aircraft's current altitude">
+        <div class="info-group four-item" title="The aircraft's filed airspeed">
           <label for="altitude">TAS</label>
-          <span id="altitude">{{fpl.speed}}</span>
+          <span id="altitude">{{content.properties.planned_tascruise}}</span>
         </div>
-        <div class="info-group four-item" title="The aircraft's current heading">
+        <div class="info-group four-item" title="The aircraft's filed cruise altitude">
           <label for="heading">ALTITUDE</label>
-          <span id="heading">{{fpl.altitude}}</span>
+          <span id="heading">{{content.properties.planned_altitude}}</span>
         </div>
-        <div class="info-group four-item" title="The aircraft's current speed">
+        <div class="info-group four-item" title="The aircraft's alternate airfield">
           <label for="speed">ALTERNATE</label>
-          <span id="speed">{{fpl.alternate}}</span>
+          <span id="speed">{{content.properties.planned_altairport}}</span>
         </div>
       </div>
       <div>
         <div class="info-group" title="The aircraft's remarks">
           <label for="speed">REMARKS</label>
-          <span id="speed">{{fpl.remarks}}</span>
+          <span id="speed">{{content.properties.planned_remarks}}</span>
         </div>
       </div>
     </section>
-    <section class="center-align" v-else>
-      <div class="section-message">NO FLIGHTPLAN FILED</div>
-    </section>
-    <section v-if="fpl.aircraft">
+    <section v-if="hasFlightPlan">
       <header>Flight Plan Route</header>
       <span id="route">
         <span v-for="(point, index) in route" :key="`point-${index}`">
           <span :class="point.class">{{point.word}} {{' '}}</span>
         </span>
       </span>
+    </section>
+    <section class="center-align" v-else>
+      <div class="section-message">NO FLIGHTPLAN FILED</div>
     </section>
   </div>
 </template>
@@ -121,45 +121,32 @@ export default {
   data() {
     return {
       track: false,
-      imageValid: true,
     };
   },
   created() {
     this.trackFlight();
+    console.log(this.content);
   },
   computed: {
-    fpl() {
-      const { flightplan } = this.content.properties;
-      if (flightplan === null) return { err: 'No flightplan filed' };
-      if (typeof flightplan === 'string') {
-        return JSON.parse(flightplan) || 'No flight plan';
+    hasFlightPlan() {
+      if (this.content.properties.planned_route !== 'null') {
+        return true;
       }
-      return flightplan;
+      return false;
     },
     route() {
-      // syntax highlight a route
-      let route;
-      let { flightplan } = this.content.properties;
-      if (flightplan) {
-        if (flightplan.route) {
-          route = flightplan.route;
-        } else if (typeof flightplan === 'string') {
-          flightplan = JSON.parse(flightplan);
-          route = flightplan.route;
-        } else {
-          return [{ word: 'Flightplan does not contain a valid route' }];
-        }
-        if (route) {
-          const output = route.split(' ').map((word) => {
-            const point = word.split('/')[0];
-            if (point === 'DCT') return { word: point, class: 'DCT' };
-            if (point.match(/\d/) && (['N', 'S'].includes(point.charAt(2))) && (['E', 'W'].includes(point.charAt(6)))) return { word: point, class: 'latlong' };
-            if (point.match(/\d/) && (point.length >= 6 && point.length <= 7)) return { word: point, class: 'sidstar' };
-            if (point.match(/\d/)) return { word: point, class: 'airway' };
-            return { word: point, class: 'num' };
-          });
-          return output;
-        }
+      const route = this.content.properties.planned_route;
+      console.log(route);
+      if (route) {
+        const output = route.split(' ').map((word) => {
+          const point = word.split('/')[0];
+          if (point === 'DCT') return { word: point, class: 'DCT' };
+          if (point.match(/\d/) && (['N', 'S'].includes(point.charAt(2))) && (['E', 'W'].includes(point.charAt(6)))) return { word: point, class: 'latlong' };
+          if (point.match(/\d/) && (point.length >= 6 && point.length <= 7)) return { word: point, class: 'sidstar' };
+          if (point.match(/\d/)) return { word: point, class: 'airway' };
+          return { word: point, class: 'num' };
+        });
+        return output;
       }
       return [{ word: 'Flightplan does not contain a valid route' }];
     },

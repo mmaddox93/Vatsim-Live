@@ -14,15 +14,15 @@
             {{props.item.properties.callsign}}
             <span class="name"> - {{props.item.properties.realname}}</span>
           </div>
-          <div class="item route" v-if="props.item.properties.flightplan">
-            <span class="bold">{{props.item.properties.flightplan.arrival}} </span>
+          <div class="item route" v-if="props.item.properties.planned_route.length">
+            <span class="bold">{{props.item.properties.planned_depairport}} </span>
             <span class="lighter"> - </span>
-            <span class="bold"> {{props.item.properties.flightplan.departure}}</span>
+            <span class="bold"> {{props.item.properties.planned_destairport}}</span>
           </div>
           <span
-            v-if="props.item.properties.flightplan"
+            v-if="props.item.properties.planned_route"
             class="item lighter"
-          >{{props.item.properties.flightplan.aircraft}}</span>
+          >{{props.item.properties.planned_aircraft}}</span>
           <button class="map-btn item" @click="openMap(props.item)">View on map</button>
         </div>
       </template>
@@ -95,9 +95,7 @@ export default {
   border: none;
   border-radius: 7px;
   color: var(--white);
-  right: 1rem;
-  padding: 10px 16px;
-  top: 12px;
+  padding: 10px;
 
   &:hover {
     background-color: var(--blueHov);

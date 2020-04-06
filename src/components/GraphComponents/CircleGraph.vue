@@ -3,7 +3,7 @@
     <div class="dials" :style="{width: halfRadiusEm, height: halfRadiusEm}">
       <div class="dial move" :style="[cssVars,{width: radiusEm, height: radiusEm}]">
         <div class="rail-background"></div>
-        <div class="dial-container container1" :style="{width: halfRadiusEm, left: halfRadiusEm}">
+        <div class="dial-container container1" :style="{width: halfRadiusEm,  left: halfRadiusEm}">
           <div
             class="half-circle"
             :style="[circleDegrees,{
@@ -105,7 +105,7 @@ export default {
   box-sizing: content-box;
 }
 
-.container {
+.screen {
   position: relative;
 
   .rail-background {

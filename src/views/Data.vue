@@ -5,18 +5,21 @@
       subtitle="Browse all the current connections to the network."
     />
     <div class="content-cont">
-      <div class="category-selector">
-        <div class="category-title">Categories</div>
-        <ol>
-          <router-link :to="{ path: '/data/' }">
-            <li>Pilots</li>
-          </router-link>
-          <router-link :to="{ path: '/data/controllers' }">
-            <li>Controllers</li>
-          </router-link>
-          <li>Supervisors</li>
-          <li>Observers</li>
-        </ol>
+      <div class="left-col">
+        <div class="category-selector">
+          <div class="category-title">Categories</div>
+          <ol>
+            <router-link :to="{ path: '/data/' }">
+              <li>Pilots</li>
+            </router-link>
+            <router-link :to="{ path: '/data/controllers' }">
+              <li>Controllers</li>
+            </router-link>
+            <li>Supervisors</li>
+            <li>Observers</li>
+          </ol>
+        </div>
+        <CircleGraph />
       </div>
       <router-view />
     </div>
@@ -25,9 +28,11 @@
 
 <script>
 import SubHeader from '@/components/SubHeader.vue';
+import CircleGraph from '../components/GraphComponents/CircleGraph.vue';
 
 export default {
-  components: { SubHeader },
+  // eslint-disable-next-line vue/no-unused-components
+  components: { SubHeader, CircleGraph },
 };
 </script>
 
@@ -50,6 +55,12 @@ export default {
   box-sizing: border-box;
   padding: 2rem 5rem;
   max-width: 1248px;
+}
+
+.left-col {
+  display: flex;
+  flex-direction: column;
+  // align-items: center;
 }
 
 .category-selector {
