@@ -99,9 +99,9 @@ export default {
       for (const pilot of this.predictiveSource.data.features) {
         const longitude = pilot.geometry.coordinates[0];
         const latitude = pilot.geometry.coordinates[1];
-        const { heading, speed } = pilot.properties;
+        const { heading } = pilot.properties;
+        const speed = pilot.properties.groundspeed;
         const distance = (speed / 3600) * 1852 * 0.5;
-
         // predictiverender mixin
         const newCoords = this.destinationFix(latitude, longitude, distance, heading);
         const newPilot = {

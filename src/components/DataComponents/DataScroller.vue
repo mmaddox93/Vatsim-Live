@@ -10,14 +10,19 @@
     >
       <template v-slot="props">
         <div class="list-item">
-          <div class="item">
+          <div class="item vertical">
             {{props.item.properties.callsign}}
-            <span class="name"> - {{props.item.properties.realname}}</span>
+            <span class="name">
+              {{props.item.properties.realname}}
+            </span>
           </div>
-          <div class="item route" v-if="props.item.properties.planned_route.length">
+          <div class="item route" v-if="props.item.properties.planned_depairport !== 'null'">
             <span class="bold">{{props.item.properties.planned_depairport}} </span>
-            <span class="lighter"> - </span>
-            <span class="bold"> {{props.item.properties.planned_destairport}}</span>
+            <span class="lighter">-</span>
+            <span class="bold">{{props.item.properties.planned_destairport}}</span>
+          </div>
+          <div class="item route" v-else>
+            No flightplan filed
           </div>
           <span
             v-if="props.item.properties.planned_route"
@@ -71,13 +76,20 @@ export default {
 
 .item {
   &:first-child {
-    width: 40%;
+    width: 30%;
     justify-content: start;
   }
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 16.66%
+  width: 16.66%;
+}
+
+.vertical {
+  display: flex;
+  justify-content: start;
+  align-items: start;
+  flex-direction: column;
 }
 
 .route {

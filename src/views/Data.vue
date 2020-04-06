@@ -31,7 +31,6 @@ import SubHeader from '@/components/SubHeader.vue';
 import CircleGraph from '../components/GraphComponents/CircleGraph.vue';
 
 export default {
-  // eslint-disable-next-line vue/no-unused-components
   components: { SubHeader, CircleGraph },
 };
 </script>
@@ -64,7 +63,7 @@ export default {
 }
 
 .category-selector {
-  min-width: 225px;
+  min-width: 175px;
 }
 
 .category-title {
