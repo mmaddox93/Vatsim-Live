@@ -1,6 +1,6 @@
 <template>
   <div class="map">
-    <WelcomeToast />
+    <WelcomeToast class="welcome-toast" />
     <SideBarManager class="SideBarManager" />
     <MglMap :token="token" :mapStyle="mapStyle">
       <div v-if="$store.state.mapLoaded">
@@ -69,5 +69,16 @@ export default {
   height: 100%;
   position: relative;
   overflow: hidden;
+}
+
+.welcome-toast {
+  z-index: 3;
+  position: absolute;
+  bottom: 0;
+  width: 100vw;
+  margin-bottom: 2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 </style>

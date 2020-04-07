@@ -32,20 +32,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.toast-container {
-  z-index: 3;
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .toast {
   cursor: pointer;
   min-width: 600px;
+  max-width: 800px;
   background-color: var(--secondary);
   color: white;
   padding: 1rem;

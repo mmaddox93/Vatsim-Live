@@ -45,7 +45,6 @@ export default {
       const response = await fetch('https://map-dev.vatsim.net/api/v1/network/online/pilots');
       const data = await response.json();
       this.$store.commit('setPilotsData', data);
-      console.log(data);
       this.pilots = data.data.features;
     },
   },

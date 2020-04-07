@@ -10,7 +10,6 @@
 <script>
 import TopNav from '@/components/TopNav.vue';
 
-
 export default {
   components: { TopNav },
   created() {
@@ -21,36 +20,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-#app {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-body {
-  color: white;
-  background-color: var(--primary);
-  margin: 0;
-}
-
-a {
-  color: inherit;
-  text-decoration: none;
-}
-
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  margin: 0;
-}
-
-* {
-  font-family: 'Poppins', sans-serif;
-  box-sizing: border-box;
-}
-</style>

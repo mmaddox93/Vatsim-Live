@@ -12,18 +12,14 @@
         <div class="list-item">
           <div class="item vertical">
             {{props.item.properties.callsign}}
-            <span class="name">
-              {{props.item.properties.realname}}
-            </span>
+            <span class="name">{{props.item.properties.realname}}</span>
           </div>
           <div class="item route" v-if="props.item.properties.planned_depairport !== 'null'">
-            <span class="bold">{{props.item.properties.planned_depairport}} </span>
+            <span class="bold">{{props.item.properties.planned_depairport}}</span>
             <span class="lighter">-</span>
             <span class="bold">{{props.item.properties.planned_destairport}}</span>
           </div>
-          <div class="item route" v-else>
-            No flightplan filed
-          </div>
+          <div class="item route" v-else>No flightplan filed</div>
           <span
             v-if="props.item.properties.planned_route"
             class="item lighter"
@@ -43,15 +39,9 @@ export default {
   components: { RecycleScroller },
   props: ['data'],
   methods: {
-    async openMap(station) {
-      console.log(station);
-      await this.$router.push({ path: '/' });
-      const setSidebar = setInterval(() => {
-        if (this.$store.state.mapLoaded) {
-          this.$store.commit('setSideBarContent', station);
-          clearInterval(setSidebar);
-        }
-      }, 500);
+    openMap(station) {
+      this.$router.push({ path: '/' });
+      this.$store.commit('setSideBarContent', station);
     },
   },
 };
@@ -77,7 +67,7 @@ export default {
 .item {
   &:first-child {
     width: 30%;
-    justify-content: start;
+    justify-content: flex-start;
   }
   display: flex;
   align-items: center;
@@ -87,8 +77,8 @@ export default {
 
 .vertical {
   display: flex;
-  justify-content: start;
-  align-items: start;
+  justify-content: flex-start;
+  align-items: flex-start;
   flex-direction: column;
 }
 

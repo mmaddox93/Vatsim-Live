@@ -13,13 +13,16 @@
   --borderDark: #343536;
   --blue: #00a2d9;
   --blueHov: #1c8abd;
+
+  &:first-child {
+    margin: 1rem;
+  }
 }
 
-// imports
-@import './globalUtils.scss';
-@import './global.scss';
-@import './modules/index.scss';
-@import './defaultOverrides.scss';
+@import '../src/assets/scss/globalUtils.scss';
+@import '../src/assets/scss/global.scss';
+@import '../src/assets/scss/modules/index.scss';
+@import '../src/assets/scss/defaultOverrides.scss';
 
 //fonts
 @import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');

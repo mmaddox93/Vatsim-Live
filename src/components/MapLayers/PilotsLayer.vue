@@ -50,11 +50,13 @@ export default {
           'text-allow-overlap': true,
           'text-field': ['get', 'callsign'],
           'text-font': ['Open Sans Bold', 'Arial Unicode MS Regular'],
-          'text-offset': [0, -1.5],
-          'text-size': 11,
+          'text-offset': [0, +1.25],
+          'text-size': 12,
         },
         paint: {
-          'text-color': '#fff',
+          'text-color': '#4eac37',
+          'text-halo-color': '#000000',
+          'text-halo-width': 1,
         },
       },
     };
@@ -62,14 +64,15 @@ export default {
   mounted() {
     this.initPilots();
     this.addClickListeners();
+
     setInterval(async () => {
       await this.updatePilots();
     }, 15000);
 
-    setInterval(() => {
-      const mapZoom = this.$store.state.map.getZoom();
-      if (this.predictiveSource.data && mapZoom > 6.5) this.predictiveRender();
-    }, 500);
+    // setInterval(() => {
+    //   const mapZoom = this.$store.state.map.getZoom();
+    //   if (this.predictiveSource.data && mapZoom > 6.5) this.predictiveRender();
+    // }, 500);
   },
   methods: {
     async fetchPilots() {

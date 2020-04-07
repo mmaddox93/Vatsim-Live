@@ -125,7 +125,6 @@ export default {
   },
   created() {
     this.trackFlight();
-    console.log(this.content);
   },
   computed: {
     hasFlightPlan() {
@@ -136,7 +135,6 @@ export default {
     },
     route() {
       const route = this.content.properties.planned_route;
-      console.log(route);
       if (route) {
         const output = route.split(' ').map((word) => {
           const point = word.split('/')[0];
