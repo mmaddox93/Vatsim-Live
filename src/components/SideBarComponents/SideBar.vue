@@ -17,7 +17,6 @@ export default {
   mixins: [AddTrail],
   props: ['content'],
   updated() {
-    console.log(this.content);
     if (this.content.properties.transponder) this.flyToFeature();
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
