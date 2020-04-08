@@ -76,7 +76,7 @@ export default {
       if (totalDegrees > 180) {
         firstCircRadius = 180;
         secondCircRadius = totalDegrees - 180;
-        secondCircTiming = secondCircRadius * 0.005555; // 180-sec = 1 degree every 0.005* seconds
+        secondCircTiming = secondCircRadius * (1 / 180); // 180deg / 1s
         endTiming = 1 + secondCircTiming;
       } else {
         firstCircRadius = totalDegrees;

@@ -5,8 +5,7 @@
     "build": "vue-cli-service build",
     "test": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint",
-    "start": "vue-cli-service serve --host localhost",
-    "storybook": "start-storybook -p 6006",
+    "start": "vue-cli-service serve",
     "build-storybook": "build-storybook"
   },
   "dependencies": {
@@ -25,10 +24,6 @@
   },
   "devDependencies": {
     "@babel/core": "^7.9.0",
-    "@storybook/addon-actions": "^5.3.18",
-    "@storybook/addon-links": "^5.3.18",
-    "@storybook/addons": "^5.3.18",
-    "@storybook/vue": "^5.3.18",
     "@vue/cli-plugin-babel": "^4.2.0",
     "@vue/cli-plugin-eslint": "^4.2.0",
     "@vue/cli-plugin-router": "^4.2.0",

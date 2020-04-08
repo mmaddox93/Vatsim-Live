@@ -19,8 +19,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-new Vue({
+const map = new Vue({
   router,
   store,
   render: (h) => h(App),
-}).$mount('#app');
+});
+
+map.$mount('#app');

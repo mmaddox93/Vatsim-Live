@@ -106,5 +106,6 @@ export default {
 
 .name {
   color: var(--lighter);
+  line-height: 100%;
 }
 </style>
