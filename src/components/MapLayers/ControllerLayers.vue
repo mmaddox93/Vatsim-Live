@@ -13,7 +13,7 @@ export default {
   },
   methods: {
     async initController() {
-      const response = await fetch('https://map-dev.vatsim.net/api/v1/network/online/controllers?groupBy=type&strict=false');
+      const response = await fetch('https://map-dev.vatsim.net/api/v1/controllers/online');
       const data = await response.json();
       this.initialFetch = data;
       // not currently in use
