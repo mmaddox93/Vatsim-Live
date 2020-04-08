@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import Map from '../views/Map.vue';
 import Data from '../views/Data.vue';
 import Weather from '../views/Weather.vue';
+import StatisticsView from '../components/DataComponents/StatisticsView.vue';
 import PilotsData from '../components/DataComponents/PilotsData.vue';
 import ControllersData from '../components/DataComponents/ControllersData.vue';
 
@@ -21,6 +22,11 @@ const routes = [
     children: [
       {
         path: '/data/',
+        name: 'Statistics',
+        component: StatisticsView,
+      },
+      {
+        path: '/data/pilots',
         name: 'Pilots',
         component: PilotsData,
       },

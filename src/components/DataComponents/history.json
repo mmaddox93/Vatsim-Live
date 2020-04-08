@@ -1,0 +1,45 @@
+{
+  "labels": [
+    "0000z",
+    "0100z",
+    "0200z",
+    "0300z",
+    "0400z",
+    "0500z",
+    "0600z",
+    "0700z",
+    "0800z",
+    "0900z",
+    "1000z",
+    "1200z",
+    "1300z",
+    "1400z"
+  ],
+  "datasets": [
+    {
+      "label": "Connections",
+      "data": [
+        564,
+        510,
+        540,
+        600,
+        630,
+        700,
+        600,
+        800,
+        850,
+        900,
+        950,
+        1200,
+        1400,
+        1470,
+        1200
+      ],
+      "borderColor": "#a95af4",
+      "pointBackgroundColor": "#a95af4",
+      "borderWidth": 4,
+      "pointBorderColor": "#a95af4",
+      "pointBorderWidth": 1.25
+    }
+  ]
+}

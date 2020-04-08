@@ -27,6 +27,7 @@ module.exports = {
     'array-callback-return': 0,
     'no-plusplus': 0,
     'consistent-return': 0,
+    'no-void': 0,
   },
 
   overrides: [

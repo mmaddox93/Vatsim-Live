@@ -6,7 +6,7 @@
           class="route-icon icon active-icon"
           :src="require(`../assets/img/svg/${currentRouteIcon}.svg`)"
         ></inline-svg>
-        {{$route.name}}
+        {{currentRouteIcon}}
       </div>
       <svg
         class="nav-icon icon"
@@ -60,6 +60,8 @@ export default {
   computed: {
     currentRouteIcon() {
       switch (this.$route.name) {
+        case 'Statistics':
+          return 'Data';
         case 'Pilots':
           return 'Data';
         case 'Controllers':

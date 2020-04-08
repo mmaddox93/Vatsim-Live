@@ -1,7 +1,9 @@
 <template>
   <div class="mglmap">
     <slot></slot>
-    <div class="map-container" :id="container"><MapSettings /></div>
+    <div class="map-container" :id="container">
+      <MapSettings />
+    </div>
   </div>
 </template>
 
@@ -37,6 +39,9 @@ export default {
   },
   created() {
     this.getLastSession();
+  },
+  destroyed() {
+    this.$store.commit('changeMapStatus', false);
   },
   mounted() {
     this.addMap();
@@ -109,6 +114,6 @@ export default {
   top: 0;
   bottom: 0;
   width: 100%;
-  height: 100%
+  height: 100%;
 }
 </style>

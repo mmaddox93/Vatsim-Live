@@ -41,7 +41,12 @@ export default {
   methods: {
     openMap(station) {
       this.$router.push({ path: '/' });
-      this.$store.commit('setSideBarContent', station);
+      const tryMap = setInterval(() => {
+        if (this.$store.state.mapLoaded) {
+          this.$store.commit('setSideBarContent', station);
+          clearInterval(tryMap);
+        }
+      }, 500);
     },
   },
 };

@@ -1,23 +1,21 @@
 <template>
-  <div class="data-details" v-bind:style="{ height: height }">
+  <div class="data-details" :style="{ height }">
     <div class="data-header">
       <div class="title">Currently Online {{$route.name}}</div>
       <div class="search">
         <input placeholder="Search..." type="text" v-model="search" />
       </div>
     </div>
-    <DataScroller v-if="pilots[0]" :data="filteredList" />
-    <div v-else class="loader">
-      Loading data...
-    </div>
+    <PilotScroller v-if="pilots[0]" :data="filteredList" />
+    <div v-else class="loader">Loading data...</div>
   </div>
 </template>
 
 <script>
-import DataScroller from '@/components/DataComponents/DataScroller.vue';
+import PilotScroller from '@/components/DataComponents/PilotScroller.vue';
 
 export default {
-  components: { DataScroller },
+  components: { PilotScroller },
   data() {
     return {
       pilots: [],
@@ -39,6 +37,9 @@ export default {
   created() {
     if (!this.$store.state.pilotsData.data) this.fetchPilots();
     else this.pilots = this.$store.state.pilotsData.data.features;
+  },
+  mounted() {
+    this.$emit('height', this.height);
   },
   methods: {
     async fetchPilots() {

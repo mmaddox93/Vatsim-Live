@@ -10,6 +10,9 @@
           <div class="category-title">Categories</div>
           <ol>
             <router-link :to="{ path: '/data/' }">
+              <li>Statistics</li>
+            </router-link>
+            <router-link :to="{ path: '/data/pilots' }">
               <li>Pilots</li>
             </router-link>
             <router-link :to="{ path: '/data/controllers' }">
@@ -19,8 +22,8 @@
             <li>Observers</li>
           </ol>
         </div>
-        <CircleGraph />
       </div>
+      <div class="seperator"></div>
       <router-view />
     </div>
   </div>
@@ -28,10 +31,9 @@
 
 <script>
 import SubHeader from '@/components/SubHeader.vue';
-import CircleGraph from '../components/GraphComponents/CircleGraph.vue';
 
 export default {
-  components: { SubHeader, CircleGraph },
+  components: { SubHeader },
 };
 </script>
 
@@ -53,16 +55,18 @@ export default {
   display: flex;
   box-sizing: border-box;
   padding: 2rem 5rem;
-  max-width: 1248px;
+  max-width: 75rem;
 }
 
 .left-col {
   display: flex;
   flex-direction: column;
-  // align-items: center;
 }
 
 .category-selector {
+  top: 2rem;
+  position: sticky;
+  z-index: 3;
   min-width: 175px;
 }
 

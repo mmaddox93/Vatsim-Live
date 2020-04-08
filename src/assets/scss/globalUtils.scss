@@ -1,7 +1,7 @@
-.horizontal-flex-row {
+.flex-row {
   display: flex;
   flex-direction: row;
-  position: relative;
+  height: min-content;
 }
 
 .highlight {
@@ -19,4 +19,9 @@
 
 .bold {
   font-weight: 800;
+}
+
+.spacer {
+  width: 1rem;
+  min-height: 1rem;
 }

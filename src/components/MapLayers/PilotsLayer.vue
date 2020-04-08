@@ -10,6 +10,7 @@
 <script>
 import MglLayer from '@/components/MapComponents/MglLayer';
 import PredictiveRender from '@/mixins/PredictiveRender';
+import mapboxgl from 'mapbox-gl';
 
 export default {
   components: {
@@ -64,6 +65,7 @@ export default {
   mounted() {
     this.initPilots();
     this.addClickListeners();
+    this.addPopup();
 
     setInterval(async () => {
       await this.updatePilots();
@@ -96,6 +98,38 @@ export default {
     },
     addClickListeners() {
       this.$store.state.map.on('click', 'pilotsLayer', (e) => this.$store.commit('setSideBarContent', e.features[0]));
+    },
+    addPopup() {
+      const popup = new mapboxgl.Popup({
+        closeButton: false,
+        closeOnClick: false,
+      });
+
+      this.$store.state.map.on('mouseenter', 'pilotsLayer', (e) => {
+        this.$store.state.map.getCanvas().style.cursor = 'pointer';
+        const coordinates = e.features[0].geometry.coordinates.slice();
+        const { callsign, groundspeed, altitude } = e.features[0].properties;
+
+        /* Ensure that if the map is zoomed out such that multiple
+        copies of the feature are visible, the popup appears
+        over the copy being pointed to. */
+        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+        }
+        const popupRawHtml = `
+          <div class="popup">
+            <span>${callsign}</span>
+            <span${altitude}></span>
+            <span>${groundspeed}</span>
+          </div>
+        `;
+        popup.setLngLat(coordinates).setHTML(popupRawHtml).addTo(this.$store.state.map);
+      });
+
+      this.$store.state.map.on('mouseleave', 'pilotsLayer', () => {
+        this.$store.state.map.getCanvas().style.cursor = '';
+        popup.remove();
+      });
     },
     predictiveRender() {
       const updatedPilots = [];
@@ -153,3 +187,39 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.popup {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+  -webkit-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+  font-size: 12px;
+  color: #e5e5e5;
+  font-weight: 600;
+  text-shadow: 0px 0px 1.5px #000;
+  position: absolute;
+  line-height: 1.1em;
+  background: rgba(0, 0, 0, 0.2);
+  border: 0;
+  padding: 0.35rem;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.mapboxgl-popup-content {
+  background: transparent;
+  box-shadow: none;
+}
+
+.mapboxgl-popup-tip {
+  border-top-color: transparent !important;
+  border-bottom-color: transparent !important;
+  border-left-color: transparent !important;
+  border-right-color: transparent !important;
+}
+</style>
