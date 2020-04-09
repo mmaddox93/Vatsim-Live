@@ -28,16 +28,32 @@
         </div>
       </template>
     </RecycleScroller>
+    <div v-if="data.length === 0" class="loader">
+      <div class="spacer"></div>
+      <section class="borderless center-flex">
+        <h4>Sorry, we couldn't find any results for that query...</h4>
+        <lottie :height="200" :width="200" :options="defaultOptions" />
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
 import { RecycleScroller } from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
+import Lottie from 'vue-lottie';
+import * as searchAnimation from './lottieSearch.json';
 
 export default {
-  components: { RecycleScroller },
+  components: { RecycleScroller, Lottie },
   props: ['data'],
+  data() {
+    return {
+      defaultOptions: {
+        animationData: searchAnimation.default,
+      },
+    };
+  },
   methods: {
     openMap(station) {
       this.$router.push({ path: '/' });

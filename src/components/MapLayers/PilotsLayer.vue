@@ -109,26 +109,37 @@ export default {
         this.$store.state.map.getCanvas().style.cursor = 'pointer';
         const coordinates = e.features[0].geometry.coordinates.slice();
         const { callsign, groundspeed, altitude } = e.features[0].properties;
+        const plannedAircraft = e.features[0].properties.planned_aircraft;
+        const departureAirport = e.features[0].properties.planned_depairport;
+        const arrAirport = e.features[0].properties.planned_destairport;
 
         /* Ensure that if the map is zoomed out such that multiple
         copies of the feature are visible, the popup appears
         over the copy being pointed to. */
+
         while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
           coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
         }
-        const popupRawHtml = `
+        const popupRawHtmlHasFp = `
           <div class="popup">
-            <span>${callsign}</span>
-            <span${altitude}></span>
-            <span>${groundspeed}</span>
+            <span>${callsign} ${plannedAircraft}</span>
+            <span>${altitude} ${groundspeed}</span>
+            <span>${departureAirport} ${arrAirport}</span>
           </div>
         `;
-        popup.setLngLat(coordinates).setHTML(popupRawHtml).addTo(this.$store.state.map);
+        const popupRawHtmlNoFp = `
+          <div class="popup">
+            <span>${callsign}</span>
+            <span>${altitude} ${groundspeed}</span>
+          </div>
+        `;
+        if (plannedAircraft !== 'null') popup.setLngLat(coordinates).setHTML(popupRawHtmlHasFp).addTo(this.$store.state.map);
+        else popup.setLngLat(coordinates).setHTML(popupRawHtmlNoFp).addTo(this.$store.state.map);
       });
 
       this.$store.state.map.on('mouseleave', 'pilotsLayer', () => {
-        this.$store.state.map.getCanvas().style.cursor = '';
         popup.remove();
+        this.$store.state.map.getCanvas().style.cursor = '';
       });
     },
     predictiveRender() {

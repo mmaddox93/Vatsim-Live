@@ -4,9 +4,10 @@
   height: min-content;
 }
 
-.highlight {
-  stroke: var(--highlight) !important;
-  fill: var(--highlight) !important;
+.center-flex {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .center-align {
@@ -17,6 +18,11 @@
   color: var(--lighter);
 }
 
+.highlight {
+  stroke: var(--highlight) !important;
+  fill: var(--highlight) !important;
+}
+
 .bold {
   font-weight: 800;
 }
@@ -24,4 +30,8 @@
 .spacer {
   width: 1rem;
   min-height: 1rem;
+}
+
+.borderless {
+  border: 1px solid transparent;
 }

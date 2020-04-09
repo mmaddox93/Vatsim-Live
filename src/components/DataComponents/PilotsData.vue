@@ -1,13 +1,12 @@
 <template>
   <div class="data-details" :style="{ height }">
-    <div class="data-header">
+    <div class="data-header" :class="{ 'data-header-border': pilots[0]}">
       <div class="title">Currently Online {{$route.name}}</div>
       <div class="search">
         <input placeholder="Search..." type="text" v-model="search" />
       </div>
     </div>
     <PilotScroller v-if="pilots[0]" :data="filteredList" />
-    <div v-else class="loader">Loading data...</div>
   </div>
 </template>
 
@@ -62,19 +61,21 @@ export default {
   position: sticky;
   top: 0;
   z-index: 3;
-  border: 1px solid var(--border);
-  border-bottom: 1px solid transparent;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0.5rem 1rem;
-  background-color: var(--tertiary);
+  background-color: var(--secondary);
+}
+
+.data-header-border {
+  border: 1px solid var(--border);
 }
 
 input {
   color: white;
   border: 1px solid var(--border);
-  background-color: var(--secondary);
+  background-color: var(--tertiary);
   border-radius: 7px;
   padding: 10px 15px;
 

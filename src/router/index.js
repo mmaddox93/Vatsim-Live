@@ -3,7 +3,7 @@ import VueRouter from 'vue-router';
 import Map from '../views/Map.vue';
 import Data from '../views/Data.vue';
 import Weather from '../views/Weather.vue';
-import StatisticsView from '../components/DataComponents/StatisticsView.vue';
+import StatisticsView from '../views/Data/StatisticsView.vue';
 import PilotsData from '../components/DataComponents/PilotsData.vue';
 import ControllersData from '../components/DataComponents/ControllersData.vue';
 
