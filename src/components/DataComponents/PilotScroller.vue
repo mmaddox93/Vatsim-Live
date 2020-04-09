@@ -14,16 +14,20 @@
             {{props.item.properties.callsign}}
             <span class="name">{{props.item.properties.realname}}</span>
           </div>
-          <div class="item route" v-if="props.item.properties.planned_depairport !== 'null'">
+          <div
+            class="item route"
+            v-if="props.item.properties.planned_destairport !== null && props.item.properties.planned_destairport !== 'null'"
+          >
             <span class="bold">{{props.item.properties.planned_depairport}}</span>
             <span class="lighter">-</span>
             <span class="bold">{{props.item.properties.planned_destairport}}</span>
           </div>
-          <div class="item route" v-else>No flightplan filed</div>
+          <div v-else class="item"></div>
           <span
-            v-if="props.item.properties.planned_route"
+            v-if="props.item.properties.planned_aircraft !== '' && props.item.properties.planned_aircraft !== 'null'"
             class="item lighter"
           >{{props.item.properties.planned_aircraft}}</span>
+          <span v-else class="item"></span>
           <button class="map-btn item" @click="openMap(props.item)">View on map</button>
         </div>
       </template>
@@ -31,7 +35,8 @@
     <div v-if="data.length === 0" class="loader">
       <div class="spacer"></div>
       <section class="borderless center-flex">
-        <h4>Sorry, we couldn't find any results for that query...</h4>
+        <h4>No flights match your search.</h4>
+        <div class="spacer"></div>
         <lottie :height="200" :width="200" :options="defaultOptions" />
       </section>
     </div>
@@ -41,6 +46,7 @@
 <script>
 import { RecycleScroller } from 'vue-virtual-scroller';
 import 'vue-virtual-scroller/dist/vue-virtual-scroller.css';
+// eslint-disable-next-line import/extensions
 import Lottie from 'vue-lottie';
 import * as searchAnimation from './lottieSearch.json';
 

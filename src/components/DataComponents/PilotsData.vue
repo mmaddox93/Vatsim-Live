@@ -7,18 +7,31 @@
       </div>
     </div>
     <PilotScroller v-if="pilots[0]" :data="filteredList" />
+    <div v-else>
+      <div class="spacer"></div>
+      <section class="borderless center-flex">
+        <h4>Loading data...</h4>
+        <lottie :height="150" :width="150" :options="defaultOptions" />
+      </section>
+    </div>
   </div>
 </template>
 
 <script>
+// eslint-disable-next-line import/extensions
+import Lottie from 'vue-lottie';
 import PilotScroller from '@/components/DataComponents/PilotScroller.vue';
+import * as loadingAnimation from './lottieLoader.json';
 
 export default {
-  components: { PilotScroller },
+  components: { PilotScroller, Lottie },
   data() {
     return {
       pilots: [],
       search: '',
+      defaultOptions: {
+        animationData: loadingAnimation.default,
+      },
     };
   },
   computed: {
