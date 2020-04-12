@@ -1,5 +1,4 @@
 export default {
-
   computed: {
     layers() {
       return this.$store.state.listOfLayers;

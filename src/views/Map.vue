@@ -6,11 +6,13 @@
       <div v-if="$store.state.mapLoaded">
         <MapSearch />
         <!-- <OnlineCenters /> -->
-        <ControllerLayers />
+        <!-- <ControllerLayers /> -->
         <PilotsLayer />
         <!-- <TrailLayer /> -->
+        <AerodromeMarkers />
         <WeatherRadar v-if="showWxRadar" />
         <SigmetLayer />
+        <AirportIcon />
       </div>
     </MglMap>
   </div>
@@ -28,9 +30,11 @@ import WeatherRadar from '@/components/MapLayers/WeatherRadar.vue';
 import OnlineCenters from '@/components/MapLayers/OnlineCenters.vue';
 import WelcomeToast from '@/components/WelcomeToast.vue';
 import SigmetLayer from '@/components/MapLayers/SigmetLayer.vue';
+import AerodromeMarkers from '@/components/MapMarkers/AerodromeMarkers';
+import AirportIcon from '@/components/MapLayers/AirportIcon.vue';
 
 export default {
-  name: 'Home',
+  name: 'Map',
   data() {
     return {
       token: process.env.VUE_APP_MAP_TOKEN,
@@ -57,6 +61,8 @@ export default {
     OnlineCenters,
     SigmetLayer,
     MapSearch,
+    AerodromeMarkers,
+    AirportIcon,
   },
 };
 </script>

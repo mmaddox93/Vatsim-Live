@@ -12,6 +12,7 @@ export default new Vuex.Store({
     },
     map: {},
     pilotsData: {},
+    airportsData: {},
     sidebarContent: null,
     trailLayer: null,
     layersAndSources: [],
@@ -40,6 +41,9 @@ export default new Vuex.Store({
     },
     setPilotsData(state, data) {
       state.pilotsData = data;
+    },
+    setAirportsData(state, data) {
+      state.airportsData = data;
     },
     updateOptions(state, data) {
       state.options = data;

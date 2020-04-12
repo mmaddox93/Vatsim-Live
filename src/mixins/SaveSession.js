@@ -5,7 +5,7 @@ export default {
     };
   },
   methods: {
-    SaveSession() {
+    saveSession() {
       this.$store.state.map.on('move', () => this.getInfo());
     },
     getInfo() {

@@ -65,7 +65,7 @@ export default {
         this.$store.commit('changeMapStatus', true);
         this.addEventListeners();
         this.addImages();
-        this.SaveSession();
+        this.saveSession();
       });
     },
     getLastSession() {

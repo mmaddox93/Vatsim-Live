@@ -1,14 +1,11 @@
 <template>
-  <div class="flex-row">
-    <div class="spacer"></div>
-    <div class="flex-col">
-      <section>
-        <LineChart class="LineChart" :chartData="history" chartTitle="Total Connections" />
-      </section>
-      <section>
-        <CurrentConnections :data="history" />
-      </section>
-    </div>
+  <div class="flex-col">
+    <section>
+      <LineChart class="LineChart" :chartData="history" chartTitle="Total Connections" />
+    </section>
+    <section>
+      <CurrentConnections :data="history" />
+    </section>
   </div>
 </template>
 
@@ -18,7 +15,6 @@ import CurrentConnections from '../../components/DataComponents/CurrentConnectio
 import history from './history.json';
 
 export default {
-  // eslint-disable-next-line vue/no-unused-components
   components: { LineChart, CurrentConnections },
   data() {
     return {

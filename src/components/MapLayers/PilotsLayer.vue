@@ -78,7 +78,7 @@ export default {
   },
   methods: {
     async fetchPilots() {
-      const response = await fetch('https://map-dev.vatsim.net/api/v1/pilots/online');
+      const response = await fetch('https://map-dev.vatsim.net/api/v1/online/pilots');
       const data = await response.json();
       return data;
     },

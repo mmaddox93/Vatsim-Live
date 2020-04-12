@@ -7,6 +7,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
+import './assets/scss/variables.scss';
+
 // plugins
 Vue.use(VueCompositionApi);
 Vue.config.productionTip = false;

@@ -55,7 +55,7 @@ export default {
   },
   methods: {
     async fetchPilots() {
-      const response = await fetch('https://map-dev.vatsim.net/api/v1/pilots/online');
+      const response = await fetch('https://map-dev.vatsim.net/api/v1/online/pilots');
       const data = await response.json();
       this.$store.commit('setPilotsData', data);
       this.pilots = data.data.features;
@@ -67,7 +67,6 @@ export default {
 <style lang="scss" scoped>
 .data-details {
   width: 100%;
-  margin: 0 2rem;
 }
 
 .data-header {

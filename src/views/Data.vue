@@ -23,7 +23,7 @@
           </ol>
         </div>
       </div>
-      <div class="seperator"></div>
+      <div class="spacer"></div>
       <router-view />
     </div>
   </div>

@@ -1,0 +1,49 @@
+.airport-marker-cont {
+  display: inline;
+  display: flex;
+  align-items: center;
+  padding-right: 0;
+  border-radius: 7px;
+  font-weight: 800;
+}
+
+.airport-marker-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+
+.marker-span {
+  z-index: 5;
+  background-color: var(--secondary);
+  padding: 0 0.25rem;
+  border-radius: 0.5rem;
+}
+
+.airport-marker-icon {
+  background-color: red;
+  padding-left: 0.65rem;
+  margin-left: -0.5rem;
+  padding-right: 0.25rem;
+}
+
+.D {
+  background-color: var(--blue);
+  z-index: 4;
+}
+
+.G {
+  background-color: rgb(54, 161, 54);
+  z-index: 3;
+}
+
+.T {
+  background-color: rgb(212, 45, 45);
+  z-index: 2;
+}
+
+.A {
+  background-color: rgb(238, 171, 46);
+  z-index: 1;
+}
