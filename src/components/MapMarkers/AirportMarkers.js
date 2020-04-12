@@ -6,10 +6,15 @@ export default {
   data() {
     return {
       airports: {},
+      currentMarkers: [],
     };
   },
   mounted() {
-    this.initAirports();
+    this.setAirports();
+
+    // setInterval(() => {
+    //   this.setAirports();
+    // }, 15000);
   },
   methods: {
     async fetchAirports() {
@@ -18,14 +23,21 @@ export default {
       this.$store.commit('setAirportsData', data);
       return data;
     },
-    async initAirports() {
+    async setAirports() {
       const data = await this.fetchAirports();
       this.airports = data;
 
+      const addedMarkers = [];
       for (const airport of this.airports.data.features) {
         if (airport.properties.controllers.length > 0) {
           const orderOfIcons = ['D', 'G', 'T', 'A'];
+          const markerBbox = document.createElement('div');
+
           const markerCont = document.createElement('div');
+          markerBbox.appendChild(markerCont);
+          markerCont.addEventListener('click', (e) => this.$store.commit('setSideBarContent', e.srcElement.innerHTML));
+
+          const circleMarker = document.createElement('div');
           const markerIcao = document.createElement('span');
 
           markerIcao.innerHTML = airport.properties.icao;
@@ -58,9 +70,15 @@ export default {
             markerCont.appendChild(controllerIcon);
           }
 
-          new mapboxgl.Marker(markerCont).setLngLat(airport.geometry.coordinates).addTo(this.$store.state.map);
+          const airportMarker = new mapboxgl.Marker(markerBbox).setLngLat(airport.geometry.coordinates).addTo(this.$store.state.map);
+          addedMarkers.push(airportMarker);
+          for (const marker of this.currentMarkers) {
+            marker.remove();
+          }
+          this.currentMarkers = [];
         }
       }
+      this.currentMarkers.push(...addedMarkers);
     },
   },
 };

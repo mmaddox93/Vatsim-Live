@@ -1,10 +1,21 @@
 .airport-marker-cont {
-  display: inline;
   display: flex;
   align-items: center;
   padding-right: 0;
   border-radius: 7px;
   font-weight: 800;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 4rem;
+
+  &:first-child {
+    padding-left: 1rem;
+  }
+
+  &:last-child {
+    padding-right: 1rem;
+  }
 }
 
 .airport-marker-icon {
@@ -22,10 +33,13 @@
 }
 
 .airport-marker-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   background-color: red;
   padding-left: 0.65rem;
-  margin-left: -0.5rem;
-  padding-right: 0.25rem;
+  margin-left: -0.45rem;
+  padding-right: 0.35rem;
 }
 
 .D {

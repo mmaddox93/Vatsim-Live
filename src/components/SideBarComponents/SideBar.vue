@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
-    <FlightDetails v-if="content.properties.transponder" :content="content" />
-    <ControllerDetails v-else :content="content.properties" />
+    <FlightDetails v-if="content.properties" :content="content" />
+    <ControllerDetails v-else :airport="content" />
   </div>
 </template>
 
@@ -17,11 +17,11 @@ export default {
   mixins: [AddTrail],
   props: ['content'],
   updated() {
-    if (this.content.properties.transponder) this.flyToFeature();
+    if (this.content.properties) this.flyToFeature();
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   mounted() {
-    if (this.content.properties.transponder) this.flyToFeature();
+    if (this.content.properties) this.flyToFeature();
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   methods: {

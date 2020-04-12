@@ -9,7 +9,7 @@
         <!-- <ControllerLayers /> -->
         <PilotsLayer />
         <!-- <TrailLayer /> -->
-        <AerodromeMarkers />
+        <AirportMarkers />
         <WeatherRadar v-if="showWxRadar" />
         <SigmetLayer />
         <AirportIcon />
@@ -30,7 +30,7 @@ import WeatherRadar from '@/components/MapLayers/WeatherRadar.vue';
 import OnlineCenters from '@/components/MapLayers/OnlineCenters.vue';
 import WelcomeToast from '@/components/WelcomeToast.vue';
 import SigmetLayer from '@/components/MapLayers/SigmetLayer.vue';
-import AerodromeMarkers from '@/components/MapMarkers/AerodromeMarkers';
+import AirportMarkers from '@/components/MapMarkers/AirportMarkers';
 import AirportIcon from '@/components/MapLayers/AirportIcon.vue';
 
 export default {
@@ -43,7 +43,12 @@ export default {
   },
   computed: {
     showWxRadar() {
-      const options = JSON.parse(this.$store.state.options);
+      let options;
+      try {
+        options = JSON.parse(this.$store.state.options);
+      } catch (error) {
+        return false;
+      }
       if (typeof options.weather !== 'undefined') {
         return options.weather;
       }
@@ -61,7 +66,7 @@ export default {
     OnlineCenters,
     SigmetLayer,
     MapSearch,
-    AerodromeMarkers,
+    AirportMarkers,
     AirportIcon,
   },
 };

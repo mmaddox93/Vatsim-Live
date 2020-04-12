@@ -12,10 +12,11 @@ import mapboxgl from 'mapbox-gl';
 import MapEvents from '@/mixins/MapEvents';
 import MapImages from '@/mixins/MapImages';
 import SaveSession from '@/mixins/SaveSession';
+import ClickController from '@/mixins/ClickController';
 import MapSettings from '@/components/MapComponents/MapSettings.vue';
 
 export default {
-  mixins: [MapEvents, MapImages, SaveSession],
+  mixins: [MapEvents, MapImages, SaveSession, ClickController],
   components: { MapSettings },
   data() {
     return {
@@ -95,8 +96,8 @@ export default {
     map(layers) {
       for (const layer of layers) {
         if (layer !== 'rainviewer') {
-          this.$store.state.map.on('mouseover', layer, () => this.$store.state.map.getCanvas().style.cursor = 'pointer');
-          this.$store.state.map.on('mouseout', layer, () => this.$store.state.map.getCanvas().style.cursor = '');
+          // this.$store.state.map.on('mouseover', layer, () => this.$store.state.map.getCanvas().style.cursor = 'pointer');
+          // this.$store.state.map.on('mouseout', layer, () => this.$store.state.map.getCanvas().style.cursor = '');
         }
       }
     },
