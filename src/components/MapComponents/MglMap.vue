@@ -64,7 +64,7 @@ export default {
       this.$store.commit('changeMap', map);
       map.on('load', () => {
         this.$store.commit('changeMapStatus', true);
-        this.addEventListeners();
+        this.startClickController();
         this.addImages();
         this.saveSession();
       });

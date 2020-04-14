@@ -1,28 +1,5 @@
 <template>
   <div class="FlightDetails">
-    <div class="button-controls">
-      <button
-        id="track-btn"
-        @click="toggleTrack()"
-        :class="{ 'highlight-btn': track }"
-        class="button-interactions"
-      >
-        Track Flight
-        <inline-svg
-          :class="{ 'highlight-btn': track }"
-          class="button-control-icon left-margin button-interactions"
-          fill="#fff"
-          :src="require('../../assets/img/svg/eye.svg')"
-        />
-      </button>
-      <inline-svg
-        @click="close()"
-        id="close-btn"
-        class="button-control-icon button-interactions"
-        fill="#fff"
-        :src="require('../../assets/img/svg/close.svg')"
-      />
-    </div>
     <section>
       <header>{{content.properties.callsign}}</header>
       <div class="arr-dep" v-if="hasFlightPlan">
@@ -31,8 +8,8 @@
           <span class="large" id="departure">{{content.properties.planned_depairport}}</span>
         </div>
         <div class="info-group arr-dep-info">
-          <label for="departure">DEPARTURE</label>
-          <span class="large" id="departure">{{content.properties.planned_destairport}}</span>
+          <label for="arrival">ARRIVAL</label>
+          <span class="large" id="arrival">{{content.properties.planned_destairport}}</span>
         </div>
       </div>
       <div class="four-item-row">
@@ -58,12 +35,12 @@
       <header>Member</header>
       <div class="two-item-row">
         <div class="info-group">
-          <label for="departure">NAME</label>
-          <span id="departure">{{content.properties.realname}}</span>
+          <label for="name">NAME</label>
+          <span id="name">{{content.properties.realname}}</span>
         </div>
         <div class="info-group">
-          <label for="departure">CID</label>
-          <span id="departure">{{content.properties.cid}}</span>
+          <label for="cid">CID</label>
+          <span id="cid">{{content.properties.cid}}</span>
         </div>
       </div>
     </section>
@@ -71,26 +48,26 @@
       <header>Flight Plan Info</header>
       <div class="four-item-row">
         <div class="info-group four-item" title="The aircraft's filed flight rules">
-          <label for="aircraft">RULES</label>
-          <span id="aircraft">{{content.properties.planned_flighttype}}</span>
+          <label for="rules">RULES</label>
+          <span id="rules">{{content.properties.planned_flighttype}}</span>
         </div>
         <div class="info-group four-item" title="The aircraft's filed airspeed">
-          <label for="altitude">TAS</label>
-          <span id="altitude">{{content.properties.planned_tascruise}}</span>
+          <label for="tas">TAS</label>
+          <span id="tas">{{content.properties.planned_tascruise}}</span>
         </div>
         <div class="info-group four-item" title="The aircraft's filed cruise altitude">
-          <label for="heading">ALTITUDE</label>
-          <span id="heading">{{content.properties.planned_altitude}}</span>
+          <label for="altitude">ALTITUDE</label>
+          <span id="altitude">{{content.properties.planned_altitude}}</span>
         </div>
         <div class="info-group four-item" title="The aircraft's alternate airfield">
-          <label for="speed">ALTERNATE</label>
-          <span id="speed">{{content.properties.planned_altairport}}</span>
+          <label for="alternate">ALTERNATE</label>
+          <span id="alternate">{{content.properties.planned_altairport}}</span>
         </div>
       </div>
       <div>
         <div class="info-group" title="The aircraft's remarks">
-          <label for="speed">REMARKS</label>
-          <span id="speed">{{content.properties.planned_remarks}}</span>
+          <label for="remarks">REMARKS</label>
+          <span id="remarks">{{content.properties.planned_remarks}}</span>
         </div>
       </div>
     </section>
@@ -109,10 +86,7 @@
 </template>
 
 <script>
-import InlineSvg from 'vue-inline-svg';
-
 export default {
-  components: { InlineSvg },
   props: {
     content: {
       required: true,
@@ -155,10 +129,6 @@ export default {
     },
   },
   methods: {
-    close() {
-      this.$store.commit('setSideBarContent', null);
-      this.track = false;
-    },
     imageLoadError() {
       this.imageValid = false;
     },
@@ -222,71 +192,12 @@ export default {
   color: grey;
 }
 
+#name {
+  text-align: center;
+}
+
 .large {
   font-size: 2rem;
   font-weight: 800;
-}
-
-.button-controls {
-  margin-bottom: 1.5rem;
-  display: flex;
-  justify-content: space-between;
-}
-
-.button-control-icon {
-  height: 2rem;
-  width: auto;
-  background-color: var(--secondary);
-}
-
-.left-margin {
-  margin-left: 0.5rem;
-  height: 1.25rem;
-}
-
-button {
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
-  font-weight: 800;
-  outline: none;
-  border: none;
-  padding: 0.25rem 1rem;
-  background-color: var(--secondary);
-  display: flex;
-  align-items: center;
-  border-radius: 4px;
-}
-
-.button-interactions {
-  cursor: pointer;
-  transition: background-color 100ms ease-in-out;
-
-  &:hover {
-    background-color: var(--secondaryHov);
-
-    .button-control-icon {
-      background-color: var(--secondaryHov);
-    }
-  }
-
-  &:active {
-    background-color: var(--secondaryAct);
-
-    .button-control-icon {
-      background-color: var(--secondaryHov);
-    }
-  }
-}
-
-.highlight-btn {
-  background-color: #139bda;
-
-  &:hover {
-    background-color: #1c8abd;
-
-    .button-control-icon {
-      background-color: #1c8abd;
-    }
-  }
 }
 </style>

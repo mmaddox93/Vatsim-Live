@@ -5,7 +5,7 @@
         <div class="emoji-cont">👋🏻</div>
         <div class="text-cont">
           <div class="toast-header">Welcome to the official VATSIM Map!</div>
-          <div class="toast-body">Click on a feature to view more information about it</div>
+          <div class="toast-body">Select a feature to view more information about it</div>
         </div>
       </div>
     </transition>
@@ -34,8 +34,7 @@ export default {
 <style lang="scss" scoped>
 .toast {
   cursor: pointer;
-  min-width: 600px;
-  max-width: 800px;
+  max-width: 90vw;
   background-color: var(--secondary);
   color: white;
   padding: 1rem;

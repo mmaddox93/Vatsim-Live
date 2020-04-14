@@ -1,6 +1,31 @@
 <template>
   <div class="sidebar">
-    <FlightDetails v-if="content.properties" :content="content" />
+    <div class="button-controls">
+      <button
+        v-if="content.properties"
+        id="track-btn"
+        @click="toggleFlightTrack()"
+        :class="{ 'highlight-btn': track }"
+        class="button-interactions"
+      >
+        Track Flight
+        <inline-svg
+          :class="{ 'highlight-btn': track }"
+          class="button-control-icon left-margin button-interactions"
+          fill="#fff"
+          :src="require('../../assets/img/svg/eye.svg')"
+        />
+      </button>
+      <div v-else></div>
+      <inline-svg
+        @click="close()"
+        id="close-btn"
+        class="button-control-icon button-interactions"
+        fill="#fff"
+        :src="require('../../assets/img/svg/close.svg')"
+      />
+    </div>
+    <FlightDetails v-if="content.properties" :content="content" :track="trackFlight" />
     <ControllerDetails v-else :airport="content" />
   </div>
 </template>
@@ -9,13 +34,21 @@
 import AddTrail from '@/mixins/AddTrail';
 import FlightDetails from '@/components/SideBarComponents/FlightDetails.vue';
 import ControllerDetails from '@/components/SideBarComponents/ControllerDetails.vue';
+import InlineSvg from 'vue-inline-svg';
+
 
 export default {
   components: {
-    FlightDetails, ControllerDetails,
+    // eslint-disable-next-line vue/no-unused-components
+    FlightDetails, ControllerDetails, InlineSvg,
   },
   mixins: [AddTrail],
   props: ['content'],
+  data() {
+    return {
+      trackFlight: false,
+    };
+  },
   updated() {
     if (this.content.properties) this.flyToFeature();
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
@@ -25,8 +58,9 @@ export default {
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   methods: {
-    closeSidebar() {
-      this.$emit('closeSidebar');
+    close() {
+      this.$store.commit('setSideBarContent', null);
+      this.trackFlight = false;
     },
     flyToFeature() {
       this.$store.state.map.flyTo({
@@ -35,6 +69,9 @@ export default {
         speed: 1,
         essential: true,
       });
+    },
+    toggleFlightTrack() {
+
     },
   },
 };
@@ -67,9 +104,73 @@ export default {
   }
 }
 
+.button-controls {
+  margin: 2rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+
+.button-control-icon {
+  height: 2rem;
+  width: auto;
+  background-color: var(--secondary);
+}
+
 .close-icon {
   width: 2rem;
   height: 2rem;
+}
+
+.left-margin {
+  margin-left: 0.5rem;
+  height: 1.25rem;
+}
+
+button {
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 800;
+  outline: none;
+  border: none;
+  padding: 0.25rem 1rem;
+  background-color: var(--secondary);
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.button-interactions {
+  cursor: pointer;
+  transition: background-color 100ms ease-in-out;
+
+  &:hover {
+    background-color: var(--secondaryHov);
+
+    .button-control-icon {
+      background-color: var(--secondaryHov);
+    }
+  }
+
+  &:active {
+    background-color: var(--secondaryAct);
+
+    .button-control-icon {
+      background-color: var(--secondaryHov);
+    }
+  }
+}
+
+.highlight-btn {
+  background-color: #139bda;
+
+  &:hover {
+    background-color: #1c8abd;
+
+    .button-control-icon {
+      background-color: #1c8abd;
+    }
+  }
 }
 
 @media (max-width: 620px) {

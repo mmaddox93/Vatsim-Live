@@ -45,15 +45,32 @@ export default {
 </script>
 
 <style lang="scss">
+.mapboxgl-ctrl-top-left {
+  @media screen and (max-width: 400px) {
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
 .mapboxgl-ctrl-geocoder {
   color: var(--white);
   background-color: var(--secondary);
   border-radius: 7px;
 }
 
-.mapboxgl-ctrl-geocoder--input {
+.mapboxgl-ctrl-geocoder--input,
+.mapboxgl-ctrl-geocoder {
   font-family: 'Poppins', sans-serif;
   color: var(--white);
+  max-width: 90vw;
+
+  @media screen and (max-width: 400px) {
+    top: 0.5rem;
+    margin: 0 !important; // override lib styles
+    width: calc(100vw - 1.5rem);
+  }
 
   &:focus {
     color: var(--white);

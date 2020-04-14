@@ -64,8 +64,8 @@ export default {
   },
   mounted() {
     this.initPilots();
-    this.addClickListeners();
-    this.addPopup();
+    // this.addClickListeners();
+    // this.addPopup();
 
     setInterval(async () => {
       await this.updatePilots();
@@ -106,7 +106,6 @@ export default {
       });
 
       this.$store.state.map.on('mouseenter', 'pilotsLayer', (e) => {
-        this.$store.state.map.getCanvas().style.cursor = 'pointer';
         const coordinates = e.features[0].geometry.coordinates.slice();
         const { callsign, groundspeed, altitude } = e.features[0].properties;
         const plannedAircraft = e.features[0].properties.planned_aircraft;

@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>{{airport}}</div>
 </template>
 
 <script>
@@ -12,7 +12,12 @@ export default {
     },
   },
   mounted() {
-    console.log(this.airport);
+    this.fetchAirportData(this.airport);
+  },
+  methods: {
+    fetchAirportData() {
+      // fetch data from api
+    },
   },
 };
 </script>

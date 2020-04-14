@@ -35,7 +35,7 @@ export default {
 
           const markerCont = document.createElement('div');
           markerBbox.appendChild(markerCont);
-          markerCont.addEventListener('click', (e) => this.$store.commit('setSideBarContent', e.srcElement.innerHTML));
+          markerCont.addEventListener('click', (e) => this.$root.$emit('airportClick', airport.properties.icao));
 
           const circleMarker = document.createElement('div');
           const markerIcao = document.createElement('span');
