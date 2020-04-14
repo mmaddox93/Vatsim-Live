@@ -49,7 +49,7 @@ export default Vue.extend({
         const airportIcao = this.registeredClicks.find((click): click is string => typeof click === 'string');
         console.log(this.registeredClicks);
         if (airportIcao) this.handleAirportClick(airportIcao);
-        else this.handlePilotClick(this.registeredClicks[0][0] as object); /* implement click handlers for other layers */
+        else this.handlePilotClick(this.registeredClicks[0][0] as object);
         this.registeredClicks = [];
       }
     },

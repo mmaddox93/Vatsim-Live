@@ -94,8 +94,8 @@ export default {
   max-width: 500px;
   z-index: 2;
   position: absolute;
-  right: 10px;
-  margin-top: 10px;
+  right: 0.625rem;
+  margin-top: 0.625rem;
   box-shadow: 0 0 10px 2px rgba(0, 0, 0, 0.1);
 }
 

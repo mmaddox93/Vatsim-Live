@@ -64,12 +64,13 @@ export default {
 .mapboxgl-ctrl-geocoder {
   font-family: 'Poppins', sans-serif;
   color: var(--white);
-  max-width: 90vw;
+  max-width: 95vw;
 
   @media screen and (max-width: 400px) {
     top: 0.5rem;
     margin: 0 !important; // override lib styles
-    width: calc(100vw - 1.5rem);
+    max-width: 100vw;
+    width: calc(100vw - 1.25rem);
   }
 
   &:focus {

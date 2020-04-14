@@ -28,14 +28,14 @@
         </div>
       </router-link>
       <router-link to="/data">
-      <div @click="toggleNav()" class="route">
-        <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Data.svg')"></inline-svg>Data
-      </div>
+        <div @click="toggleNav()" class="route">
+          <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Data.svg')"></inline-svg>Data
+        </div>
       </router-link>
       <router-link to="/weather">
-      <div @click="toggleNav()" class="route">
-        <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Weather.svg')"></inline-svg>Weather/ATIS
-      </div>
+        <div @click="toggleNav()" class="route">
+          <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Weather.svg')"></inline-svg>Weather/ATIS
+        </div>
       </router-link>
     </div>
   </div>
@@ -90,8 +90,14 @@ export default {
 .NavList {
   width: 20%;
   min-width: 200px;
+  max-width: 300px;
   position: relative;
   z-index: 5;
+
+  @media screen and (max-width: 400px) {
+    width: 100%;
+    max-width: 0;
+  }
 }
 
 .list-header {

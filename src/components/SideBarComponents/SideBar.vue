@@ -5,12 +5,12 @@
         v-if="content.properties"
         id="track-btn"
         @click="toggleFlightTrack()"
-        :class="{ 'highlight-btn': track }"
+        :class="{ 'highlight-btn': trackFlight }"
         class="button-interactions"
       >
         Track Flight
         <inline-svg
-          :class="{ 'highlight-btn': track }"
+          :class="{ 'highlight-btn': trackFlight }"
           class="button-control-icon left-margin button-interactions"
           fill="#fff"
           :src="require('../../assets/img/svg/eye.svg')"
@@ -71,7 +71,7 @@ export default {
       });
     },
     toggleFlightTrack() {
-
+      this.trackFlight = !this.trackFlight;
     },
   },
 };
@@ -80,7 +80,6 @@ export default {
 
 <style lang="scss" scoped>
 .sidebar {
-  overflow: hidden;
   height: 100%;
   position: relative;
   background-color: var(--primary);

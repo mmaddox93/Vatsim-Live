@@ -28,8 +28,11 @@ label {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  overflow: auto;
   margin-bottom: 0.25rem;
+  @media screen and (max-width: 400px) {
+    overflow: auto;
+    flex-wrap: wrap;
+  }
 }
 
 .two-item-row {
@@ -40,6 +43,9 @@ label {
 
 .four-item {
   flex: 1 0 21%;
+  @media screen and (max-width: 400px) {
+    flex: 0 50%;
+  }
 }
 
 .info-group {
