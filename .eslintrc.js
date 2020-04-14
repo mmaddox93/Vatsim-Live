@@ -8,10 +8,11 @@ module.exports = {
   extends: [
     'plugin:vue/essential',
     '@vue/airbnb',
+    '@vue/typescript',
   ],
 
   parserOptions: {
-    parser: 'babel-eslint',
+    parser: '@typescript-eslint/parser',
   },
 
   rules: {

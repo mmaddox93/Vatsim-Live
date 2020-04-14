@@ -21,10 +21,10 @@ if (process.env.NODE_ENV === 'production') {
   });
 }
 
-const map = new Vue({
+const mapApp = new Vue({
   router,
   store,
   render: (h) => h(App),
 });
 
-map.$mount('#app');
+mapApp.$mount('#app');

@@ -19,7 +19,12 @@ export default {
   mixins: [PredictiveRender],
   computed: {
     showLabels() {
-      const options = JSON.parse(this.$store.state.options);
+      let options = {};
+      try {
+        options = JSON.parse(this.$store.state.options);
+      } catch (error) {
+        console.log(error);
+      }
       if (typeof options.aircraftLabels !== 'undefined') {
         return options.aircraftLabels;
       }
