@@ -1,7 +1,9 @@
-export default {
+import Vue from 'vue';
+
+export default Vue.extend({
   data() {
     return {
-      numberOfTimesMapUpdated: 0,
+      numberOfTimesMapUpdated: 0 as number,
     };
   },
   methods: {
@@ -18,4 +20,4 @@ export default {
       }
     },
   },
-};
+});

@@ -53,11 +53,11 @@
   </div>
 </template>
 
-<script>
+<script lang="ts">
+import Vue from 'vue';
 import { ToggleButton } from 'vue-js-toggle-button';
 
-
-export default {
+export default Vue.extend({
   components: { ToggleButton },
   data() {
     return {
@@ -71,7 +71,7 @@ export default {
   },
   watch: {
     options: {
-      handler(newVal) {
+      handler(newVal: string) {
         const options = JSON.stringify(newVal);
         this.$store.commit('updateOptions', options);
         localStorage.options = options;
@@ -81,12 +81,12 @@ export default {
   },
   methods: {
     getOptions() {
-      if (this.$store.state.options.weather) {
+      if (Object.keys(this.$store.state.options).length) {
         this.options = this.$store.state.options;
       }
     },
   },
-};
+});
 </script>
 
 <style lang="scss" scoped>

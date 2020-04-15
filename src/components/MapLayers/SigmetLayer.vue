@@ -1,5 +1,5 @@
 <template>
-  <div v-if="showSigmets">
+  <div v-if="$store.state.options.sigmets">
     <MglLayer v-if="geojson.data.id" :source="geojson" :layer="sigmetFill" />
     <MglLayer v-if="geojson.data.id" :source="geojson" :layer="sigmetBorder" />
   </div>
@@ -10,15 +10,6 @@ import MglLayer from '@/components/MapComponents/MglLayer';
 
 export default {
   components: { MglLayer },
-  computed: {
-    showSigmets() {
-      const options = JSON.parse(this.$store.state.options);
-      if (typeof options.sigmets !== 'undefined') {
-        return options.sigmets;
-      }
-      return false;
-    },
-  },
   data() {
     return {
       geojson: {

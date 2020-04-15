@@ -1,6 +1,6 @@
 <template>
   <div v-if="geojson.type">
-    <div v-if="showLabels">
+    <div v-if="$store.state.options.aicraftLabels">
       <MglLayer :source="geojson" :layer="geojsonTextLayer" />
     </div>
     <MglLayer :source="geojson" :layer="geojsonLayer" />
@@ -17,20 +17,6 @@ export default {
     MglLayer,
   },
   mixins: [PredictiveRender],
-  computed: {
-    showLabels() {
-      let options = {};
-      try {
-        options = JSON.parse(this.$store.state.options);
-      } catch (error) {
-        console.log(error);
-      }
-      if (typeof options.aircraftLabels !== 'undefined') {
-        return options.aircraftLabels;
-      }
-      return false;
-    },
-  },
   data() {
     return {
       lastFetch: {},

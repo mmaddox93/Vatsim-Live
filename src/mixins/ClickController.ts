@@ -45,7 +45,6 @@ export default Vue.extend({
     },
     handleClick() {
       if (this.registeredClicks.length > 0) {
-        /* get index of first airport in array */
         const airportIcao = this.registeredClicks.find((click): click is string => typeof click === 'string');
         console.log(this.registeredClicks);
         if (airportIcao) this.handleAirportClick(airportIcao);

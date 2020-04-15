@@ -9,14 +9,13 @@
 
 <script>
 import mapboxgl from 'mapbox-gl';
-import MapEvents from '@/mixins/MapEvents';
 import MapImages from '@/mixins/MapImages';
 import SaveSession from '@/mixins/SaveSession';
 import ClickController from '@/mixins/ClickController';
 import MapSettings from '@/components/MapComponents/MapSettings.vue';
 
 export default {
-  mixins: [MapEvents, MapImages, SaveSession, ClickController],
+  mixins: [MapImages, SaveSession, ClickController],
   components: { MapSettings },
   data() {
     return {

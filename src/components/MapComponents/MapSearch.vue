@@ -1,9 +1,9 @@
-<script>
-import MapboxGeoCoder from '@mapbox/mapbox-gl-geocoder';
+<script lang="ts">
+import Vue from 'vue';
+import MapboxGeoCoder from '@mapbox/mapbox-gl-geocoder'; /* no types avail */
 import mapboxgl from 'mapbox-gl';
 
-export default {
-  render: () => null,
+export default Vue.extend({
   mounted() {
     this.addGeoCoder();
   },
@@ -26,9 +26,16 @@ export default {
       });
       this.$store.state.map.addControl(geocoder, 'top-left');
 
-      geocoder.on('result', (e) => this.$store.commit('setSideBarContent', e.result));
+      interface Result {
+        result: object
+      }
+
+      geocoder.on('result', (e: Result) => {
+        console.log(e);
+        this.$store.commit('setSideBarContent', e.result);
+      });
     },
-    forwardGeocoder(query) {
+    forwardGeocoder(query: string) {
       const matchingFeatures = [];
       for (let i = 0; i < this.$store.state.pilotsData.data.features.length; i++) {
         const feature = this.$store.state.pilotsData.data.features[i];
@@ -41,7 +48,7 @@ export default {
       return matchingFeatures;
     },
   },
-};
+});
 </script>
 
 <style lang="scss">
@@ -120,3 +127,7 @@ div > .suggestions {
   font-family: 'Poppins', sans-serif;
 }
 </style>
+
+<template>
+<div></div>
+</template>

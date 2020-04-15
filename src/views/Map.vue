@@ -43,16 +43,7 @@ export default {
   },
   computed: {
     showWxRadar() {
-      let options;
-      try {
-        options = JSON.parse(this.$store.state.options);
-      } catch (error) {
-        return false;
-      }
-      if (typeof options.weather !== 'undefined') {
-        return options.weather;
-      }
-      return false;
+      return this.$store.state.options.weather || false;
     },
   },
   components: {

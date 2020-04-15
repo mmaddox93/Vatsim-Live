@@ -1,10 +1,10 @@
 const radius = 6371000;
-const toRadians = (degrees) => (degrees * Math.PI) / 180;
-const toDegrees = (radians) => (radians * 180) / Math.PI;
+const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+const toDegrees = (radians: number) => (radians * 180) / Math.PI;
 
 export default {
   methods: {
-    destinationFix(latitude, longitude, distance, heading) {
+    destinationFix(latitude: number, longitude: number, distance: number, heading: number) {
       const delta = distance / radius;
       const theta = toRadians(heading);
       const phi = toRadians(latitude);
