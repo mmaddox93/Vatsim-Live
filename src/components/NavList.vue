@@ -37,6 +37,11 @@
           <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Weather.svg')"></inline-svg>Weather/ATIS
         </div>
       </router-link>
+      <router-link to="/engineers">
+        <div @click="toggleNav()" class="route">
+          <inline-svg class="route-icon icon" :src="require('../assets/img/svg/Engineers.svg')"></inline-svg>Facility Engineers
+        </div>
+      </router-link>
     </div>
   </div>
 </template>
@@ -64,6 +69,8 @@ export default {
           return 'Data';
         case 'Pilots':
           return 'Data';
+        case 'Facility Engineers':
+          return 'Engineers';
         case 'Controllers':
           return 'Data';
         default:
@@ -73,7 +80,7 @@ export default {
   },
   methods: {
     toggleNav() {
-      this.$store.commit('setSideBarContent', null);
+      this.$store.commit('SET_SIDEBAR_CONTENT', null);
       this.showNav = !this.showNav;
       if (!this.showNav) this.$refs.header.blur();
     },

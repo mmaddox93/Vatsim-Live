@@ -33,7 +33,7 @@ export default {
       }
     },
     addLayer() {
-      this.$store.commit('addLayerToList', this.layer.id);
+      this.$store.commit('SET_LAYER', this.layer.id);
       this.layer.source = this.source.data.id;
       try {
         this.$store.state.map.addLayer(this.layer);
@@ -47,7 +47,7 @@ export default {
     removeLayer() {
       const layer = this.$store.state.map.getLayer(this.layer.id);
       if (layer) this.$store.state.map.removeLayer(this.layer.id);
-      this.$store.commit('removeLayerfromList', this.layer.id);
+      this.$store.commit('REMOVE_LAYER', this.layer.id);
     },
     removeSource() {
       this.$store.state.map.removeSource(this.source.data.id);

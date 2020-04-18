@@ -20,8 +20,8 @@ export default {
   },
   methods: {
     closeSidebar() {
-      this.$store.commit('setSideBarContent', null);
-      this.$store.commit('setTrailLayer', null);
+      this.$store.commit('SET_SIDEBAR_CONTENT', null);
+      this.$store.commit('SET_TRAIL_LAYER', null);
     },
   },
 };

@@ -57,7 +57,7 @@ export default {
     async fetchPilots() {
       const response = await fetch('https://map-dev.vatsim.net/api/v1/online/pilots');
       const data = await response.json();
-      this.$store.commit('setPilotsData', data);
+      this.$store.commit('SET_PILOTS_DATA', data);
       this.pilots = data.data.features;
     },
   },

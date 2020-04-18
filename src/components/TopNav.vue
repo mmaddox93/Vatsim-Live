@@ -1,8 +1,8 @@
 <template>
-  <div class="TopNav">
-    <img src="@/assets/img/VatsimLogo.png" class="vatsim-img-logo" />
+  <header class="TopNav">
+    <img src="@/assets/img/VatsimLogo.png" class="vatsim-img-logo" alt="VATSIM logo" />
     <NavList />
-  </div>
+  </header>
 </template>
 
 <script>
@@ -14,6 +14,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+header {
+  font-size: 1rem;
+  margin-top: 0;
+  font-weight: normal;
+}
+
 .TopNav {
   padding: 0.5rem 1rem;
   display: flex;

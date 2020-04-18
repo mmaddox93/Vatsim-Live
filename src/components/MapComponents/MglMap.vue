@@ -41,7 +41,7 @@ export default {
     this.getLastSession();
   },
   destroyed() {
-    this.$store.commit('changeMapStatus', false);
+    this.$store.commit('SET_MAP_STATUS', false);
   },
   mounted() {
     this.addMap();
@@ -60,9 +60,9 @@ export default {
         center: this.mapCenter,
         zoom: this.mapZoom,
       });
-      this.$store.commit('changeMap', map);
+      this.$store.commit('SET_MAP', map);
       map.on('load', () => {
-        this.$store.commit('changeMapStatus', true);
+        this.$store.commit('SET_MAP_STATUS', true);
         this.startClickController();
         this.addImages();
         this.saveSession();

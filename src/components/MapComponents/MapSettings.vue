@@ -34,16 +34,11 @@
       <div class="subheader">LAYERS</div>
       <div class="setting-group">
         <span class="setting">SIGMETs</span>
-        <toggle-button v-model="options.sigmets" color="#50fa7b" :sync="false" :labels="false" />
+        <toggle-button v-model="options.sigmets" color="#50fa7b" :sync="true" :labels="false" />
       </div>
       <div class="setting-group">
         <span class="setting">Aircraft Labels</span>
-        <toggle-button
-          v-model="options.aircraftLabels"
-          color="#50fa7b"
-          :sync="false"
-          :labels="false"
-        />
+        <toggle-button v-model="options.labels" color="#50fa7b" :sync="true" :labels="false" />
       </div>
       <div class="setting-group">
         <span class="setting">Weather Radar</span>
@@ -66,24 +61,16 @@ export default Vue.extend({
       options: {},
     };
   },
-  mounted() {
-    this.getOptions();
+  created() {
+    this.options = { ...this.$store.state.options };
   },
   watch: {
     options: {
-      handler(newVal: string) {
-        const options = JSON.stringify(newVal);
-        this.$store.commit('updateOptions', options);
-        localStorage.options = options;
+      handler(newVal) {
+        console.log(newVal);
+        this.$store.commit('SET_OPTIONS', newVal);
       },
       deep: true,
-    },
-  },
-  methods: {
-    getOptions() {
-      if (Object.keys(this.$store.state.options).length) {
-        this.options = this.$store.state.options;
-      }
     },
   },
 });

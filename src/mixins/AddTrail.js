@@ -21,7 +21,7 @@ export default {
       const response = await fetch(`${process.env.VUE_APP_API_ADDRI}/geojsontrail/${callsign}`);
       const data = await response.json();
       const output = { source: data, layer: this.layer };
-      this.$store.commit('setTrailLayer', output);
+      this.$store.commit('SET_TRAIL_LAYER', output);
     },
   },
 };

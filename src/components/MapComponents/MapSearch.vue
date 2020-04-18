@@ -32,7 +32,7 @@ export default Vue.extend({
 
       geocoder.on('result', (e: Result) => {
         console.log(e);
-        this.$store.commit('setSideBarContent', e.result);
+        this.$store.commit('SET_SIDEBAR_CONTENT', e.result);
       });
     },
     forwardGeocoder(query: string) {
@@ -129,5 +129,5 @@ div > .suggestions {
 </style>
 
 <template>
-<div></div>
+  <div></div>
 </template>

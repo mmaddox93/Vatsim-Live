@@ -1,5 +1,5 @@
 <template>
-  <div class="sidebar">
+  <aside class="sidebar">
     <div class="button-controls">
       <button
         v-if="content.properties"
@@ -27,7 +27,7 @@
     </div>
     <FlightDetails v-if="content.properties" :content="content" :track="trackFlight" />
     <ControllerDetails v-else :airport="content" />
-  </div>
+  </aside>
 </template>
 
 <script>
@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     close() {
-      this.$store.commit('setSideBarContent', null);
+      this.$store.commit('SET_SIDEBAR_CONTENT', null);
       this.trackFlight = false;
     },
     flyToFeature() {

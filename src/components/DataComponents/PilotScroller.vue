@@ -54,7 +54,7 @@ export default {
       this.$router.push({ path: '/' });
       const tryMap = setInterval(() => {
         if (this.$store.state.mapLoaded) {
-          this.$store.commit('setSideBarContent', station);
+          this.$store.commit('SET_SIDEBAR_CONTENT', station);
           clearInterval(tryMap);
         }
       }, 500);

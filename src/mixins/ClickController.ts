@@ -53,10 +53,10 @@ export default Vue.extend({
       }
     },
     handleAirportClick(icao: string) {
-      this.$store.commit('setSideBarContent', icao);
+      this.$store.commit('SET_SIDEBAR_CONTENT', icao);
     },
     handlePilotClick(pilot: object) {
-      this.$store.commit('setSideBarContent', pilot);
+      this.$store.commit('SET_SIDEBAR_CONTENT', pilot);
     },
   },
 });

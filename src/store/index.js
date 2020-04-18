@@ -1,24 +1,25 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
+import { saveStatePlugin } from './plugins';
 import mutations from './mutations';
+import defaultOptions from './defaultOptions';
 
 Vue.use(Vuex);
 
-export default new Vuex.Store({
+const option = JSON.parse(localStorage.getItem('options')) || defaultOptions;
+
+const store = new Vuex.Store({
+  plugins: [saveStatePlugin],
   state: {
-    options: {
-      sigmets: false,
-      aircraftLabels: false,
-      weather: true,
-    },
+    options: option,
     map: {},
+    mapLoaded: false,
+    trailLayer: null,
     pilotsData: {},
     airportsData: {},
     sidebarContent: null,
-    trailLayer: null,
     layersAndSources: [],
     listOfLayers: [],
-    mapLoaded: false,
   },
   mutations,
   actions: {
@@ -26,3 +27,5 @@ export default new Vuex.Store({
   modules: {
   },
 });
+
+export default store;

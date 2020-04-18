@@ -1,6 +1,6 @@
 <template>
   <div v-if="geojson.type">
-    <div v-if="$store.state.options.aicraftLabels">
+    <div v-if="$store.state.options.labels">
       <MglLayer :source="geojson" :layer="geojsonTextLayer" />
     </div>
     <MglLayer :source="geojson" :layer="geojsonLayer" />
@@ -77,18 +77,18 @@ export default {
       const newData = await this.fetchPilots();
       this.lastFetch = newData;
       this.predictiveSource = newData;
-      this.$store.commit('setPilotsData', newData);
+      this.$store.commit('SET_PILOTS_DATA', newData);
       this.$store.state.map.getSource('pilots').setData(newData.data);
     },
     async initPilots() {
       const newData = await this.fetchPilots();
-      this.$store.commit('setPilotsData', newData);
+      this.$store.commit('SET_PILOTS_DATA', newData);
       this.geojson = newData;
       this.lastFetch = newData;
       this.predictiveSource = newData;
     },
     addClickListeners() {
-      this.$store.state.map.on('click', 'pilotsLayer', (e) => this.$store.commit('setSideBarContent', e.features[0]));
+      this.$store.state.map.on('click', 'pilotsLayer', (e) => this.$store.commit('SET_SIDEBAR_CONTENT', e.features[0]));
     },
     addPopup() {
       const popup = new mapboxgl.Popup({

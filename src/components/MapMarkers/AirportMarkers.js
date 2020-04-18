@@ -12,15 +12,15 @@ export default {
   mounted() {
     this.setAirports();
 
-    // setInterval(() => {
-    //   this.setAirports();
-    // }, 15000);
+    setInterval(() => {
+      this.setAirports();
+    }, 15000);
   },
   methods: {
     async fetchAirports() {
       const response = await fetch('https://map-dev.vatsim.net/api/v1/online/airports');
       const data = await response.json();
-      this.$store.commit('setAirportsData', data);
+      this.$store.commit('SET_AIRPORTS_DATA', data);
       return data;
     },
     async setAirports() {

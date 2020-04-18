@@ -6,6 +6,7 @@ import Weather from '../views/Weather.vue';
 import StatisticsView from '../views/Data/StatisticsView.vue';
 import PilotsData from '../components/DataComponents/PilotsData.vue';
 import ControllersData from '../components/DataComponents/ControllersData.vue';
+import FacilityEngineers from '../views/FacilityEngineers.vue';
 
 Vue.use(VueRouter);
 
@@ -41,6 +42,11 @@ const routes = [
     path: '/weather',
     name: 'Weather',
     component: Weather,
+  },
+  {
+    path: '/engineers',
+    name: 'Facility Engineers',
+    component: FacilityEngineers,
   },
 ];
 
