@@ -1,15 +1,19 @@
 <template>
   <header class="TopNav">
-    <img src="@/assets/img/VatsimLogo.png" class="vatsim-img-logo" alt="VATSIM logo" />
-    <NavList />
+    <div class="flex-row">
+      <img src="@/assets/img/VatsimLogo.png" class="vatsim-img-logo" alt="VATSIM logo" />
+      <NavList />
+    </div>
+    <TopNavHozNav />
   </header>
 </template>
 
 <script>
 import NavList from '@/components/NavList.vue';
+import TopNavHozNav from './TopHozNav/TopNavHozNav.vue';
 
 export default {
-  components: { NavList },
+  components: { NavList, TopNavHozNav },
 };
 </script>
 
@@ -23,6 +27,8 @@ header {
 .TopNav {
   padding: 0.5rem 1rem;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100vw;
   background-color: var(--secondary);
   z-index: 4;

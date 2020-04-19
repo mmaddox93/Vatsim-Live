@@ -95,9 +95,7 @@ export default {
 
 <style lang="scss" scoped>
 .NavList {
-  width: 20%;
-  min-width: 200px;
-  max-width: 300px;
+  width: 300px;
   position: relative;
   z-index: 5;
 
