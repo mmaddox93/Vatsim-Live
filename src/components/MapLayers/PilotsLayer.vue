@@ -20,6 +20,7 @@ export default {
   data() {
     return {
       lastFetch: {},
+      allowUpdateOfPredictiveSource: false,
       predictiveSource: {},
       geojson: {},
       geojsonLayer: {
@@ -58,13 +59,13 @@ export default {
     // this.addClickListeners();
     // this.addPopup();
 
-    setInterval(async () => {
-      await this.updatePilots();
+    setInterval(() => {
+      this.updatePilots();
     }, 15000);
 
     setInterval(() => {
       const mapZoom = this.$store.state.map.getZoom();
-      if (this.predictiveSource.data && mapZoom > 6.5) this.predictiveRender();
+      if (this.predictiveSource.data && mapZoom > 6.5 && this.allowUpdateOfPredictiveSource) this.predictiveRender();
     }, 500);
   },
   methods: {
@@ -75,9 +76,8 @@ export default {
     },
     async updatePilots() {
       const newData = await this.fetchPilots();
-      this.lastFetch = newData;
-      this.predictiveSource = newData;
       this.$store.commit('SET_PILOTS_DATA', newData);
+      this.predictiveSource = newData;
       this.$store.state.map.getSource('pilots').setData(newData.data);
     },
     async initPilots() {
@@ -162,7 +162,6 @@ export default {
       };
 
       if (newData) this.$store.state.map.getSource('pilots').setData(newData);
-      this.fixTrail(updatedPilots);
       this.updatedPilots = [];
     },
     fixTrail(updatedPilots) {
