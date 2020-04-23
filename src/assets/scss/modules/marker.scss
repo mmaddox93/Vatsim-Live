@@ -7,7 +7,6 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 4rem;
 
   &:first-child {
     padding-left: 1rem;
@@ -40,6 +39,10 @@
   padding-left: 0.65rem;
   margin-left: -0.45rem;
   padding-right: 0.35rem;
+}
+
+.controller-letter {
+  color: #ffffff;
 }
 
 .D {

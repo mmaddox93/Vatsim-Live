@@ -66,7 +66,6 @@ export default Vue.extend({
   watch: {
     options: {
       handler(newVal) {
-        console.log(newVal);
         this.$store.commit('SET_OPTIONS', newVal);
       },
       deep: true,

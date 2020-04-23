@@ -1,5 +1,5 @@
 <template>
-  <aside class="sidebar">
+  <aside ref="sidebar" class="sidebar">
     <div class="button-controls">
       <button
         v-if="content.properties"
@@ -11,7 +11,7 @@
         Track Flight
         <inline-svg
           :class="{ 'highlight-btn': trackFlight }"
-          class="button-control-icon left-margin button-interactions"
+          class="button-control-icon left-margin"
           fill="#fff"
           :src="require('../../assets/img/svg/eye.svg')"
         />
@@ -26,21 +26,20 @@
       />
     </div>
     <FlightDetails v-if="content.properties" :content="content" :track="trackFlight" />
-    <ControllerDetails v-else :airport="content" />
+    <!-- <AirportDetails v-else :airport="content" /> -->
   </aside>
 </template>
 
 <script>
 import AddTrail from '@/mixins/AddTrail';
 import FlightDetails from '@/components/SideBarComponents/FlightDetails.vue';
-import ControllerDetails from '@/components/SideBarComponents/ControllerDetails.vue';
+import AirportDetails from '@/components/SideBarComponents/AirportDetails.vue';
 import InlineSvg from 'vue-inline-svg';
-
 
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    FlightDetails, ControllerDetails, InlineSvg,
+    FlightDetails, AirportDetails, InlineSvg,
   },
   mixins: [AddTrail],
   props: ['content'],
@@ -51,6 +50,7 @@ export default {
   },
   updated() {
     if (this.content.properties) this.flyToFeature();
+    this.$refs.sidebar.scrollTop = 0;
     // if (this.content.properties.type === 'pilot') this.fetchTrail(this.content.properties.callsign);
   },
   mounted() {
@@ -113,7 +113,6 @@ export default {
 .button-control-icon {
   height: 2rem;
   width: auto;
-  background-color: var(--secondary);
 }
 
 .close-icon {
@@ -140,36 +139,41 @@ button {
 }
 
 .button-interactions {
+  background-color: var(--tertiary);
+  color: var(--lighter);
   cursor: pointer;
   transition: background-color 100ms ease-in-out;
 
-  &:hover {
-    background-color: var(--secondaryHov);
+  @media screen and (prefers-color-scheme: light) {
+    color: var(--text);
+  }
 
-    .button-control-icon {
-      background-color: var(--secondaryHov);
+  &:hover {
+    filter: brightness(1.2);
+    @media screen and (prefers-color-scheme: light) {
+      filter: brightness(0.95);
     }
   }
 
   &:active {
-    background-color: var(--secondaryAct);
+    filter: brightness(1.4);
 
-    .button-control-icon {
-      background-color: var(--secondaryHov);
+    @media screen and (prefers-color-scheme: light) {
+      filter: brightness(0.85);
     }
   }
 }
 
 .highlight-btn {
-  background-color: #139bda;
+  // background-color: #139bda;
 
-  &:hover {
-    background-color: #1c8abd;
+  // &:hover {
+  //   background-color: #1c8abd;
 
-    .button-control-icon {
-      background-color: #1c8abd;
-    }
-  }
+  //   .button-control-icon {
+  //     background-color: #1c8abd;
+  //   }
+  // }
 }
 
 @media (max-width: 620px) {
@@ -181,6 +185,17 @@ button {
     min-width: 0;
     height: min-content;
     min-height: 100vh;
+  }
+}
+</style>
+
+<style lang="scss">
+.button-control-icon > path,
+.button-control-icon > circle {
+  fill: var(--text);
+
+  @media screen and (prefers-color-scheme: light) {
+    fill: var(--lighter);
   }
 }
 </style>

@@ -1,8 +1,8 @@
 <template>
   <header class="TopNav">
     <div class="flex-row">
-      <img src="@/assets/img/VatsimLogo.png" class="vatsim-img-logo" alt="VATSIM logo" />
-      <NavList />
+      <img alt="VATSIM logo" src="@/assets/img/logo.png" class="vatsim-img-logo" />
+      <!-- <NavList /> -->
     </div>
     <TopNavHozNav />
   </header>
@@ -13,6 +13,7 @@ import NavList from '@/components/NavList.vue';
 import TopNavHozNav from './TopHozNav/TopNavHozNav.vue';
 
 export default {
+  // eslint-disable-next-line vue/no-unused-components
   components: { NavList, TopNavHozNav },
 };
 </script>

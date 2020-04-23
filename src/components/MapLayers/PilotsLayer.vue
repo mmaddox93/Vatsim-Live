@@ -1,6 +1,6 @@
 <template>
   <div v-if="geojson.type">
-    <div v-if="$store.state.options.labels">
+    <div v-if="$store.state.options.map.labels">
       <MglLayer :source="geojson" :layer="geojsonTextLayer" />
     </div>
     <MglLayer :source="geojson" :layer="geojsonLayer" />
@@ -20,7 +20,6 @@ export default {
   data() {
     return {
       lastFetch: {},
-      allowUpdateOfPredictiveSource: false,
       predictiveSource: {},
       geojson: {},
       geojsonLayer: {
@@ -63,10 +62,10 @@ export default {
       this.updatePilots();
     }, 15000);
 
-    setInterval(() => {
-      const mapZoom = this.$store.state.map.getZoom();
-      if (this.predictiveSource.data && mapZoom > 6.5 && this.allowUpdateOfPredictiveSource) this.predictiveRender();
-    }, 500);
+    // setInterval(() => {
+    //   const mapZoom = this.$store.state.map.getZoom();
+    //   if (this.predictiveSource.data && mapZoom > 6.5) this.predictiveRender();
+    // }, 500);
   },
   methods: {
     async fetchPilots() {
@@ -78,7 +77,8 @@ export default {
       const newData = await this.fetchPilots();
       this.$store.commit('SET_PILOTS_DATA', newData);
       this.predictiveSource = newData;
-      this.$store.state.map.getSource('pilots').setData(newData.data);
+      const source = this.$store.state.map.getSource('pilots');
+      if (source) source.setData(newData.data);
     },
     async initPilots() {
       const newData = await this.fetchPilots();
@@ -161,7 +161,11 @@ export default {
         features: updatedPilots,
       };
 
-      if (newData) this.$store.state.map.getSource('pilots').setData(newData);
+      if (newData) {
+        const source = this.$store.state.map.getSource('pilots');
+        if (source) source.setData(newData);
+      }
+
       this.updatedPilots = [];
     },
     fixTrail(updatedPilots) {

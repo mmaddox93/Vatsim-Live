@@ -1,9 +1,8 @@
-<script lang="ts">
-import Vue from 'vue';
+<script>
 import MapboxGeoCoder from '@mapbox/mapbox-gl-geocoder'; /* no types avail */
 import mapboxgl from 'mapbox-gl';
 
-export default Vue.extend({
+export default {
   mounted() {
     this.addGeoCoder();
   },
@@ -26,16 +25,11 @@ export default Vue.extend({
       });
       this.$store.state.map.addControl(geocoder, 'top-left');
 
-      interface Result {
-        result: object
-      }
-
-      geocoder.on('result', (e: Result) => {
-        console.log(e);
+      geocoder.on('result', (e) => {
         this.$store.commit('SET_SIDEBAR_CONTENT', e.result);
       });
     },
-    forwardGeocoder(query: string) {
+    forwardGeocoder(query) {
       const matchingFeatures = [];
       for (let i = 0; i < this.$store.state.pilotsData.data.features.length; i++) {
         const feature = this.$store.state.pilotsData.data.features[i];
@@ -48,7 +42,7 @@ export default Vue.extend({
       return matchingFeatures;
     },
   },
-});
+};
 </script>
 
 <style lang="scss">
@@ -62,15 +56,15 @@ export default Vue.extend({
 }
 
 .mapboxgl-ctrl-geocoder {
-  color: var(--white);
-  background-color: var(--secondary);
+  color: var(--text);
+  background-color: var(--tertiary);
   border-radius: 7px;
 }
 
 .mapboxgl-ctrl-geocoder--input,
 .mapboxgl-ctrl-geocoder {
   font-family: 'Poppins', sans-serif;
-  color: var(--white);
+  color: var(--text);
   max-width: 95vw;
 
   @media screen and (max-width: 400px) {
@@ -81,7 +75,7 @@ export default Vue.extend({
   }
 
   &:focus {
-    color: var(--white);
+    color: var(--text);
   }
 }
 
@@ -91,7 +85,7 @@ export default Vue.extend({
 
 .mapboxgl-ctrl-geocoder--icon-search,
 .mapboxgl-ctrl-geocoder--icon-close {
-  fill: var(--white);
+  fill: var(--text);
 }
 
 .mapboxgl-ctrl button:not(:disabled):hover {
@@ -99,18 +93,18 @@ export default Vue.extend({
 }
 
 .mapboxgl-ctrl-geocoder .suggestions > li > a {
-  color: var(--white);
+  color: var(--text);
   background-color: var(--secondary);
 
   &:hover {
     background-color: var(--secondaryHov);
-    color: var(--white);
+    color: var(--text);
   }
 }
 
 .mapboxgl-ctrl-geocoder .suggestions > .active > a {
   background-color: var(--secondaryAct);
-  color: var(--white);
+  color: var(--text);
 }
 
 .mapbox-gl-geocoder--error {

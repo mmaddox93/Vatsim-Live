@@ -1,5 +1,8 @@
 export default {
-  sigmets: false,
-  labels: false,
-  weather: true,
+  darkMode: true,
+  map: {
+    sigmets: false,
+    labels: false,
+    weather: true,
+  },
 };

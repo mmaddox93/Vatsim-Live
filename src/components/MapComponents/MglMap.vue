@@ -2,7 +2,7 @@
   <div class="mglmap">
     <slot></slot>
     <div class="map-container" :id="container">
-      <MapSettings />
+      <!-- <MapSettings /> -->
     </div>
   </div>
 </template>
@@ -16,6 +16,7 @@ import MapSettings from '@/components/MapComponents/MapSettings.vue';
 
 export default {
   mixins: [MapImages, SaveSession, ClickController],
+  // eslint-disable-next-line vue/no-unused-components
   components: { MapSettings },
   data() {
     return {
@@ -64,7 +65,8 @@ export default {
       map.on('load', () => {
         this.$store.commit('SET_MAP_STATUS', true);
         this.startClickController();
-        this.addImages();
+        if (this.$store.state.options.darkMode) this.addImages();
+        else this.addDarkImages();
         this.saveSession();
       });
     },
@@ -99,6 +101,9 @@ export default {
           // this.$store.state.map.on('mouseout', layer, () => this.$store.state.map.getCanvas().style.cursor = '');
         }
       }
+    },
+    mapStyle(newVal) {
+      this.$store.state.map.setStyle(newVal);
     },
   },
 };

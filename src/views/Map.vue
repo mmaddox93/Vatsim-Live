@@ -1,16 +1,15 @@
 <template>
   <div class="map">
-    <WelcomeToast class="welcome-toast" />
     <SideBarManager class="SideBarManager" />
-    <MglMap :token="token" :mapStyle="mapStyle">
+    <MglMap :token="token" :mapStyle="style">
       <div v-if="$store.state.mapLoaded">
-        <MapSearch />
+        <!-- <MapSearch /> -->
         <!-- <OnlineCenters /> -->
         <!-- <ControllerLayers /> -->
         <PilotsLayer />
         <!-- <TrailLayer /> -->
         <AirportMarkers />
-        <WeatherRadar v-if="showWxRadar" />
+        <WeatherRadar v-if="$store.state.options.map.weather" />
         <SigmetLayer />
         <AirportIcon />
       </div>
@@ -28,26 +27,14 @@ import TrailLayer from '@/components/MapLayers/TrailLayer.vue';
 import SideBarManager from '@/components/SideBarComponents/SideBarManager.vue';
 import WeatherRadar from '@/components/MapLayers/WeatherRadar.vue';
 import OnlineCenters from '@/components/MapLayers/OnlineCenters.vue';
-import WelcomeToast from '@/components/WelcomeToast.vue';
 import SigmetLayer from '@/components/MapLayers/SigmetLayer.vue';
 import AirportMarkers from '@/components/MapMarkers/AirportMarkers';
 import AirportIcon from '@/components/MapLayers/AirportIcon.vue';
+import MapImages from '@/mixins/MapImages';
 
 export default {
   name: 'Map',
-  data() {
-    return {
-      token: process.env.VUE_APP_MAP_TOKEN,
-      mapStyle: 'mapbox://styles/markdoyle/ck7ziswea26v21in02hvdrafj?optimize=true',
-    };
-  },
-  computed: {
-    showWxRadar() {
-      return this.$store.state.options.weather || false;
-    },
-  },
   components: {
-    WelcomeToast,
     PilotsLayer,
     MglMap,
     SideBarManager,
@@ -60,6 +47,35 @@ export default {
     AirportMarkers,
     AirportIcon,
   },
+  mixins: [MapImages],
+  data() {
+    return {
+      token: process.env.VUE_APP_MAP_TOKEN,
+    };
+  },
+  computed: {
+    style() {
+      if (this.$store.state.options.darkMode) return 'mapbox://styles/markdoyle/ck7ziswea26v21in02hvdrafj?optimize=true';
+      return 'mapbox://styles/markdoyle/ck99rtdu30lwx1inzmz80kkzn';
+    },
+  },
+  mounted() {
+    this.$root.$on('changeMode', () => this.switchMap());
+  },
+  methods: {
+    switchMap() {
+      this.$store.commit('SET_MAP_STATUS', false);
+      this.$store.state.map.on('style.load', () => {
+        if (!this.$store.state.mapLoaded) {
+          if (!this.$store.state.options.darkMode) {
+            this.removeImages();
+            this.addDarkImages();
+          } else this.addImages();
+        }
+        this.$store.commit('SET_MAP_STATUS', true);
+      });
+    },
+  },
 };
 </script>
 
@@ -70,16 +86,5 @@ export default {
   width: 100%;
   height: 100%;
   position: relative;
-}
-
-.welcome-toast {
-  z-index: 3;
-  position: absolute;
-  bottom: 0;
-  width: 100vw;
-  margin-bottom: 2rem;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="NavList">
+  <div class="NavList" v-click-outside="clickOutsideClose">
     <div ref="header" @click="toggleNav()" :class="{ 'no-border': showNav }" class="list-header">
       <div class="header-name-cont">
         <inline-svg
@@ -48,8 +48,10 @@
 
 <script>
 import InlineSvg from 'vue-inline-svg';
+import ClickOutside from '@/directives/clickOutside';
 
 export default {
+  directives: { ClickOutside },
   components: { InlineSvg },
   data() {
     return {
@@ -84,10 +86,8 @@ export default {
       this.showNav = !this.showNav;
       if (!this.showNav) this.$refs.header.blur();
     },
-    hideNav(e) {
-      if (!this.$el.contains(e.target)) {
-        this.showNav = false;
-      }
+    clickOutsideClose() {
+      this.showNav = false;
     },
   },
 };
@@ -112,7 +112,7 @@ export default {
   justify-content: space-between;
   box-sizing: border-box;
   padding: 0.5rem 1rem;
-  border: 1px solid #343536;
+  border: 1px solid var(--border);
   border-radius: 4px;
   width: auto;
   height: 100%;
@@ -136,7 +136,7 @@ export default {
   background-color: var(--secondary);
   position: absolute;
   box-sizing: border-box;
-  border: 1px solid #343536;
+  border: 1px solid var(--bordert);
   border-top: none;
   width: 100%;
   border-radius: 0 0 4px 4px;
@@ -149,7 +149,11 @@ export default {
   padding: 0.5rem 1.5rem;
 
   &:hover {
-    background-color: #272729;
+    background-color: var(--secondaryHov);
+  }
+
+  &:active {
+    background-color: var(--secondaryAct);
   }
 }
 
@@ -187,7 +191,14 @@ export default {
 .active-icon > path,
 .active-icon > ellipse,
 .active-icon > line {
-  stroke: var(--highlight);
-  fill: var(--highlight);
+  stroke: var(--highlight) !important;
+}
+
+@media screen and (prefers-color-scheme: light) {
+  .route-icon > path,
+  .route-icon > line,
+  .route-icon > ellipse {
+    stroke: var(--lighter);
+  }
 }
 </style>

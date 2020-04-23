@@ -6,12 +6,12 @@ import defaultOptions from './defaultOptions';
 
 Vue.use(Vuex);
 
-const option = JSON.parse(localStorage.getItem('options')) || defaultOptions;
+const options = JSON.parse(localStorage.getItem('options')) || defaultOptions;
 
 const store = new Vuex.Store({
   plugins: [saveStatePlugin],
   state: {
-    options: option,
+    options,
     map: {},
     mapLoaded: false,
     trailLayer: null,

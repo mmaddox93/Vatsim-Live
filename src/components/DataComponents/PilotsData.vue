@@ -21,7 +21,7 @@
 // eslint-disable-next-line import/extensions
 import Lottie from 'vue-lottie';
 import PilotScroller from '@/components/DataComponents/PilotScroller.vue';
-import * as loadingAnimation from './lottieLoader.json';
+import * as loadingAnimation from '@/assets/lottieLoader.json';
 
 export default {
   components: { PilotScroller, Lottie },
