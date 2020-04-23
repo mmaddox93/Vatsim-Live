@@ -48,7 +48,7 @@
 
 <script>
 import InlineSvg from 'vue-inline-svg';
-import ClickOutside from '@/directives/clickOutside';
+import ClickOutside from '@/Directives/clickOutside';
 
 export default {
   directives: { ClickOutside },
