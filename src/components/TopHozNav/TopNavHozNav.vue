@@ -104,7 +104,7 @@
 </template>
 
 <script>
-import ClickOutside from '@/directives/clickOutside';
+import ClickOutside from '@/Directives/clickOutside';
 import InlineSvg from 'vue-inline-svg';
 import { ToggleButton } from 'vue-js-toggle-button';
 
