@@ -26,7 +26,7 @@
       />
     </div>
     <FlightDetails v-if="content.properties" :content="content" :track="trackFlight" />
-    <!-- <AirportDetails v-else :airport="content" /> -->
+    <AirportDetails v-else :airport="content" />
   </aside>
 </template>
 
@@ -39,7 +39,9 @@ import InlineSvg from 'vue-inline-svg';
 export default {
   components: {
     // eslint-disable-next-line vue/no-unused-components
-    FlightDetails, AirportDetails, InlineSvg,
+    FlightDetails,
+    AirportDetails,
+    InlineSvg,
   },
   mixins: [AddTrail],
   props: ['content'],

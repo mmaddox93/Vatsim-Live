@@ -10,7 +10,7 @@
         <!-- <TrailLayer /> -->
         <AirportMarkers />
         <WeatherRadar v-if="$store.state.options.map.weather" />
-        <SigmetLayer />
+        <!-- <SigmetLayer /> -->
         <AirportIcon />
       </div>
     </MglMap>
@@ -18,7 +18,7 @@
 </template>
 
 <script>
-/* eslint-disable vue/no-unused-components */
+/* eslint-disable no-unused-vars */
 import MglMap from '@/components/MapComponents/MglMap.vue';
 import MapSearch from '@/components/MapComponents/MapSearch.vue';
 import PilotsLayer from '@/components/MapLayers/PilotsLayer.vue';
@@ -35,15 +35,15 @@ import MapImages from '@/mixins/MapImages';
 export default {
   name: 'Map',
   components: {
-    PilotsLayer,
     MglMap,
+    PilotsLayer,
     SideBarManager,
-    TrailLayer,
+    // TrailLayer,
     WeatherRadar,
-    ControllerLayers,
-    OnlineCenters,
-    SigmetLayer,
-    MapSearch,
+    // ControllerLayers,
+    // OnlineCenters,
+    // SigmetLayer,
+    // MapSearch,
     AirportMarkers,
     AirportIcon,
   },

@@ -10,7 +10,6 @@
 <script>
 import MglLayer from '@/components/MapComponents/MglLayer';
 import PredictiveRender from '@/mixins/PredictiveRender';
-import mapboxgl from 'mapbox-gl';
 
 export default {
   components: {
@@ -57,15 +56,15 @@ export default {
     this.initPilots();
     // this.addClickListeners();
     // this.addPopup();
+    // this is a mem leak that needs fixing
+    // setInterval(() => {
+    //   this.updatePilots();
+    // }, 15000);
 
     setInterval(() => {
-      this.updatePilots();
-    }, 15000);
-
-    // setInterval(() => {
-    //   const mapZoom = this.$store.state.map.getZoom();
-    //   if (this.predictiveSource.data && mapZoom > 6.5) this.predictiveRender();
-    // }, 500);
+      const mapZoom = this.$store.state.map.getZoom();
+      if (this.predictiveSource.data && mapZoom > 6.5) this.predictiveRender();
+    }, 500);
   },
   methods: {
     async fetchPilots() {
@@ -74,6 +73,7 @@ export default {
       return data;
     },
     async updatePilots() {
+      // eslint-disable-next-line no-unused-vars
       const newData = await this.fetchPilots();
       this.$store.commit('SET_PILOTS_DATA', newData);
       this.predictiveSource = newData;
@@ -89,48 +89,6 @@ export default {
     },
     addClickListeners() {
       this.$store.state.map.on('click', 'pilotsLayer', (e) => this.$store.commit('SET_SIDEBAR_CONTENT', e.features[0]));
-    },
-    addPopup() {
-      const popup = new mapboxgl.Popup({
-        closeButton: false,
-        closeOnClick: false,
-      });
-
-      this.$store.state.map.on('mouseenter', 'pilotsLayer', (e) => {
-        const coordinates = e.features[0].geometry.coordinates.slice();
-        const { callsign, groundspeed, altitude } = e.features[0].properties;
-        const plannedAircraft = e.features[0].properties.planned_aircraft;
-        const departureAirport = e.features[0].properties.planned_depairport;
-        const arrAirport = e.features[0].properties.planned_destairport;
-
-        /* Ensure that if the map is zoomed out such that multiple
-        copies of the feature are visible, the popup appears
-        over the copy being pointed to. */
-
-        while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
-          coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
-        }
-        const popupRawHtmlHasFp = `
-          <div class="popup">
-            <span>${callsign} ${plannedAircraft}</span>
-            <span>${altitude} ${groundspeed}</span>
-            <span>${departureAirport} ${arrAirport}</span>
-          </div>
-        `;
-        const popupRawHtmlNoFp = `
-          <div class="popup">
-            <span>${callsign}</span>
-            <span>${altitude} ${groundspeed}</span>
-          </div>
-        `;
-        if (plannedAircraft !== 'null') popup.setLngLat(coordinates).setHTML(popupRawHtmlHasFp).addTo(this.$store.state.map);
-        else popup.setLngLat(coordinates).setHTML(popupRawHtmlNoFp).addTo(this.$store.state.map);
-      });
-
-      this.$store.state.map.on('mouseleave', 'pilotsLayer', () => {
-        popup.remove();
-        this.$store.state.map.getCanvas().style.cursor = '';
-      });
     },
     predictiveRender() {
       const updatedPilots = [];
