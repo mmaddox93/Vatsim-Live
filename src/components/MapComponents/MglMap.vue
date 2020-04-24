@@ -68,6 +68,7 @@ export default {
         if (this.$store.state.options.darkMode) this.addImages();
         else this.addDarkImages();
         this.saveSession();
+        this.setAttribution();
       });
     },
     getLastSession() {
@@ -86,6 +87,15 @@ export default {
         this.$store.state.map.moveLayer('sigmetAtc');
         // if (this.map.includes('trailLayer')) this.$store.state.map.moveLayer('trailLayer');
       }
+    },
+    setAttribution() {
+      const attributionEl = document.querySelector('.mapboxgl-ctrl-attrib-inner');
+
+      for (const el of attributionEl.children) {
+        el.setAttribute('rel', 'noreferrer');
+      }
+
+      // rel="noreferrer"
     },
   },
   computed: {

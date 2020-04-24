@@ -1,5 +1,5 @@
 <template>
-  <div class="map">
+  <main class="map">
     <SideBarManager class="SideBarManager" />
     <MglMap :token="token" :mapStyle="style">
       <div v-if="$store.state.mapLoaded">
@@ -14,7 +14,7 @@
         <AirportIcon />
       </div>
     </MglMap>
-  </div>
+  </main>
 </template>
 
 <script>
