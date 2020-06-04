@@ -25,16 +25,19 @@ export default collectionPropInjector(Vue, ['map']).extend({
   created(): void {
     if (this.source) {
       this.$watch('source', (next) => {
-        if (!this.firstLoad) {
-          const source: any = this.map.getSource(this.source.data.id);
-          if (source) source.setData(next.data);
-        } else {
-          this.firstLoad = false;
-          this.map.addSource(this.source.data.id, this.source);
-          this.addLayer();
+        if (this.firstLoad) {
+          this.lateMount();
+          return;
         }
+        const source: any = this.map.getSource(this.source.data.id);
+        if (source) source.setData(next.data);
       }, { deep: true });
+      this.lateMount();
     }
+  },
+  beforeDestroy() {
+    this.map.removeLayer(this.layer.id);
+    this.map.removeSource(this.source.data.id);
   },
   methods: {
     addLayer(): void {
@@ -53,6 +56,16 @@ export default collectionPropInjector(Vue, ['map']).extend({
         throw new Error(error);
       }
     },
+    lateMount(): void {
+      if (this.source.data) {
+        this.firstLoad = false;
+        const exists = this.map.getSource(this.source.data.id);
+        if (exists) {
+          this.map.removeSource(this.source.data.id);
+        }
+        this.map.addSource(this.source.data.id, this.source);
+        this.addLayer();
+      }
+    },
   },
-
 });

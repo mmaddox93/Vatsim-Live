@@ -1,0 +1,21 @@
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.align-center {
+  display: flex;
+  align-items: center;
+}
+
+.flex-col {
+  flex-direction: column;
+}
+
+.card {
+  background-color: var(--tertiary);
+  border-radius: 15px;
+  box-shadow: var(--boxShadow);
+  padding: 1.25rem;
+}
