@@ -23,7 +23,7 @@ export default Vue.extend({
   components: { ButtonRound, ArrowLeftIcon },
   methods: {
     login() {
-      this.$router.push('/developer/sector');
+      this.$router.push('/developer/dashboard/vateir');
     },
   },
 });

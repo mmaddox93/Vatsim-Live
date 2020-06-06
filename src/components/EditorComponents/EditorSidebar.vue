@@ -8,8 +8,15 @@
       <div class="sidebar__content">
         <div class="sidebar__title bold big">Sector Editor</div>
         <div class="sidebar__info card">
-          <div class="sidebar__name bold">EISN_CTR</div>
-          <div class="sidebar__description">Shannon Control - Bandbox</div>
+          <div class="sidebar__input__cont">
+            <input
+              :style="{width: (sectorDescription.length + 1) + 'ch'}"
+              v-model="sectorDescription"
+              placeholder="Sector Description"
+              class="edit__input bold"
+              :class="{ 'edit__input-empty': sectorDescription.length === 0}"
+            />
+          </div>
         </div>
         <div class="sidebar__limits card">
           <div class="sidebar__card__title bold">Vertical Limits</div>
@@ -61,9 +68,9 @@ export default Vue.extend({
   components: { ArrowLeftIcon, VueSlider, ButtonRound },
   data() {
     return {
-      toFt: '{value}ft',
       lowerLimit: 0,
       upperLimit: 0,
+      sectorDescription: 'Shannon Control Bandbox',
     };
   },
   methods: {
@@ -86,7 +93,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .sidebar {
   background-color: var(--secondary);
-  min-width: 350px;
+  width: 350px;
   height: 100%;
   padding: 1rem 1.875rem;
   display: flex;

@@ -3,6 +3,7 @@ import VueRouter from 'vue-router';
 import MapHome from '../views/MapHome.vue';
 import DevLogin from '../views/DevLogin.vue';
 import SectorEditor from '../views/SectorEditor.vue';
+import DivisionDashboard from '../views/DivisionDashboard.vue';
 
 Vue.use(VueRouter);
 
@@ -21,6 +22,12 @@ const routes = [
     path: '/developer/sector',
     name: 'Sector Editor',
     component: SectorEditor,
+  },
+  {
+    path: '/developer/dashboard/:id',
+    name: 'Division Dashboard',
+    component: DivisionDashboard,
+    props: true,
   },
 ];
 

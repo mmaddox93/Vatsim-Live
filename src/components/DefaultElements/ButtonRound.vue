@@ -1,5 +1,5 @@
 <template>
-  <button class="button">
+  <button :class="customClass" class="button">
     <div class="button__content">
       <slot></slot>
       <span>{{text}}</span>
@@ -17,7 +17,12 @@ export default Vue.extend({
       type: String,
       required: true,
     },
+    customClass: {
+      type: String,
+      required: false,
+    },
   },
+
 });
 </script>
 
@@ -38,6 +43,7 @@ export default Vue.extend({
   transition: all 200ms ease-in-out;
   cursor: pointer;
   box-shadow: var(--boxShadow);
+  font-family: inherit;
 
   &:hover {
     transform: scale(1.02);

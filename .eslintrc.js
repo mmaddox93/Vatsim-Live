@@ -19,7 +19,8 @@ module.exports = {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-await-in-loop': 0,
-    'no-unused-vars': 0,
+    // 'no-unused-vars': 0,
+    'linebreak-style': 0,
     '@typescript-eslint/no-unused-vars': 'error',
   },
 
