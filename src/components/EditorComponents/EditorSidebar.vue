@@ -26,7 +26,7 @@
               :tooltip-formatter="toFlightLevel"
             ></vue-slider>
           </div>
-          <div class="sidebar__divider"></div>
+          <div class="divider"></div>
           <div class="sidebar__limit">
             <span class="sidebar__limit__text">
               Upper Limit:
@@ -86,7 +86,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 .sidebar {
   background-color: var(--secondary);
-  max-width: 25vw;
+  min-width: 350px;
   height: 100%;
   padding: 1rem 1.875rem;
   display: flex;
@@ -109,13 +109,6 @@ export default Vue.extend({
 
 .sidebar__limits {
   margin-top: 1rem;
-}
-
-.sidebar__divider {
-  margin: 1rem 0;
-  width: 100%;
-  height: 1px;
-  background-color: var(--seperator);
 }
 
 .sidebar__card__title {

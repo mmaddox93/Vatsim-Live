@@ -23,7 +23,7 @@ export default Vue.extend({
   components: { ButtonRound, ArrowLeftIcon },
   methods: {
     login() {
-      setTimeout(() => { this.$router.push('/developer/sector'); }, 500);
+      this.$router.push('/developer/sector');
     },
   },
 });
