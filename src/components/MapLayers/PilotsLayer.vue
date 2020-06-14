@@ -1,27 +1,31 @@
 <template>
-  <div v-if="geojson.type">
-    <div v-if="$store.state.options.map.labels">
-      <MglLayer :source="geojson" :layer="geojsonTextLayer" />
-    </div>
-    <MglLayer :source="geojson" :layer="geojsonLayer" />
+  <div>
+    <MglImage url="https://i.imgur.com/4Lhn9MY.png" id="airplaneIcon" />
+    <MglGeojsonLayer :source="geojson" :layer="layer" />
   </div>
 </template>
 
-<script>
-import MglLayer from '@/components/MapComponents/MglLayer';
-import PredictiveRender from '@/mixins/PredictiveRender';
+<script lang="ts">
+import Vue from 'vue';
+import MglGeojsonLayer from '@/components/MapComponents/MglGeojsonLayer';
+import MglImage from '@/components/MapComponents/MglImage';
+import { PilotsGeojson } from '@/types/PilotGeojson';
+import { makeInjector } from '@/helpers/inject';
 
-export default {
-  components: {
-    MglLayer,
-  },
-  mixins: [PredictiveRender],
+const radius = 6371000;
+const toRadians = (degrees: number) => (degrees * Math.PI) / 180;
+const toDegrees = (radians: number) => (radians * 180) / Math.PI;
+const sleep = (delay: number) => new Promise((resolve) => { setTimeout(resolve, delay); });
+
+const collectionPropInjector = makeInjector<{ map: mapboxgl.Map }>();
+
+export default collectionPropInjector(Vue, ['map']).extend({
+  inject: ['map'],
+  components: { MglGeojsonLayer, MglImage },
   data() {
     return {
-      lastFetch: {},
-      predictiveSource: {},
-      geojson: {},
-      geojsonLayer: {
+      geojson: {} as PilotsGeojson,
+      layer: {
         id: 'pilotsLayer',
         type: 'symbol',
         source: 'pilots',
@@ -33,155 +37,65 @@ export default {
           'icon-rotation-alignment': 'map',
         },
       },
-      geojsonTextLayer: {
-        id: 'pilotsTextLayer',
-        type: 'symbol',
-        source: 'pilots',
-        layout: {
-          'text-allow-overlap': true,
-          'text-field': ['get', 'callsign'],
-          'text-font': ['Open Sans Bold', 'Arial Unicode MS Regular'],
-          'text-offset': [0, +1.25],
-          'text-size': 12,
-        },
-        paint: {
-          'text-color': '#4eac37',
-          'text-halo-color': '#000000',
-          'text-halo-width': 1,
-        },
-      },
     };
   },
-  mounted() {
+  async mounted() {
     this.initPilots();
-    // this.addClickListeners();
-    // this.addPopup();
-    // this is a mem leak that needs fixing
-    // setInterval(() => {
-    //   this.updatePilots();
-    // }, 15000);
-
-    setInterval(() => {
-      const mapZoom = this.$store.state.map.getZoom();
-      if (this.predictiveSource.data && mapZoom > 6.5) this.predictiveRender();
-    }, 500);
+    setInterval(() => this.initPilots(), 15000);
+    for (;; await sleep(500)) {
+      if (this.geojson.data) this.predictiveRender();
+    }
   },
   methods: {
-    async fetchPilots() {
+    async initPilots() {
       const response = await fetch('https://map-dev.vatsim.net/api/v1/online/pilots');
       const data = await response.json();
-      return data;
+      this.geojson = data;
     },
-    async updatePilots() {
-      // eslint-disable-next-line no-unused-vars
-      const newData = await this.fetchPilots();
-      this.$store.commit('SET_PILOTS_DATA', newData);
-      this.predictiveSource = newData;
-      const source = this.$store.state.map.getSource('pilots');
-      if (source) source.setData(newData.data);
-    },
-    async initPilots() {
-      const newData = await this.fetchPilots();
-      this.$store.commit('SET_PILOTS_DATA', newData);
-      this.geojson = newData;
-      this.lastFetch = newData;
-      this.predictiveSource = newData;
-    },
-    addClickListeners() {
-      this.$store.state.map.on('click', 'pilotsLayer', (e) => this.$store.commit('SET_SIDEBAR_CONTENT', e.features[0]));
+    // eslint-disable-next-line max-len
+    destinationFix(latitude: number, longitude: number, distance: number, heading: number, altitude: number): [number, number, number] {
+      const DELTA = distance / radius;
+      const THETA = toRadians(heading);
+      const PHI = toRadians(latitude);
+      const LAMBDA = toRadians(longitude);
+
+      const newLat = Math.asin(
+        Math.sin(PHI) * Math.cos(DELTA)
+        + Math.cos(PHI) * Math.sin(DELTA) * Math.cos(THETA),
+      );
+
+      const newLng = LAMBDA + Math.atan2(
+        Math.sin(THETA) * Math.sin(DELTA) * Math.cos(PHI),
+        Math.cos(DELTA) - Math.sin(PHI) * Math.sin(newLat),
+      );
+
+      const lat: number = toDegrees(newLat);
+      const lng: number = toDegrees(newLng);
+      return [lng, lat, altitude];
     },
     predictiveRender() {
       const updatedPilots = [];
-      for (const pilot of this.predictiveSource.data.features) {
-        const longitude = pilot.geometry.coordinates[0];
-        const latitude = pilot.geometry.coordinates[1];
-        const { heading } = pilot.properties;
-        const speed = pilot.properties.groundspeed;
-        const distance = (speed / 3600) * 1852 * 0.5;
-        // predictiverender mixin
-        const newCoords = this.destinationFix(latitude, longitude, distance, heading);
+      // eslint-disable-next-line no-restricted-syntax
+      for (const pilot of this.geojson.data.features) {
+        const UPDATE_FREQ: number = 0.5;
+        const LONG = pilot.geometry.coordinates[0];
+        const LAT = pilot.geometry.coordinates[1];
+        const ALT = pilot.geometry.coordinates[2];
+        const HDG = pilot.properties.heading;
+        const SPEED = pilot.properties.groundspeed;
+        const DISTANCE = (SPEED / 3600) * 1852 * UPDATE_FREQ;
+
         const newPilot = {
           ...pilot,
           geometry: {
             type: 'Point',
-            coordinates: newCoords,
+            coordinates: this.destinationFix(LAT, LONG, DISTANCE, HDG, ALT),
           },
         };
-
         updatedPilots.push(newPilot);
       }
-
-      this.predictiveSource.data.features = updatedPilots;
-
-      const newData = {
-        id: 'pilots',
-        type: 'FeatureCollection',
-        features: updatedPilots,
-      };
-
-      if (newData) {
-        const source = this.$store.state.map.getSource('pilots');
-        if (source) source.setData(newData);
-      }
-
-      this.updatedPilots = [];
-    },
-    fixTrail(updatedPilots) {
-      const source = this.$store.state.map.getSource('pilotsTrailSource');
-
-      // if an aircraft is selected...
-      if (source) {
-        const data = source._data.features;
-        const { callsign } = data[0].properties;
-
-        const pilot = updatedPilots.filter((station) => station.properties.callsign === callsign);
-        const longitude = pilot[0].geometry.coordinates[0];
-        const latitude = pilot[0].geometry.coordinates[1];
-        const newPoint = data;
-        newPoint[0].geometry.coordinates[0] = [longitude, latitude];
-
-        this.$store.state.map.getSource('pilotsTrailSource').setData({
-          type: 'FeatureCollection',
-          features: newPoint,
-        });
-      }
+      this.geojson.data.features = updatedPilots;
     },
   },
-};
+});
 </script>
-
-<style lang="scss">
-.popup {
-  display: flex;
-  flex-direction: column;
-  white-space: nowrap;
-  -webkit-hyphens: none;
-  -ms-hyphens: none;
-  hyphens: none;
-  font-size: 12px;
-  color: #e5e5e5;
-  font-weight: 600;
-  text-shadow: 0px 0px 1.5px #000;
-  position: absolute;
-  line-height: 1.1em;
-  background: rgba(0, 0, 0, 0.2);
-  border: 0;
-  padding: 0.35rem;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-.mapboxgl-popup-content {
-  background: transparent;
-  box-shadow: none;
-}
-
-.mapboxgl-popup-tip {
-  border-top-color: transparent !important;
-  border-bottom-color: transparent !important;
-  border-left-color: transparent !important;
-  border-right-color: transparent !important;
-}
-</style>

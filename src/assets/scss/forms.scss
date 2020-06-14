@@ -1,0 +1,31 @@
+.edit__input {
+  background-color: inherit;
+  border: 1px solid transparent;
+  padding: 0 0.5rem;
+  border-radius: 3px;
+  font-family: inherit;
+  color: inherit;
+  font-size: inherit;
+  min-width: 6ch;
+  overflow: visible;
+  max-width: 100%;
+
+  &:hover {
+    border: 1px solid var(--quaternary);
+  }
+
+  &:focus {
+    border: 1px solid var(--quaternary);
+    background-color: var(--secondary);
+  }
+}
+
+.edit__input-empty {
+  border: 1px solid var(--quaternary);
+  background-color: var(--secondary);
+  width: 100% !important;
+
+  &::placeholder {
+    font-weight: normal;
+  }
+}

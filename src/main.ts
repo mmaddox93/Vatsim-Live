@@ -1,30 +1,23 @@
 import Vue from 'vue';
 import VueCompositionApi from '@vue/composition-api';
-import * as Sentry from '@sentry/browser';
-import * as Integrations from '@sentry/integrations';
-
+import VueContext from 'vue-context';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import mapboxgl from 'mapbox-gl';
 import App from './App.vue';
 import router from './router';
 import store from './store';
-
-import './assets/scss/variables.scss';
+import './assets/scss/index.scss';
 
 // plugins
 Vue.use(VueCompositionApi);
+
+// components
+Vue.component('VueContext', VueContext);
+
 Vue.config.productionTip = false;
 
-// enable error logging
-if (process.env.NODE_ENV === 'production') {
-  Sentry.init({
-    dsn: 'https://dadece6a2a2c4518b794862a500456b2@sentry.io/5182235',
-    integrations: [new Integrations.Vue({ Vue, attachProps: true })],
-  });
-}
-
-const mapApp = new Vue({
+new Vue({
   router,
   store,
   render: (h) => h(App),
-});
-
-mapApp.$mount('#app');
+}).$mount('#app');

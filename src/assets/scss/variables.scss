@@ -1,44 +1,12 @@
-[data-theme="dark"] {
-  --lighter: #818384;
-  --text: #ffffff;
-  --primary: #030303;
-  --secondary: #1a1a1b;
-  --secondaryHov: #272729;
-  --secondaryAct: #2f2f31;
-  --tertiary: #3a3b3c;
-  --active: #202124;
-  --highlight: #50fa7b;
-  --darkModifier: #171717;
-  --border: #474748;
-  --borderDark: #343536;
-  --blue: #00a2d9;
-  --blueHov: #1c8abd;
-  --fontFam: 'Poppins', sans-serif;
+:root {
+  --primary: #18191E;
+  --secondary: #1D2027;
+  --tertiary: #22252E;
+  --quaternary: #121317;
+  --grey: #666666;
+  --highlightBlue: #0099FF;
+  --highlightBlueActive: #0088ff;
+  --white: #ffffff;
+  --boxShadow: 0px 0px 15px 0px rgba(0, 0, 0, 0.03);
+  --divider: rgba(66, 70, 92, 0.4);
 }
-
-[data-theme="light"] {
-  --lighter: #818384;
-  --text: #1c1c1c;
-  --primary: #f1f2f5;
-  --secondary: #ffffff;
-  --secondaryHov: #F2F3F5;
-  --secondaryAct: #d5d6d8;
-  --tertiary: #e5e6eb;
-  --active: #202124;
-  --highlight: #50fa7b;
-  --darkModifier: #171717;
-  --border: #ccc;
-  --borderDark: #343536;
-  --blue: #00a2d9;
-  --blueHov: #1c8abd;
-  --fontFam: 'Poppins', sans-serif;
-}
-
-// imports
-@import './globalUtils.scss';
-@import './global.scss';
-@import './modules/index.scss';
-@import './defaultOverrides.scss';
-
-//fonts
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
