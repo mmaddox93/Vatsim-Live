@@ -1,0 +1,65 @@
+.v-context {
+    &, & ul {
+        background-color: var(--tertiary);
+        background-clip: padding-box;
+        border-radius: 7px;
+        box-shadow: var(--boxShadow);
+        display: block;
+        margin: 0;
+        padding: 0.3rem;
+        min-width: 12rem;
+        z-index: 1500;
+        position: fixed;
+        list-style: none;
+        box-sizing: border-box;
+        max-height: calc(100% - 50px);
+        overflow-y: auto;
+
+        > li {
+            margin: 0;
+            position: relative;
+
+            > a {
+                width: 100%;
+                cursor: pointer;
+                display: block;
+                padding: .5rem 1.5rem;
+                font-weight: 400;
+                color: inherit;
+                text-decoration: none;
+                white-space: nowrap;
+                background-color: transparent;
+                border: 0;
+                border-radius: 7px;
+                font-family: inherit;
+
+                &:hover,
+                &:focus {
+                    text-decoration: none;
+                    color: inherit;
+                    background-color: var(--quaternary);
+                }
+
+                &:focus {
+                    outline: 0;
+                }
+            }
+        }
+
+        &:focus {
+            outline: 0;
+        }
+    }
+
+    &__sub {
+        > a:after {
+            content: "\2bc8";
+            float: right;
+            padding-left: 1rem;
+        }
+
+        > ul {
+          display: none;
+        }
+    }
+}
