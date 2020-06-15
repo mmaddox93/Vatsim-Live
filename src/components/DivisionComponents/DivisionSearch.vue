@@ -12,9 +12,23 @@
         <input v-model="search" placeholder="Search 9 recent files" class="search__input" />
       </div>
       <div class="search__items">
-        <DivisionItem v-for="item in recent" :item="item" :key="item.name" />
+        <DivisionItem
+          @contextmenu.native.prevent="$refs.menu.open"
+          @optionsClick="openContext"
+          v-for="item in recent"
+          :item="item"
+          :key="item.name"
+        />
       </div>
     </div>
+    <vue-context ref="menu">
+      <li>
+        <a @click.prevent="onClick($event.target.innerText)">Copy Text</a>
+      </li>
+      <li>
+        <a @click.prevent="onClick($event.target.innerText)">Option 2</a>
+      </li>
+    </vue-context>
   </div>
 </template>
 
@@ -50,6 +64,15 @@ export default Vue.extend({
         },
       ],
     };
+  },
+  methods: {
+    openContext($event: Event) {
+      const { menu }: any = this.$refs;
+      menu.open($event);
+    },
+    copySelection() {
+
+    },
   },
 });
 </script>
@@ -100,12 +123,6 @@ export default Vue.extend({
 
   &::placeholder {
     color: var(--grey);
-  }
-
-  &:focus {
-    &::placeholder {
-      color: var(--white);
-    }
   }
 }
 
