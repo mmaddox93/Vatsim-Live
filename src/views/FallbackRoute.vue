@@ -8,13 +8,13 @@
       </div>
       <ul class="fallback__links">
         <li class="fallback__link">
-          <router-link to="/">HOME</router-link>
+          <router-link class="fallback__href" to="/">HOME</router-link>
         </li>
         <li class="fallback__link">
-          <a href="https://network-status.vatsim.net/">STATUS PAGE</a>
+          <a class="fallback__href" href="https://network-status.vatsim.net/">STATUS PAGE</a>
         </li>
         <li class="fallback__link">
-          <router-link to="/developer/login">DEVELOPER PORTAL</router-link>
+          <router-link class="fallback__href" to="/developer/login">DEVELOPER PORTAL</router-link>
         </li>
       </ul>
     </div>
@@ -84,12 +84,15 @@ export default Vue.extend({
 .fallback__link {
   font-weight: normal;
   margin-bottom: 0.5rem;
+}
+
+.fallback__href {
   color: var(--grey);
   transition: color 100ms linear;
-  cursor: pointer;
 
   &:hover {
     color: var(--white);
+    cursor: pointer;
   }
 }
 
