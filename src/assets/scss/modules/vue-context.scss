@@ -1,4 +1,6 @@
 .v-context {
+    padding: 0.3rem;
+
     &, & ul {
         background-color: var(--tertiary);
         background-clip: padding-box;
@@ -6,9 +8,8 @@
         box-shadow: var(--boxShadow);
         display: block;
         margin: 0;
-        padding: 0.3rem;
         min-width: 12rem;
-        z-index: 1500;
+        z-index: 3;
         position: fixed;
         list-style: none;
         box-sizing: border-box;
