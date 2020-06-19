@@ -39,17 +39,32 @@ export default Vue.extend({
 .fallback {
   width: 100%;
   height: 100%;
+
+  @media (max-width: 950px) {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+  }
 }
 
 .fallback__side {
   width: 50%;
   height: 100%;
+
+  @media (max-width: 950px) {
+    height: auto;
+    width: auto;
+  }
 }
 
 .fallback__left {
   display: flex;
   justify-content: center;
   padding: 0 4rem;
+
+  @media (max-width: 950px) {
+    padding: 0 2rem;
+  }
 }
 
 .fallback__message {
@@ -82,8 +97,12 @@ export default Vue.extend({
   -webkit-text-stroke: 2px var(--highlightBlue);
   filter: opacity(0.3);
   color: transparent;
-  font-size: 30vmin;
+  font-size: 20vmin;
   font-weight: 700;
+
+  @media (max-width: 950px) {
+    display: none;
+  }
 }
 
 .fallback__title-upper {
@@ -95,7 +114,7 @@ export default Vue.extend({
   height: min-content;
 
   &:hover {
-    transform: scale(1.3);
+    transform: scale(1.2);
     cursor: default;
   }
 }
