@@ -4,10 +4,16 @@ import MapHome from '../views/MapHome.vue';
 import DevLogin from '../views/DevLogin.vue';
 import SectorEditor from '../views/SectorEditor.vue';
 import DivisionDashboard from '../views/DivisionDashboard.vue';
+import FallbackRoute from '../views/FallbackRoute.vue';
 
 Vue.use(VueRouter);
 
 const routes = [
+  {
+    path: '*',
+    name: 'Not Found',
+    component: FallbackRoute,
+  },
   {
     path: '/',
     name: 'Home',
