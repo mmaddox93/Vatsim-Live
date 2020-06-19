@@ -1,38 +1,28 @@
 <template>
   <div class="fallback center">
-    <div class="fallback__initial center">
-      <span>
-        <br />h1 {
-        <span class="fallback__indent">
-          margin: 0;
-          <br />padding: 0;
-          <br />font-size: 100%;
-          <br />vertical-align: baseline;
-        </span>
-        }
-        <br />
-        <br />h1 {
-        <span class="fallback__indent">
-          margin: 0;
-          <br />padding: 0;
-          <br />font-size: 100%;
-          <br />vertical-align: baseline;
-        </span>
-        }
-        <br />
-        <br />.error-message-content {
-        <span class="fallback__indent">
-          font-size: 14px;
-          <br />font-family: Helvetica Neue,HelveticaNeue,sans-serif;
-          <br />line-height: 21px;
-        </span>
-        }
-      </span>
-      <span class="blinkingCursor" style="display: none;">|</span>
+    <div class="fallback__side fallback__left flex-col">
+      <div class="fallback__message">Page not found, sorry</div>
+      <div class="fallback__submessage">
+        You may have misspelled the url,
+        or the page may no longer exist. Here are some suggested pages
+      </div>
+      <ul class="fallback__links">
+        <li class="fallback__link">
+          <router-link to="/">HOME</router-link>
+        </li>
+        <li class="fallback__link">
+          <a href="https://network-status.vatsim.net/">STATUS PAGE</a>
+        </li>
+        <li class="fallback__link">
+          <router-link to="/developer/login">DEVELOPER PORTAL</router-link>
+        </li>
+      </ul>
     </div>
-    <div class="fallback__cont">
-      <div class="fallback__title fallback__title-upper">404</div>
-      <div class="fallback__title">404</div>
+    <div class="fallback__side center">
+      <div class="fallback__cont">
+        <div class="fallback__title fallback__title-upper">404</div>
+        <div class="fallback__title">404</div>
+      </div>
     </div>
   </div>
 </template>
@@ -51,24 +41,41 @@ export default Vue.extend({
   height: 100%;
 }
 
-.fallback__initial {
-  width: 100%;
+.fallback__side {
+  width: 50%;
   height: 100%;
-  z-index: 1;
-  position: absolute;
-  background-color: var(--primary);
-  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace;
-  font-size: 1.1rem;
 }
 
-.fallback__cont {
-  z-index: 0;
-  position: relative;
+.fallback__left {
+  display: flex;
+  justify-content: center;
+  padding: 0 4rem;
 }
 
-.fallback__indent {
-  display: block;
-  margin-left: 10px;
+.fallback__message {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+}
+
+.fallback__submessage {
+  font-size: 1.25rem;
+}
+
+.fallback__links {
+  margin-top: 1.5rem;
+}
+
+.fallback__link {
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  color: var(--grey);
+  transition: color 100ms linear;
+  cursor: pointer;
+
+  &:hover {
+    color: var(--white);
+  }
 }
 
 .fallback__title {
@@ -77,10 +84,6 @@ export default Vue.extend({
   color: transparent;
   font-size: 30vmin;
   font-weight: 700;
-  font-family: 'Prompt', Tahoma, Verdana, sans-serif;
-  line-height: 25vmin;
-  display: inline-block;
-  vertical-align: top;
 }
 
 .fallback__title-upper {
@@ -93,6 +96,7 @@ export default Vue.extend({
 
   &:hover {
     transform: scale(1.3);
+    cursor: default;
   }
 }
 </style>
