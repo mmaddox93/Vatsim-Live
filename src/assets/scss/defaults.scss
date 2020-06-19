@@ -50,8 +50,7 @@ ol[class] {
   list-style: none;
 }
 
-/* A elements that don't have a class get default styles */
-a:not([class]), a:-webkit-any-link {
+a {
   text-decoration-skip-ink: auto;
   color: inherit;
   text-decoration: none;

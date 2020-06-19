@@ -8,13 +8,13 @@
       </div>
       <ul class="fallback__links">
         <li class="fallback__link">
-          <router-link to="/">HOME</router-link>
+          <router-link class="fallback__href" to="/">HOME</router-link>
         </li>
         <li class="fallback__link">
-          <a href="https://network-status.vatsim.net/">STATUS PAGE</a>
+          <a class="fallback__href" href="https://network-status.vatsim.net/">STATUS PAGE</a>
         </li>
         <li class="fallback__link">
-          <router-link to="/developer/login">DEVELOPER PORTAL</router-link>
+          <router-link class="fallback__href" to="/developer/login">DEVELOPER PORTAL</router-link>
         </li>
       </ul>
     </div>
@@ -39,17 +39,32 @@ export default Vue.extend({
 .fallback {
   width: 100%;
   height: 100%;
+
+  @media (max-width: 950px) {
+    align-items: center;
+    justify-content: center;
+    flex-direction: column-reverse;
+  }
 }
 
 .fallback__side {
   width: 50%;
   height: 100%;
+
+  @media (max-width: 950px) {
+    height: auto;
+    width: auto;
+  }
 }
 
 .fallback__left {
   display: flex;
   justify-content: center;
   padding: 0 4rem;
+
+  @media (max-width: 950px) {
+    padding: 0 2rem;
+  }
 }
 
 .fallback__message {
@@ -69,12 +84,15 @@ export default Vue.extend({
 .fallback__link {
   font-weight: normal;
   margin-bottom: 0.5rem;
+}
+
+.fallback__href {
   color: var(--grey);
   transition: color 100ms linear;
-  cursor: pointer;
 
   &:hover {
     color: var(--white);
+    cursor: pointer;
   }
 }
 
@@ -82,8 +100,12 @@ export default Vue.extend({
   -webkit-text-stroke: 2px var(--highlightBlue);
   filter: opacity(0.3);
   color: transparent;
-  font-size: 30vmin;
+  font-size: 20vmin;
   font-weight: 700;
+
+  @media (max-width: 950px) {
+    display: none;
+  }
 }
 
 .fallback__title-upper {
@@ -95,7 +117,7 @@ export default Vue.extend({
   height: min-content;
 
   &:hover {
-    transform: scale(1.3);
+    transform: scale(1.2);
     cursor: default;
   }
 }
