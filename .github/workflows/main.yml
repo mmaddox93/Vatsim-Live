@@ -1,11 +1,11 @@
 - name: Pulumi CLI Action
   # You may pin to the exact commit or the version.
-  # uses: pulumi/actions@8a477588e1e16b6d6ea69fce287eea4af97cbbab
-  uses: pulumi/actions@v3.15.0
+   uses: pulumi/actions@8a477588e1e16b6d6ea69fce287eea4af97cbbab
+  #uses: pulumi/actions@v3.15.0
   with:
   
     # Pulumi command to run, eg. up
-    command: 
+    command: npm
     # Which stack you want to apply to, eg. dev
     stack-name: 
     # Location of your Pulumi files. Defaults to ./
