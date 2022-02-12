@@ -1,0 +1,54 @@
+0 verbose cli [
+0 verbose cli   '/usr/local/bin/node',
+0 verbose cli   '/usr/local/bin/npm',
+0 verbose cli   'run',
+0 verbose cli   'serve',
+0 verbose cli   '-s',
+0 verbose cli   'dist'
+0 verbose cli ]
+1 info using npm@8.4.1
+2 info using node@v14.19.0
+3 timing npm:load:whichnode Completed in 1ms
+4 timing config:load:defaults Completed in 3ms
+5 timing config:load:file:/usr/local/lib/node_modules/npm/npmrc Completed in 2ms
+6 timing config:load:builtin Completed in 4ms
+7 timing config:load:cli Completed in 4ms
+8 timing config:load:env Completed in 0ms
+9 timing config:load:project Completed in 1ms
+10 timing config:load:file:/home/container/.npmrc Completed in 0ms
+11 timing config:load:user Completed in 0ms
+12 timing config:load:file:/usr/local/etc/npmrc Completed in 1ms
+13 timing config:load:global Completed in 1ms
+14 timing config:load:validate Completed in 0ms
+15 timing config:load:credentials Completed in 2ms
+16 timing config:load:setEnvs Completed in 2ms
+17 timing config:load Completed in 18ms
+18 timing npm:load:configload Completed in 18ms
+19 timing npm:load:setTitle Completed in 1ms
+20 timing config:load:flatten Completed in 6ms
+21 timing npm:load:display Completed in 7ms
+22 verbose logfile /home/container/.npm/_logs/2022-02-12T02_56_05_990Z-debug-0.log
+23 timing npm:load:logFile Completed in 9ms
+24 timing npm:load:timers Completed in 0ms
+25 timing npm:load:configScope Completed in 0ms
+26 timing npm:load Completed in 36ms
+27 silly logfile start cleaning logs, removing 1 files
+28 timing command:run Completed in 13ms
+29 verbose stack Error: Missing script: "serve"
+29 verbose stack
+29 verbose stack To see a list of scripts, run:
+29 verbose stack   npm run
+29 verbose stack     at RunScript.run (/usr/local/lib/node_modules/npm/lib/commands/run-script.js:95:13)
+29 verbose stack     at async module.exports (/usr/local/lib/node_modules/npm/lib/cli.js:66:5)
+30 verbose cwd /home/container
+31 verbose Linux 5.4.0-96-generic
+32 verbose argv "/usr/local/bin/node" "/usr/local/bin/npm" "run" "serve" "-s" "dist"
+33 verbose node v14.19.0
+34 verbose npm  v8.4.1
+35 error Missing script: "serve"
+35 error
+35 error To see a list of scripts, run:
+35 error   npm run
+36 verbose exit 1
+37 timing npm Completed in 337ms
+38 verbose code 1

@@ -1,0 +1,2 @@
+
+4d2958f534227c62b917dbe042983b92a2a1306f	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/mime/1.6.0/mime-1.6.0.tgz","integrity":"sha1-Ms2eXGRVO9WNGaVor0Uqz/BJgbE=","time":1644607190484,"size":15686,"metadata":{"time":1644607188489,"url":"https://cdn.npmmirror.com/packages/mime/1.6.0/mime-1.6.0.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 16:04:57 GMT","etag":"\"B1DA6CA980D44A31D3B64A6B951C9712\"","last-modified":"Wed, 26 Jan 2022 12:58:25 GMT"}}}

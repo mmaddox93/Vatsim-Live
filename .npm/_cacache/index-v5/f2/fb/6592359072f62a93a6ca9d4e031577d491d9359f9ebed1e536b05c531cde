@@ -1,0 +1,2 @@
+
+3bc149eec4e92d535bac1d8c33a3b0b070e82758	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/obuf/1.1.2/obuf-1.1.2.tgz","integrity":"sha1-Cb6jND1BhZ69RGKS0RydTbYZCE4=","time":1644607173087,"size":4111,"metadata":{"time":1644607171800,"url":"https://cdn.npmmirror.com/packages/obuf/1.1.2/obuf-1.1.2.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:13:26 GMT","etag":"\"A42A4CD6C55D1CA73F8042235FCE1D29\"","last-modified":"Wed, 26 Jan 2022 13:48:30 GMT"}}}

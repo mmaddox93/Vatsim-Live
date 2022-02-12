@@ -1,0 +1,90 @@
+0 verbose cli [
+0 verbose cli   '/usr/local/bin/node',
+0 verbose cli   '/usr/local/bin/npm',
+0 verbose cli   'config',
+0 verbose cli   'travis',
+0 verbose cli   'env',
+0 verbose cli   'set',
+0 verbose cli   'GITHUB_TOKEN',
+0 verbose cli   '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'
+0 verbose cli ]
+1 info using npm@8.4.1
+2 info using node@v14.19.0
+3 timing npm:load:whichnode Completed in 1ms
+4 timing config:load:defaults Completed in 3ms
+5 timing config:load:file:/usr/local/lib/node_modules/npm/npmrc Completed in 2ms
+6 timing config:load:builtin Completed in 4ms
+7 timing config:load:cli Completed in 3ms
+8 timing config:load:env Completed in 0ms
+9 timing config:load:project Completed in 1ms
+10 timing config:load:file:/home/container/.npmrc Completed in 0ms
+11 timing config:load:user Completed in 0ms
+12 timing config:load:file:/usr/local/etc/npmrc Completed in 1ms
+13 timing config:load:global Completed in 1ms
+14 timing config:load:validate Completed in 0ms
+15 timing config:load:credentials Completed in 2ms
+16 timing config:load:setEnvs Completed in 2ms
+17 timing config:load Completed in 17ms
+18 timing npm:load:configload Completed in 17ms
+19 timing npm:load:setTitle Completed in 1ms
+20 timing config:load:flatten Completed in 6ms
+21 timing npm:load:display Completed in 9ms
+22 verbose logfile /home/container/.npm/_logs/2022-02-12T02_46_22_103Z-debug-0.log
+23 timing npm:load:logFile Completed in 9ms
+24 timing npm:load:timers Completed in 0ms
+25 timing npm:load:configScope Completed in 0ms
+26 timing npm:load Completed in 38ms
+27 timing command:config Completed in 3ms
+28 verbose stack Error: 
+28 verbose stack Usage: npm config
+28 verbose stack
+28 verbose stack Manage the npm configuration files
+28 verbose stack
+28 verbose stack Usage:
+28 verbose stack npm config set <key>=<value> [<key>=<value> ...]
+28 verbose stack npm config get [<key> [<key> ...]]
+28 verbose stack npm config delete <key> [<key> ...]
+28 verbose stack npm config list [--json]
+28 verbose stack npm config edit
+28 verbose stack
+28 verbose stack Options:
+28 verbose stack [--json] [-g|--global] [--editor <editor>] [-L|--location <global|user|project>]
+28 verbose stack [-l|--long]
+28 verbose stack
+28 verbose stack alias: c
+28 verbose stack
+28 verbose stack Run "npm help config" for more info
+28 verbose stack     at Config.usageError (/usr/local/lib/node_modules/npm/lib/base-command.js:68:26)
+28 verbose stack     at Config.exec (/usr/local/lib/node_modules/npm/lib/commands/config.js:129:22)
+28 verbose stack     at Npm.exec (/usr/local/lib/node_modules/npm/lib/npm.js:146:22)
+28 verbose stack     at async module.exports (/usr/local/lib/node_modules/npm/lib/cli.js:66:5)
+29 verbose cwd /home/container
+30 verbose Linux 5.4.0-96-generic
+31 verbose argv "/usr/local/bin/node" "/usr/local/bin/npm" "config" "travis" "env" "set" "GITHUB_TOKEN" "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"
+32 verbose node v14.19.0
+33 verbose npm  v8.4.1
+34 error code EUSAGE
+35 error
+35 error Usage: npm config
+35 error
+35 error Manage the npm configuration files
+35 error
+35 error Usage:
+35 error npm config set <key>=<value> [<key>=<value> ...]
+35 error npm config get [<key> [<key> ...]]
+35 error npm config delete <key> [<key> ...]
+35 error npm config list [--json]
+35 error npm config edit
+35 error
+35 error Options:
+35 error [--json] [-g|--global] [--editor <editor>] [-L|--location <global|user|project>]
+35 error [-l|--long]
+35 error
+35 error alias: c
+35 error
+35 error Run "npm help config" for more info
+36 verbose exit 1
+37 timing npm Completed in 336ms
+38 verbose code 1
+39 error A complete log of this run can be found in:
+39 error     /home/container/.npm/_logs/2022-02-12T02_46_22_103Z-debug-0.log

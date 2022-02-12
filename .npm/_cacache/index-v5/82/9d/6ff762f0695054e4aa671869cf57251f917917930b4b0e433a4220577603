@@ -1,0 +1,2 @@
+
+61af5b2e9be1f3b951db6f9c55e162acc9c0c283	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/aws4/1.9.1/aws4-1.9.1.tgz","integrity":"sha1-fjPY99RJs/ZzzXLeuavcVS2+Uo4=","time":1644607183286,"size":9694,"metadata":{"time":1644607181933,"url":"https://cdn.npmmirror.com/packages/aws4/1.9.1/aws4-1.9.1.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 16:55:03 GMT","etag":"\"24A1D383F4B15489F03A8534C82D37B2\"","last-modified":"Wed, 26 Jan 2022 13:11:03 GMT"}}}

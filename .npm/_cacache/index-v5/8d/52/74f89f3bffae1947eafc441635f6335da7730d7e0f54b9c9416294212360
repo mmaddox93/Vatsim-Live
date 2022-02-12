@@ -1,0 +1,2 @@
+
+69ce3fbec6b0f22dbf765ae3d2041018713eb0d3	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/cssom/0.4.4/cssom-0.4.4.tgz","integrity":"sha1-WmbPk9LQtmHYC/akT7ZfXC5OChA=","time":1644607191545,"size":11838,"metadata":{"time":1644607190369,"url":"https://cdn.npmmirror.com/packages/cssom/0.4.4/cssom-0.4.4.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:18:38 GMT","etag":"\"32C2B5A637ED96F110910ABE65DFE1AB\"","last-modified":"Wed, 26 Jan 2022 13:49:13 GMT"}}}

@@ -1,0 +1,2 @@
+
+fdbee9c8dc053d00e898cc6d3cb45eac1db92424	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/levn/0.3.0/levn-0.3.0.tgz","integrity":"sha1-OwmSTt+fCDwEkP3UwLxEIeBHZO4=","time":1644607176199,"size":7967,"metadata":{"time":1644607174072,"url":"https://cdn.npmmirror.com/packages/levn/0.3.0/levn-0.3.0.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:03:05 GMT","etag":"\"824680DE0ED2DABE2745E88737723963\"","last-modified":"Wed, 26 Jan 2022 13:03:12 GMT"}}}

@@ -1,0 +1,2 @@
+
+9966b846fe893a56ae197c69ace3dd9e0d49b199	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/pump/2.0.1/pump-2.0.1.tgz","integrity":"sha1-Ejma3W5M91Jtlzy8i1zi4pCLOQk=","time":1644607189424,"size":3136,"metadata":{"time":1644607188669,"url":"https://cdn.npmmirror.com/packages/pump/2.0.1/pump-2.0.1.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:26:42 GMT","etag":"\"66CC30F52092ADFA3D1C98543F181737\"","last-modified":"Wed, 26 Jan 2022 13:01:18 GMT"}}}

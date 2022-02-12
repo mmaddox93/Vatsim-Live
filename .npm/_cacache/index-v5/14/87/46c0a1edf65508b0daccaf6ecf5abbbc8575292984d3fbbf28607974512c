@@ -1,0 +1,2 @@
+
+277876a8ef1841d27b019f79258c0f4313f040b0	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/ssri/6.0.1/ssri-6.0.1.tgz","integrity":"sha1-KjxBso3UW2K2Nnbst0ABJlrp7dg=","time":1644607169155,"size":12276,"metadata":{"time":1644607168353,"url":"https://cdn.npmmirror.com/packages/ssri/6.0.1/ssri-6.0.1.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 17:32:55 GMT","etag":"\"CD79E2A547644291CBD33BFF80A93D72\"","last-modified":"Wed, 26 Jan 2022 13:17:18 GMT"}}}

@@ -1,0 +1,2 @@
+
+fa62c59bf7e2bcb8a93007bf760d0a29501eda08	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/ms/2.1.2/ms-2.1.2.tgz","integrity":"sha1-0J0fNXtEP0kzgqjrPM0YOHKuYAk=","time":1644607174163,"size":3017,"metadata":{"time":1644607172673,"url":"https://cdn.npmmirror.com/packages/ms/2.1.2/ms-2.1.2.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 16:01:29 GMT","etag":"\"5A8310F20FD4B97C7F8EEAF65F896A7A\"","last-modified":"Wed, 26 Jan 2022 12:56:11 GMT"}}}

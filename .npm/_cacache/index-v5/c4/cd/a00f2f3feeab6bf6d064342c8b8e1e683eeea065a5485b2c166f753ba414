@@ -1,0 +1,2 @@
+
+404781a45e6874a533b59d9e59f083571f87819d	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/acorn/6.4.1/acorn-6.4.1.tgz","integrity":"sha1-Ux5Yuj9RudrLmmZGyk3r9bFMpHQ=","time":1644607191980,"size":247945,"metadata":{"time":1644607182869,"url":"https://cdn.npmmirror.com/packages/acorn/6.4.1/acorn-6.4.1.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 17:54:56 GMT","etag":"\"93ADE7125A3BC8AE5BD73FDB6853E5FD\"","last-modified":"Wed, 26 Jan 2022 12:59:51 GMT"}}}

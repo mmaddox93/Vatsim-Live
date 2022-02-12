@@ -1,0 +1,2 @@
+
+974c28ad8de5a8f5e32878c175bde717792ee8e3	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/meow/3.7.0/meow-3.7.0.tgz","integrity":"sha1-cstmi0JSKCkKu/qFaJJYcwioAfs=","time":1644607174616,"size":3611,"metadata":{"time":1644607173018,"url":"https://cdn.npmmirror.com/packages/meow/3.7.0/meow-3.7.0.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 17:08:39 GMT","etag":"\"9AA94B33A2AC7EE0494259C0AD716211\"","last-modified":"Wed, 26 Jan 2022 12:58:24 GMT"}}}

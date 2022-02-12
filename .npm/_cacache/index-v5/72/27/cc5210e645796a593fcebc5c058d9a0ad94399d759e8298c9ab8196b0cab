@@ -1,0 +1,2 @@
+
+8fcc0b084547ca80deb868c0523fa65794e0dce8	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/xtend/4.0.2/xtend-4.0.2.tgz","integrity":"sha1-u3J3n1+kZRhrH0OPZ0+jR/2121Q=","time":1644607165486,"size":2529,"metadata":{"time":1644607165440,"url":"https://cdn.npmmirror.com/packages/xtend/4.0.2/xtend-4.0.2.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:03:05 GMT","etag":"\"183E6EEF1DF0529FD39BD932447BA547\"","last-modified":"Wed, 26 Jan 2022 12:54:28 GMT"}}}

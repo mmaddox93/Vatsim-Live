@@ -1,0 +1,2 @@
+
+a46a165802a2cfd3c36bf5a778872a4ad6d12977	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/wbuf/1.7.3/wbuf-1.7.3.tgz","integrity":"sha1-wdjRSTFtPqhShIiVy2oL/oh7h98=","time":1644607165307,"size":4784,"metadata":{"time":1644607164911,"url":"https://cdn.npmmirror.com/packages/wbuf/1.7.3/wbuf-1.7.3.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:11:04 GMT","etag":"\"6D1F9677D8A332DF4AA10182CBD2D833\"","last-modified":"Wed, 26 Jan 2022 14:51:50 GMT"}}}

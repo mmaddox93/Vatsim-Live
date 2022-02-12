@@ -1,0 +1,2 @@
+
+fb011e572586927039aa6e5c98a7de55e5db125c	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/tmpl/1.0.4/tmpl-1.0.4.tgz","integrity":"sha1-I2QN17QtAEM5ERQIIOXPRA5SHdE=","time":1644607167871,"size":1726,"metadata":{"time":1644607167506,"url":"https://cdn.npmmirror.com/packages/tmpl/1.0.4/tmpl-1.0.4.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 18:24:08 GMT","etag":"\"F56C24DDB7E0A0ADD003709711F25E37\"","last-modified":"Wed, 26 Jan 2022 20:53:48 GMT"}}}

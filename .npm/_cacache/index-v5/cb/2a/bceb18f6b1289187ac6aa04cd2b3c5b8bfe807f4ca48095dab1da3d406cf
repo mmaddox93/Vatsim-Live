@@ -1,0 +1,2 @@
+
+8c0a6c3e98a7d8653bf2eaaa70163a7ce9560da9	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/isexe/2.0.0/isexe-2.0.0.tgz","integrity":"sha1-6PvzdNxVb/iUehDcsFctYz8s+hA=","time":1644607175937,"size":3756,"metadata":{"time":1644607175040,"url":"https://cdn.npmmirror.com/packages/isexe/2.0.0/isexe-2.0.0.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 14:52:33 GMT","etag":"\"02BF57881FA200BCD6501E4DED2B1B3A\"","last-modified":"Wed, 26 Jan 2022 13:14:41 GMT"}}}

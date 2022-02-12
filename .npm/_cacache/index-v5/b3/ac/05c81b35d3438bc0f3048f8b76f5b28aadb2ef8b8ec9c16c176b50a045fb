@@ -1,0 +1,2 @@
+
+5ddc9f8d021bd470200929a3f9eb2d7b0770b5fd	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/chalk/2.4.2/chalk-2.4.2.tgz","integrity":"sha1-zUJUFnelQzPPVBpJEIwUMrRMlCQ=","time":1644607181811,"size":9865,"metadata":{"time":1644607180768,"url":"https://cdn.npmmirror.com/packages/chalk/2.4.2/chalk-2.4.2.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 14:58:30 GMT","etag":"\"2C0467F3F122DA3E7A9FCCF05418B2C8\"","last-modified":"Wed, 26 Jan 2022 12:52:56 GMT"}}}

@@ -1,0 +1,2 @@
+
+01a83855d6279e9676b00f51e5035eb136ca0a89	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/tr46/1.0.1/tr46-1.0.1.tgz","integrity":"sha1-qLE/1r/SSJUZZ0zN5VujaTtwbQk=","time":1644607168056,"size":76774,"metadata":{"time":1644607167220,"url":"https://cdn.npmmirror.com/packages/tr46/1.0.1/tr46-1.0.1.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 06:58:50 GMT","etag":"\"65566252D04A28B96DC6F05BCF0A61C4\"","last-modified":"Wed, 26 Jan 2022 12:54:36 GMT"}}}

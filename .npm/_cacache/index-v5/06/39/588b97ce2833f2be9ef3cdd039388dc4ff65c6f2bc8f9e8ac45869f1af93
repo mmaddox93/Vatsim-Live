@@ -1,0 +1,2 @@
+
+3d36cdb552f3993aa1b8298141f8ef0c198da86d	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/ora/3.4.0/ora-3.4.0.tgz","integrity":"sha1-vwdSSRBZo+8+1MhQl1Md6f280xg=","time":1644607172693,"size":5587,"metadata":{"time":1644607171606,"url":"https://cdn.npmmirror.com/packages/ora/3.4.0/ora-3.4.0.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:21:13 GMT","etag":"\"970A7C75A1EE52390FE389101DCB9075\"","last-modified":"Wed, 26 Jan 2022 12:59:11 GMT"}}}

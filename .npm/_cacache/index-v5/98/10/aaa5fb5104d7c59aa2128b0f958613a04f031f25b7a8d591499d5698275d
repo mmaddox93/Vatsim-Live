@@ -1,0 +1,2 @@
+
+52192a0755c86559da4c7b16d0018371b34f4062	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/ejs/2.7.4/ejs-2.7.4.tgz","integrity":"sha1-SGYSh1c9zFPjZsehrlLDoSDuybo=","time":1644607181467,"size":37914,"metadata":{"time":1644607178292,"url":"https://cdn.npmmirror.com/packages/ejs/2.7.4/ejs-2.7.4.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 15:27:16 GMT","etag":"\"1885AEE75B28C96C5012000612E6781F\"","last-modified":"Wed, 26 Jan 2022 12:57:47 GMT"}}}

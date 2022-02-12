@@ -1,0 +1,2 @@
+
+3b4cddc162e4875fed99f011831a04d75c343fd4	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/kleur/3.0.3/kleur-3.0.3.tgz","integrity":"sha1-p5yezIbuHOP6YgbRIWxQHxR/wH4=","time":1644607175255,"size":4292,"metadata":{"time":1644607174118,"url":"https://cdn.npmmirror.com/packages/kleur/3.0.3/kleur-3.0.3.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 16:32:01 GMT","etag":"\"A05F5C24F83FDD97FBBCAF371BB7671E\"","last-modified":"Wed, 26 Jan 2022 12:58:04 GMT"}}}

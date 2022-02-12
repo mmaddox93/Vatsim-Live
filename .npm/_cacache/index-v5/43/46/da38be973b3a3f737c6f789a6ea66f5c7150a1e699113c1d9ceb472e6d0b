@@ -1,0 +1,2 @@
+
+3ac78270b0296370d65c908faf8fc0e6072283be	{"key":"make-fetch-happen:request-cache:https://cdn.npmmirror.com/packages/vuex/3.4.0/vuex-3.4.0.tgz","integrity":"sha1-IMwIYGLXUHafzh/rs05/zurr3kU=","time":1644607165485,"size":40955,"metadata":{"time":1644607165318,"url":"https://cdn.npmmirror.com/packages/vuex/3.4.0/vuex-3.4.0.tgz","reqHeaders":{},"resHeaders":{"cache-control":"max-age=0, s-maxage=60","content-type":"application/octet-stream","date":"Fri, 11 Feb 2022 14:33:14 GMT","etag":"\"A378A013E1371D3D6F4ACB0746FD11BD\"","last-modified":"Wed, 26 Jan 2022 14:53:47 GMT"}}}
