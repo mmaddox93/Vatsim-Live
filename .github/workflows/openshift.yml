@@ -75,8 +75,8 @@ jobs:
       with:
         script: |
           const secrets = {
-            OPENSHIFT_SERVER: `${{ secrets.https://api.sandbox-m2.ll9k.p1.openshiftapps.com:6443 }}`,
-            OPENSHIFT_TOKEN: `${{ secrets.sha256~or63ot1a46HApKEGt0GTZcVDHRryKuUwit8c7VFHdpU }}`,
+            OPENSHIFT_SERVER: `${{ secrets.OPENSHIFT_SERVER }}`,
+            OPENSHIFT_TOKEN: `${{ secrets.OPENSHIFT_TOKEN }}`,
           };
 
           const GHCR = "ghcr.io";
