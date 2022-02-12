@@ -1,4 +1,4 @@
-# vatmap
+# Vatsim Live
 
 ## Project setup
 ```
