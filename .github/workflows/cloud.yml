@@ -1,6 +1,6 @@
  name: Cloud Run Build Push and Deploy 
 
-  uses: Pam-Pam-Co/action-cloud-run@v1.5
+  -uses: Pam-Pam-Co/action-cloud-run@v1.5
   
   with:
     image: https://cloud.canister.io/n/9935/vatmap
@@ -13,5 +13,4 @@
 
     env: [path-to-env-file]
 
-
-    service key: ${{ secrets.GCLOUD_AUTH }}
+   service key: ${{ secrets.GCLOUD_AUTH }}
