@@ -10,6 +10,10 @@
 # - Log in to your OpenShift cluster
 # - Create an OpenShift app from the image and expose it to the internet
 
+- name: Buildah Build
+  uses: redhat-actions/buildah-build@v2.9
+
+
 # ℹ️ Configure your repository and the workflow with the following steps:
 # 1. Have access to an OpenShift cluster. Refer to https://www.openshift.com/try
 # 2. Create the OPENSHIFT_SERVER and OPENSHIFT_TOKEN repository secrets. Refer to:
