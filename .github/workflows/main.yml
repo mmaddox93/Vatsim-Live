@@ -1,0 +1,40 @@
+- name: Pulumi CLI Action
+  # You may pin to the exact commit or the version.
+  # uses: pulumi/actions@8a477588e1e16b6d6ea69fce287eea4af97cbbab
+  uses: pulumi/actions@v3.15.0
+  with:
+  
+    # Pulumi command to run, eg. up
+    command: 
+    # Which stack you want to apply to, eg. dev
+    stack-name: 
+    # Location of your Pulumi files. Defaults to ./
+    work-dir: # optional, default is ./
+    # If true, a comment will be created with results
+    comment-on-pr: # optional, default is false
+    # Github Token
+    github-token: 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
+    # A cloud URL to log in to
+    cloud-url: # optional, default is 
+    # The type of the provider that should be used to encrypt and decrypt secrets. Possible choices: default, passphrase, awskms, azurekeyvault, gcpkms, hashivault
+    secrets-provider: # optional, default is 
+    # Allow P resource operations to run in parallel at once (1 for no parallelism). Defaults to unbounded.
+    parallel: # optional, default is 2147483647
+    # Optional message to associate with the update operation
+    message: # optional, default is 
+    # Return an error if any changes occur during this update
+    expect-no-changes: # optional
+    # Display operation as a rich diff showing the overall change
+    diff: # optional
+    # Specify resources to replace. Multiple resources can be specified one per line
+    replace: # optional
+    # Specify a single resource URN to update. Other resources will not be updated. Multiple resources can be specified one per line
+    target: # optional
+    # Allows updating of dependent targets discovered but not specified in target.
+    target-dependents: # optional, default is false
+    # Perform a stack refresh as part of the operation
+    refresh: # optional, default is false
+    # Create the stack if it currently does not exist
+    upsert: # optional, default is false
+    # Edit previous PR comment instead of posting new one
+    edit-pr-comment: # optional, default is true 
