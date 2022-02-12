@@ -1,15 +1,11 @@
  name: Cloud Run Build Push and Deploy 
  uses: Pam-Pam-Co/action-cloud-run@v1.5
-  with:
-   
-    image: https://cloud.canister.io/n/9935/vatmap
-    
-    service: Dev
-    
-    project: Vatsim_Live_Map
-    
-    region: US
-
-    env: [path-to-env-file]
-
+ 
+ 
+ with:
+   image: https://cloud.canister.io/n/9935/vatmap
+   service: dev
+   project: Vatsim_Live_Map
+   region: US
+   env: [path-to-env-file]
     service key: ${{ secrets.GCLOUD_AUTH }}
