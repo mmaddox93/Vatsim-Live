@@ -17,13 +17,32 @@
 # For more information on the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # For more samples to get started with GitHub Action workflows to deploy to Azure: https://github.com/Azure/actions-workflow-samples
 
+
+- name: Azure Login
+  uses: Azure/login@v1.4.3
+  with:
+    # Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS
+    creds: itv8W0-0M8emwmSW4flHdVjU00n~X0tXkM
+    # ClientId of the Azure Service principal created.
+    client-id: 4a8b02f3-362d-4ed6-9a54-a985fed6f799
+    # TenantId of the Azure Service principal created.
+    tenant-id: 6a21b16c-5531-4836-9c56-251c05e7f2c3
+    # Azure subscriptionId
+    subscription-id: 78b86237-9019-4fa4-ba6f-4d59f9c7dc6e
+    # Set this value to true to enable Azure PowerShell Login in addition to Az CLI login
+    enable-AzPSSession: true
+    # Name of the environment. Supported values are azurecloud, azurestack, azureusgovernment, azurechinacloud, azuregermancloud. Default being azurecloud
+    environment: # optional, default is azurecloud
+    # Set this value to true to enable support for accessing tenants without subscriptions
+    allow-no-subscriptions: # optional
+    # Provide audience field for access-token. Default value is api://AzureADTokenExchange
+    audience: # optional, default is api://AzureADTokenExchange
+    
 on:
   push:
     branches:
       - main
   workflow_dispatch:
-   -name: Azure Login 
-        uses: Azure/login@v1 
 
 
 env:
