@@ -1,4 +1,4 @@
-- name: Cloud Run Build Push and Deploy 
+ name: Cloud Run Build Push and Deploy 
 
   uses: Pam-Pam-Co/action-cloud-run@v1.5
   
