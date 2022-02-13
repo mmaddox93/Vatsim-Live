@@ -1,4 +1,6 @@
 version: 2.1
+orbs:
+ node: circleci/node@5.0.0
 executors:
   my-custom-executor:
     docker:
@@ -10,12 +12,13 @@ executors:
           password: $DOCKER_HUB_PASSWORD
 jobs:
   deployment:
-
+ 
     executor: my-custom-executor
     steps:
       - checkout
       - run: |
-          npm install vue-cli-service serve
+         npm install-packages
+         node/install-packages
 workflows:
   my-custom-workflow:
     jobs:
