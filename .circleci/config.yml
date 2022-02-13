@@ -1,16 +1,18 @@
 version: '2.1'
 orbs:
   orb-tools: circleci/orb-tools@10.1.0
+  heroku: circleci/heroku@1.2.6
 jobs:
   Orb tools:
     docker:
       # replace with your preferred image
       - image: cimg/base:stable
     steps:
+      - heroku/install
       - orb-tools/validate
 workflows:
   example-workflow:
     jobs:
       - Orb tools
-
+     
 
