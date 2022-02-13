@@ -1,26 +1,1281 @@
-# This config is equivalent to both the '.circleci/extended/orb-free.yml' and the base '.circleci/config.yml'
+# This code is licensed from CircleCI to the user under the MIT license.
+# See here for details: https://circleci.com/developer/orbs/licensing
 version: 2.1
-
-# Orbs are reusable packages of CircleCI configuration that you may share across projects, enabling you to create encapsulated, parameterized commands, jobs, and executors that can be used across multiple projects.
-# See: https://circleci.com/docs/2.0/orb-intro/
+description: |
+    Various tools for creating, testing, and publishing Orbs.
+display:
+    source_url: https://github.com/CircleCI-Public/orb-tools-orb
 orbs:
-  node: circleci/node@4.7
-  python: circleci/python@2.0.0
+    build-tools: circleci/build-tools@2.6.3
+    cli: circleci/circleci-cli@0.1.8
+    jq: circleci/jq@2.2
+commands:
+    configure-git:
+        description: |
+            Sets mandatory git config fields to allow creating and pushing of tags. If not set it will default to details from the VCS system, composed from the $CIRCLE_USERNAME variable. If both parameters are set, they will be used instead.
+        parameters:
+            user-email:
+                default: ""
+                description: |
+                    Override git user email.
+                type: string
+            user-name:
+                default: ""
+                description: |
+                    Override git user name.
+                type: string
+        steps:
+            - run:
+                command: |
+                    if [ -z "$GIT_USER_NAME" ] || [ -z "$GIT_EMAIL" ]; then
+                        # No user name or email set, default to CIRCLE_USERNAME-based identifiers
+                        git config --global user.name "$CIRCLE_USERNAME"
+                        git config --global user.email "$CIRCLE_USERNAME@users.noreply.github.com"
+                    else
+                        git config --global user.name "${GIT_USER_NAME}"
+                        git config --global user.email "${GIT_EMAIL}"
+                    fi
+                environment:
+                    GIT_EMAIL: << parameters.user-email >>
+                    GIT_USER_NAME: << parameters.user-name >>
+                name: git config
+    dev-promote-from-commit-subject:
+        description: |
+            Uses the CLI to promote a dev version of an orb to the registry. This command supports Semantic Versioning support. It assumes the context of a GitHub pull request, and promotion of the orb to a new major/minor/patch version is based on information that must be contained in the subject of the commit that merges the pull request. Namely, the commit subject must include the `[semver:FOO]` pattern, where FOO is major, minor, patch, or skip (to skip promotion). e.g. 'Merge pull request #XX from some-branch [semver:minor]'
+        parameters:
+            add-pr-comment:
+                description: |
+                    CircleCI can comment on the merged PR with the final production version. If you want contributors to see a message with the production version, please provide the username & token, and ensure the merge commit subject includes the PR number in default format. i.e. 'Merge pull request #XX from some-branch'
+                type: boolean
+            bot-token-variable:
+                default: PR_COMMENTER_GITHUB_TOKEN
+                description: |
+                    Name of env var containing the GitHub token value of the GitHub user that to be used for posting the PR comment. Pass this as a raw string such as GITHUB_TOKEN. Do not paste the actual token into your configuration. Only applicable when add-pr-comment is set to true.
+                type: env_var_name
+            bot-user:
+                default: ""
+                description: |
+                    The GitHub user to post PR comment. Only applicable when add-pr-comment is set to true.
+                type: string
+            checkout:
+                default: true
+                description: |
+                    Whether to perform the CircleCI checkout step.
+                type: boolean
+            fail-if-semver-not-indicated:
+                description: |
+                    Whether to fail if the commit subject did not include [semver:patch|minor|major|skip]
+                type: boolean
+            orb-name:
+                description: |
+                    Semver-less name of an orb, e.g. circleci/orb-tools
+                type: string
+            orb-ref:
+                default: dev:${CIRCLE_SHA1:0:7}
+                description: |
+                    Dev:reference to promote to a production release, defaults to 'dev:${CIRCLE_SHA1:0:7}' (evaluates to the first 7 characters of the job's commit hash)
+                type: string
+            pr-number-sed-expression:
+                default: 's/Merge pull request #\([0-9]*\) from.*/\1/p'
+                description: |
+                    Used to extract the PR number from the commit subject with sed. The default value works with the default GitHub PR merge commit subject. Only applicable when add-pr-comment is set to true.
+                type: string
+            token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of env var containing your token. Pass this as a raw string such as ORB_PUBLISHING_TOKEN. Do not paste the actual token into your configuration. If omitted it's assumed the CLI has already been setup with a valid token.
+                type: env_var_name
+        steps:
+            - when:
+                condition: <<parameters.checkout>>
+                steps:
+                    - checkout
+            - run:
+                command: |-
+                    Setup() {
+                        COMMIT_SUBJECT=$(git log -1 --pretty=%s.)
+                        T=$(eval echo "$TOKEN")
+                        REF=$(eval echo "$ORB_REF")
+                    }
 
-# Invoke jobs via workflows
-# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
-workflows:
-  sample: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
-    jobs:
-      - node/test:
+                    GetIncrement() {
+                        SEMVER_INCREMENT=$(echo "${COMMIT_SUBJECT}" | sed -En 's/.*\[semver:(major|minor|patch|skip)\].*/\1/p')
+                        echo "Commit subject: ${COMMIT_SUBJECT}"
+                        echo "export SEMVER_INCREMENT=\"$SEMVER_INCREMENT\""  >> "$BASH_ENV"
+                    }
 
-          # This is the node version to use for the `cimg/node` tag
-          # Relevant tags can be found on the CircleCI Developer Hub
-          # https://circleci.com/developer/images/image/cimg/node
-          version: '16.10'
-          # If you are using yarn, change the line below from "npm" to "yarn"
-          pkg-manager: npm
+                    PublishOrb() {
+                        PUBLISH_MESSAGE=$(circleci orb publish promote "${ORB_NAME}@${REF}" "${SEMVER_INCREMENT}" --token "$T" --skip-update-check)
+                        echo "$PUBLISH_MESSAGE"
+                        ORB_VERSION=$(echo "$PUBLISH_MESSAGE" | sed -n 's/Orb .* was promoted to `\(.*\)`.*/\1/p')
+                        echo "export ORB_VERSION=\"$ORB_VERSION\"" >> "$BASH_ENV"
+                    }
 
-         steps:
-            - python/install-packages
+                    CheckIncrement() {
+                        if [ -z "${SEMVER_INCREMENT}" ];then
+                            echo "Commit subject did not indicate which SemVer increment to make."
+                            echo "To publish orb, you can ammend the commit or push another commit with [semver:FOO] in the subject where FOO is major, minor, patch."
+                            echo "Note: To indicate intention to skip promotion, include [semver:skip] in the commit subject instead."
+                            if [ "$SHOULD_FAIL" == "1" ];then
+                                exit 1
+                            else
+                            echo "export PR_MESSAGE=\"BotComment: Orb publish was skipped due to [semver:patch|minor|major] not being included in commit message.\""  >> "$BASH_ENV"
+                            fi
+                        elif [ "$SEMVER_INCREMENT" == "skip" ];then
+                            echo "SEMVER in commit indicated to skip orb release"
+                            echo "export PR_MESSAGE=\"BotComment: Orb publish was skipped due to [semver:skip] in commit message.\""  >> "$BASH_ENV"
+                        else
+                            PublishOrb
+                            echo "export PR_MESSAGE=\"BotComment: *Production* version of orb available for use - \\\`${ORB_VERSION}\\\`\"" >> "$BASH_ENV"
+                        fi
+                    }
+
+                    Main() {
+                        Setup
+                        GetIncrement
+                        CheckIncrement
+                    }
+
+                    # Will not run if sourced for bats.
+                    # View src/tests for more information.
+                    TEST_ENV="bats-core"
+                    if [ "${0#*$TEST_ENV}" == "$0" ]; then
+                        Main
+                    fi
+                environment:
+                    ORB_NAME: <<parameters.orb-name>>
+                    ORB_REF: <<parameters.orb-ref>>
+                    SHOULD_FAIL: <<parameters.fail-if-semver-not-indicated>>
+                    TOKEN: $<<parameters.token-variable>>
+                name: Promote dev orb to production
+            - when:
+                condition: <<parameters.add-pr-comment>>
+                steps:
+                    - post-pr-comment:
+                        bot-token-variable: <<parameters.bot-token-variable>>
+                        bot-user: <<parameters.bot-user>>
+                        comment: $PR_MESSAGE
+                        pr-number-sed-expression: <<parameters.pr-number-sed-expression>>
+    dev-promote-from-git-tag:
+        description: |
+            Uses the CLI to promote a dev version of an orb to the registry. This command supports Semantic Versioning support. Whether the new release of the orb will be a patch, minor or major release is determined based on the information in the commit's git tag which must match the regex pattern defined in the major-release-tag-regex, minor-release-tag-regex and patch-release-tag-regex parameters. Hence this command should be used in a job with an "only" tag filter suitable for the above 3 patterns (e.g. /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/ would fit the default patterns) and a branch filter set to ignore /.*/ .
+            Requires bash.
+        parameters:
+            add-pr-comment:
+                description: |
+                    CircleCI can comment on the merged PR with the final production version. If you want contributors to see a message with the production version, please provide the username & token, and ensure the merge commit subject includes the PR number in default format. i.e. 'Merge pull request #XX from some-branch'
+                type: boolean
+            bot-token-variable:
+                default: PR_COMMENTER_GITHUB_TOKEN
+                description: |
+                    Name of env var containing the GitHub token value of the GitHub user that to be used for posting the PR comment. Pass this as a raw string such as GITHUB_TOKEN. Do not paste the actual token into your configuration. Only applicable when add-pr-comment is set to true.
+                type: env_var_name
+            bot-user:
+                default: ""
+                description: |
+                    The GitHub user to post PR comment. Only applicable when add-pr-comment is set to true.
+                type: string
+            checkout:
+                default: true
+                description: |
+                    Whether to perform the CircleCI checkout step.
+                type: boolean
+            major-release-tag-regex:
+                default: ^major-release-v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$
+                description: |
+                    The regex pattern that the commit's tag will be matched against to check if a major release of the orb should be done.
+                type: string
+            minor-release-tag-regex:
+                default: ^minor-release-v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$
+                description: |
+                    The regex pattern that the commit's tag will be matched against to check if a minor release of the orb should be done.
+                type: string
+            orb-name:
+                description: |
+                    Semver-less name of the orb to be promoted into production , e.g. circleci/orb-tools
+                type: string
+            orb-ref:
+                default: dev:${CIRCLE_SHA1:0:7}
+                description: |
+                    Dev:reference to promote to a production release, defaults to 'dev:${CIRCLE_SHA1:0:7}' (evaluates to the first 7 characters of the job's commit hash)
+                type: string
+            patch-release-tag-regex:
+                default: ^patch-release-v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$
+                description: |
+                    The regex pattern that the commit's tag will be matched against to check if a patch release of the orb should be done.
+                type: string
+            perform-branch-check:
+                default: true
+                description: |
+                    Whether to check whether the tagged commit is contained by a particular branch.
+                type: boolean
+            pr-number-sed-expression:
+                default: 's/Merge pull request #\([0-9]*\) from.*/\1/p'
+                description: |
+                    Used to extract the PR number from the commit subject with sed. The default value works with the default GitHub PR merge commit subject. Only applicable when add-pr-comment is set to true.
+                type: string
+            required-branch:
+                default: master
+                description: |
+                    Checks whether the tagged commit is contained by the specified branch. Only applicable if the perform-branch-check parameter is set to true.
+                type: string
+            token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of env var containing your token. Pass this as a raw string such as ORB_PUBLISHING_TOKEN. Do not paste the actual token into your configuration. If omitted it's assumed the CLI has already been setup with a valid token.
+                type: env_var_name
+        steps:
+            - when:
+                condition: <<parameters.checkout>>
+                steps:
+                    - checkout
+            - when:
+                condition: <<parameters.perform-branch-check>>
+                steps:
+                    - run:
+                        command: |
+                            TEMP_DIR=`mktemp -d 2>/dev/null || mktemp -d -t 'orbtoolsorbtempdir'`
+                            git clone "$CIRCLE_REPOSITORY_URL" ${TEMP_DIR}
+                            cd ${TEMP_DIR}
+                            git checkout <<parameters.required-branch>>
+                            git branch --contains ${CIRCLE_SHA1} | grep -E "(^|\s)<<parameters.required-branch>>$"
+                        name: Check that commit is contained in <<parameters.required-branch>> branch
+            - run:
+                command: |-
+                    Setup() {
+                        RELEASE_TYPE=''
+                        T=$(eval echo "$TOKEN")
+                        REF=$(eval echo "$ORB_REF")
+                    }
+
+                    DiscoverTag() {
+                        if [[ "${CIRCLE_TAG}" =~ ${MAJOR_RELEASE_TAG_REGEX} ]]; then
+                            RELEASE_TYPE='major'
+                        elif [[ "${CIRCLE_TAG}" =~ ${MINOR_RELEASE_TAG_REGEX} ]]; then
+                            RELEASE_TYPE='minor'
+                        elif [[ "${CIRCLE_TAG}" =~ ${PATCH_RELEASE_TAG_REGEX} ]]; then
+                            RELEASE_TYPE='patch'
+                        fi
+                        echo "export RELEASE_TYPE=\"$RELEASE_TYPE\"" >> $BASH_ENV
+                    }
+
+                    PublishTag() {
+                        if [ -n "${RELEASE_TYPE}" ]; then
+                            PUBLISH_MESSAGE=$(circleci orb publish promote \
+                            "${ORB_NAME}@${REF}" \
+                            "${RELEASE_TYPE}" --token \
+                            "${T}" \
+                            --skip-update-check)
+                            echo "$PUBLISH_MESSAGE"
+                            ORB_VERSION=$(echo "$PUBLISH_MESSAGE" | sed -n 's/Orb .* was promoted to `\(.*\)`.*/\1/p')
+                            echo "export PR_MESSAGE=\"BotComment: *Production* version of orb available for use - \\\`${ORB_VERSION}\\\`\"" >> "$BASH_ENV"
+                        else
+                            echo "Unable to determine semver bump from tag (${CIRCLE_TAG})."
+                        fi
+                    }
+
+                    Main() {
+                        Setup
+                        DiscoverTag
+                        PublishTag
+                    }
+
+                    # Will not run if sourced for bats.
+                    # View src/tests for more information.
+                    TEST_ENV="bats-core"
+                    if [ "${0#*$TEST_ENV}" == "$0" ]; then
+                        Main
+                    fi
+                environment:
+                    MAJOR_RELEASE_TAG_REGEX: <<parameters.major-release-tag-regex>>
+                    MINOR_RELEASE_TAG_REGEX: <<parameters.minor-release-tag-regex>>
+                    ORB_NAME: <<parameters.orb-name>>
+                    ORB_REF: <<parameters.orb-ref>>
+                    PATCH_RELEASE_TAG_REGEX: <<parameters.patch-release-tag-regex>>
+                    TOKEN: $<<parameters.token-variable>>
+                name: Promote dev orb to production
+            - when:
+                condition: <<parameters.add-pr-comment>>
+                steps:
+                    - post-pr-comment:
+                        bot-token-variable: <<parameters.bot-token-variable>>
+                        bot-user: <<parameters.bot-user>>
+                        comment: $PR_MESSAGE
+                        pr-number-sed-expression: <<parameters.pr-number-sed-expression>>
+    increment:
+        description: |
+            Uses the CLI to increment the version of an orb in the registry. If the orb does not have a version yet it starts at 0.0.0
+        parameters:
+            orb-path:
+                default: orb.yml
+                description: Path to an orb file.
+                type: string
+            orb-ref:
+                description: A versionless orb-ref in the form <namespace>/<orb-name>
+                type: string
+            segment:
+                default: patch
+                description: The semver segment to increment 'major' or 'minor' or 'patch'
+                enum:
+                    - major
+                    - minor
+                    - patch
+                type: enum
+            token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of env var containing your token. Pass this as a raw string such as ORB_PUBLISHING_TOKEN. Do not paste the actual token into your configuration. If omitted it's assumed the CLI has already been setup with a valid token.
+                type: env_var_name
+        steps:
+            - run:
+                command: |
+                    circleci orb publish increment << parameters.orb-path >> << parameters.orb-ref >> << parameters.segment >> <<# parameters.token-variable >>--token $<< parameters.token-variable >> <</ parameters.token-variable >> --skip-update-check
+                name: |
+                    Increment << parameters.segment >> segment of orb at << parameters.orb-path >>
+    pack:
+        description: |
+            Uses the CLI to pack an orb file structure into a single orb yml.
+        parameters:
+            destination:
+                default: orb.yml
+                description: Path including the filename to output the packed orb.
+                type: string
+            source:
+                default: src
+                description: Path to the root folder of an unpacked orb.
+                type: string
+            use-orb-pack:
+                default: false
+                description: Setting this will use the new "orb pack" instead of "config pack"
+                type: boolean
+        steps:
+            - run:
+                command: |
+                    mkdir -pv $(dirname << parameters.destination >>)
+                name: Ensure destination path
+            - run:
+                command: |
+                    circleci orb pack --skip-update-check << parameters.source >> > << parameters.destination >>
+                name: Pack << parameters.source>> to << parameters.destination >>
+    post-pr-comment:
+        description: |
+            Posts a comment on a pull request. Requires that the subject of the commit that merged the pull request includes the PR number i.e. 'Merge pull request #XX from some-branch', but the PR number extraction can be customized using the pr-number-sed-expression parameter.
+        parameters:
+            bot-token-variable:
+                default: PR_COMMENTER_GITHUB_TOKEN
+                description: |
+                    Name of env var containing the GitHub token value of the GitHub user that to be used for posting the PR comment. Pass this as a raw string such as GITHUB_TOKEN. Do not paste the actual token into your configuration.
+                type: env_var_name
+            bot-user:
+                default: ""
+                description: |
+                    The GitHub user to post PR comment.
+                type: string
+            comment:
+                description: |
+                    The message of the comment to be added to the pull request.
+                type: string
+            pr-number-sed-expression:
+                default: 's/Merge pull request #\([0-9]*\) from.*/\1/p'
+                description: |
+                    Used to extract the PR number from the commit subject with sed. The default value works with the default GitHub PR merge commit subject.
+                type: string
+        steps:
+            - run:
+                command: |
+                    PR_NUMBER=$(git log -1 --pretty=%s. | sed -n "$SED_EXP")
+                    echo "PR_NUMBER is ${PR_NUMBER}"
+                    if [ "$PR_NUMBER" == "" ];then
+                        echo "No pr found; do nothing. If this is a mistake, check if your PR commit message matches the $SED_EXP sed expression."
+                        exit 0
+                    fi
+                    curl -X POST -u "${BOT_USER}:${!BOT_TOKEN}" "https://api.github.com/repos/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/issues/${PR_NUMBER}/comments" -d "{\"body\":\"${COMMENT}\"}"
+                environment:
+                    BOT_TOKEN: <<parameters.bot-token-variable>>
+                    BOT_USER: <<parameters.bot-user>>
+                    COMMENT: <<parameters.comment>>
+                    SED_EXP: <<parameters.pr-number-sed-expression>>
+                name: Post comment to GitHub pull request
+    publish:
+        description: |
+            Uses the CLI to publish an orb to the registry.
+        parameters:
+            orb-path:
+                default: orb.yml
+                description: Path to an orb file.
+                type: string
+            orb-ref:
+                description: |
+                    A fully-qualified reference to an orb. This takes the form <namespace>/<orb-name>@<version> NOTE: To publish a dev version prefix the version with 'dev:' like this: <namespace>/<orb-name>@dev:<label>
+                type: string
+            token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of env var containing your token. Pass this as a raw string such as ORB_PUBLISHING_TOKEN. Do not paste the actual token into your configuration. If omitted it's assumed the CLI has already been setup with a valid token.
+                type: env_var_name
+        steps:
+            - run:
+                command: |
+                    circleci orb publish --skip-update-check << parameters.orb-path >> << parameters.orb-ref >> <<# parameters.token-variable >>--token $<< parameters.token-variable >> <</ parameters.token-variable >>
+                name: |
+                    Publish orb at << parameters.orb-path >> to << parameters.orb-ref >>
+    trigger-integration-tests-workflow:
+        description: |
+            Trigger an integration-testing workflow for a just-published alpha version of an orb using CircleCI v2 API. See examples for further usage details.
+        parameters:
+            checkout:
+                default: true
+                description: |
+                    Checkout as a first step? Default is true
+                type: boolean
+            circleci-api-host:
+                default: https://circleci.com
+                description: |
+                    Host URL of CircleCI API
+                type: string
+            circleci-app-host:
+                default: https://app.circleci.com
+                description: |
+                    Host URL of CircleCI Web UI
+                type: string
+            pipeline-param-map:
+                default: '{"run-integration-tests": true, "dev-orb-version": "dev:${CIRCLE_SHA1:0:7}"}'
+                description: |
+                    Map of pipeline parameters that the new pipeline will be invoked with. Make use of this to target the integration workflow that should be triggered and exclude other workflows from being triggered.
+                type: string
+            token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of environment variable containing your personal CircleCI API token
+                type: env_var_name
+        steps:
+            - when:
+                condition: <<parameters.checkout>>
+                steps:
+                    - checkout
+            - jq/install
+            - run:
+                command: |-
+                    Setup() {
+                        VCS_TYPE=$(echo "${CIRCLE_BUILD_URL}" | cut -d '/' -f 4)
+                        T=$(eval echo "$TOKEN")
+                    }
+
+                    BuildParams() {
+                        PARAM_MAP=$(eval echo $PARAM_MAP)
+                        REQUEST_PARAMS='{\"branch\": \"$CIRCLE_BRANCH\", \"parameters\": $PARAM_MAP}'
+                        eval echo $REQUEST_PARAMS > pipelineparams.json
+                    }
+
+                    DoCurl() {
+                        curl -u "${T}": -X POST --header "Content-Type: application/json" -d @pipelineparams.json \
+                          "${CIRCLECI_API_HOST}/api/v2/project/${VCS_TYPE}/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/pipeline" -o /tmp/curl-result.txt
+                    }
+
+                    Result() {
+                        CURL_RESULT=$(cat /tmp/curl-result.txt)
+                        if [[ $(echo "$CURL_RESULT" | jq -r .message) == "Not Found" || $(echo "$CURL_RESULT" | jq -r .message) == "Permission denied" || $(echo "$CURL_RESULT" | jq -r .message) == "Project not found" ]]; then
+                            echo "Was unable to trigger integration test workflow. API response: $(cat /tmp/curl-result.txt | jq -r .message)"
+                            exit 1
+                        else
+                            echo "Pipeline triggered!"
+                            echo "${CIRCLECI_APP_HOST}/jobs/${VCS_TYPE}/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}/$(cat /tmp/curl-result.txt | jq -r .number)"
+                        fi
+                    }
+
+                    Main() {
+                        Setup
+                        BuildParams
+                        DoCurl
+                        Result
+                    }
+
+                    # Will not run if sourced for bats.
+                    # View src/tests for more information.
+                    TEST_ENV="bats-core"
+                    if [ "${0#*$TEST_ENV}" == "$0" ]; then
+                        Main
+                    fi
+                environment:
+                    CIRCLECI_API_HOST: <<parameters.circleci-api-host>>
+                    CIRCLECI_APP_HOST: <<parameters.circleci-app-host>>
+                    PARAM_MAP: <<parameters.pipeline-param-map>>
+                    TOKEN: $<<parameters.token-variable>>
+                name: Trigger integration test workflow
+    validate:
+        description: |
+            Uses the CLI to validate a given orb yml
+        parameters:
+            orb-path:
+                default: orb.yml
+                description: Path to the orb file to be validated.
+                type: string
+        steps:
+            - run:
+                command: circleci orb --skip-update-check validate << parameters.orb-path >>
+                name: Validate whether this is a well-formed orb.
+jobs:
+    dev-promote-prod-from-commit-subject:
+        description: |
+            Promote a dev version of an orb to a semantic production release. It assumes the context of a GitHub pull request, and promotion of the orb to a new major/minor/patch version is based on information that must be contained in the subject of the commit that merges the pull request. Namely, the commit subject must include the `[semver:FOO]` pattern, where FOO is major, minor, patch, or skip (to skip promotion). e.g. 'Merge pull request #XX from some-branch [semver:minor]'
+            This job is designed to run at the conclusion of an integration-testing workflow.
+        executor: cli/default
+        parameters:
+            add-pr-comment:
+                description: |
+                    CircleCI can comment on the merged PR with the final production version. If you want contributors to see a message with the production version, please provide the username & token, and ensure the merge commit subject includes the PR number in default format. i.e. 'Merge pull request #XX from some-branch'
+                type: boolean
+            bot-token-variable:
+                default: PR_COMMENTER_GITHUB_TOKEN
+                description: |
+                    Name of env var containing the GitHub token value of the GitHub user that to be used for posting the PR comment. Pass this as a raw string such as GITHUB_TOKEN. Do not paste the actual token into your configuration. Only applicable when add-pr-comment is set to true.
+                type: env_var_name
+            bot-user:
+                default: ""
+                description: |
+                    The GitHub user to post PR comment. Only applicable when add-pr-comment is set to true.
+                type: string
+            checkout:
+                default: true
+                description: |
+                    Whether to perform the CircleCI checkout step.
+                type: boolean
+            fail-if-semver-not-indicated:
+                description: |
+                    Whether to fail if the commit subject did not include [semver:patch|minor|release|skip]
+                type: boolean
+            orb-name:
+                description: |
+                    Semver-less name of an orb, e.g. circleci/orb-tools
+                type: string
+            orb-ref:
+                default: dev:${CIRCLE_SHA1:0:7}
+                description: |
+                    Dev:reference to promote to a production release, defaults to 'dev:${CIRCLE_SHA1:0:7}' (evaluates to the first 7 characters of the job's commit hash)
+                type: string
+            pr-number-sed-expression:
+                default: 's/Merge pull request #\([0-9]*\) from.*/\1/p'
+                description: |
+                    Used to extract the PR number from the commit subject with sed. The default value works with the default GitHub PR merge commit subject. Only applicable when add-pr-comment is set to true.
+                type: string
+            publish-token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of environment variable containing your CircleCI API token
+                type: env_var_name
+            publish-version-tag:
+                description: |
+                    Push a git tag describing the release that was just published? If `true`, make sure to pass SSH fingerprints, as well
+                type: boolean
+            ssh-fingerprints:
+                default: ""
+                description: |
+                    Fingerprints for SSH deploy key (add the public key as a read/write key on GitHub; add the private key in CircleCI via SSH Permissions, with github.com as Hostname). Used to push a git tag back to the project's repository.
+                type: string
+        steps:
+            - dev-promote-from-commit-subject:
+                add-pr-comment: <<parameters.add-pr-comment>>
+                bot-token-variable: <<parameters.bot-token-variable>>
+                bot-user: <<parameters.bot-user>>
+                checkout: <<parameters.checkout>>
+                fail-if-semver-not-indicated: <<parameters.fail-if-semver-not-indicated>>
+                orb-name: <<parameters.orb-name>>
+                orb-ref: <<parameters.orb-ref>>
+                pr-number-sed-expression: <<parameters.pr-number-sed-expression>>
+                token-variable: <<parameters.publish-token-variable>>
+            - when:
+                condition: <<parameters.publish-version-tag>>
+                steps:
+                    - run:
+                        command: |-
+                            echo "Indicated semver increment was: ${SEMVER_INCREMENT}"
+                            echo "Version of orb published: ${ORB_VERSION}"
+                            if [ -z "${ORB_VERSION}" ] || [ -z "${SEMVER_INCREMENT}" ] || [ "${SEMVER_INCREMENT}" == "skip" ]; then
+                                echo "Release tags will not be published."
+                                echo "Reason: \"skip\" or no semver increment was indicated, or the orb was not published."
+                                circleci step halt
+                            fi
+                        name: Check if release tags should be published
+                    - add_ssh_keys:
+                        fingerprints:
+                            - <<parameters.ssh-fingerprints>>
+                    - configure-git
+                    - run:
+                        command: |-
+                            # construct/push new tag
+                            NEW_VERSION=$(echo "${ORB_VERSION}"| sed -E "s|$ORB_NAME@||")
+
+                            TAG="v$NEW_VERSION"
+
+                            git tag -a "$TAG" \
+                            -m "View this orb release in the orb registry:" \
+                            -m "https://circleci.com/orbs/registry/orb/$ORB_NAME?version=$NEW_VERSION" \
+                            -m "View this orb release using the CircleCI CLI:" \
+                            -m "\`circleci orb source $ORB_NAME@$NEW_VERSION\`"
+
+                            git push origin "$TAG"
+                        environment:
+                            ORB_NAME: <<parameters.orb-name>>
+                        name: construct/push git release tag
+    dev-promote-prod-from-git-tag:
+        description: |
+            Uses the CLI to promote a dev version of an orb to the registry. This command supports Semantic Versioning support. Whether the new release of the orb will be a patch, minor or major release is determined based on the information in the commit's git tag which must match the regex pattern defined in the major-release-tag-regex, minor-release-tag-regex and patch-release-tag-regex parameters. Hence this job should be configured with an "only" tag filter suitable for the above 3 patterns (e.g. /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/ would fit the default patterns) and a branch filter set to ignore /.*/ .
+            Requires bash.
+        executor: cli/default
+        parameters:
+            add-pr-comment:
+                description: |
+                    CircleCI can comment on the merged PR with the final production version. If you want contributors to see a message with the production version, please provide the username & token, and ensure the merge commit subject includes the PR number in default format. i.e. 'Merge pull request #XX from some-branch'
+                type: boolean
+            bot-token-variable:
+                default: PR_COMMENTER_GITHUB_TOKEN
+                description: |
+                    Name of env var containing the GitHub token value of the GitHub user that to be used for posting the PR comment. Pass this as a raw string such as GITHUB_TOKEN. Do not paste the actual token into your configuration. Only applicable when add-pr-comment is set to true.
+                type: env_var_name
+            bot-user:
+                default: ""
+                description: |
+                    The GitHub user to post PR comment. Only applicable when add-pr-comment is set to true.
+                type: string
+            checkout:
+                default: true
+                description: |
+                    Whether to perform the CircleCI checkout step.
+                type: boolean
+            major-release-tag-regex:
+                default: ^major-release-v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$
+                description: |
+                    The regex pattern that the commit's tag will be matched against to check if a major release of the orb should be done.
+                type: string
+            minor-release-tag-regex:
+                default: ^minor-release-v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$
+                description: |
+                    The regex pattern that the commit's tag will be matched against to check if a minor release of the orb should be done.
+                type: string
+            orb-name:
+                description: |
+                    Semver-less name of the orb to be promoted into production , e.g. circleci/orb-tools
+                type: string
+            orb-ref:
+                default: dev:${CIRCLE_SHA1:0:7}
+                description: |
+                    Dev:reference to promote to a production release, defaults to 'dev:${CIRCLE_SHA1:0:7}' (evaluates to the first 7 characters of the job's commit hash)
+                type: string
+            patch-release-tag-regex:
+                default: ^patch-release-v[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+$
+                description: |
+                    The regex pattern that the commit's tag will be matched against to check if a patch release of the orb should be done.
+                type: string
+            perform-branch-check:
+                default: true
+                description: |
+                    Whether to check whether the tagged commit is contained by a particular branch.
+                type: boolean
+            pr-number-sed-expression:
+                default: 's/Merge pull request #\([0-9]*\) from.*/\1/p'
+                description: |
+                    Used to extract the PR number from the commit subject with sed. The default value works with the default GitHub PR merge commit subject. Only applicable when add-pr-comment is set to true.
+                type: string
+            publish-token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of environment variable containing your CircleCI API token
+                type: env_var_name
+            required-branch:
+                default: master
+                description: |
+                    Checks whether the tagged commit is contained by the specified branch. Only applicable if the perform-branch-check parameter is set to true.
+                type: string
+        steps:
+            - dev-promote-from-git-tag:
+                add-pr-comment: <<parameters.add-pr-comment>>
+                bot-token-variable: <<parameters.bot-token-variable>>
+                bot-user: <<parameters.bot-user>>
+                checkout: <<parameters.checkout>>
+                major-release-tag-regex: <<parameters.major-release-tag-regex>>
+                minor-release-tag-regex: <<parameters.minor-release-tag-regex>>
+                orb-name: <<parameters.orb-name>>
+                orb-ref: <<parameters.orb-ref>>
+                patch-release-tag-regex: <<parameters.patch-release-tag-regex>>
+                perform-branch-check: <<parameters.perform-branch-check>>
+                pr-number-sed-expression: <<parameters.pr-number-sed-expression>>
+                required-branch: <<parameters.required-branch>>
+                token-variable: <<parameters.publish-token-variable>>
+    increment:
+        description: |
+            Uses the CLI to increment the version of an orb in the registry. If the orb does not have a version yet it starts at 0.0.0
+        executor: cli/default
+        parameters:
+            attach-workspace:
+                default: false
+                description: |
+                    Boolean for whether or not to attach to an existing workspace. Default is false.
+                type: boolean
+            checkout:
+                default: true
+                description: |
+                    Boolean for whether or not to checkout as a first step. Default is true.
+                type: boolean
+            orb-path:
+                default: workspace/orb.yml
+                description: Path to an orb file.
+                type: string
+            orb-ref:
+                description: A versionless orb-ref in the form <namespace>/<orb-name>
+                type: string
+            publish-token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of env var containing your token. Pass this as a raw string such as ORB_PUBLISHING_TOKEN. Do not paste the actual token into your configuration. If omitted it's assumed the CLI has already been setup with a valid token.
+                type: env_var_name
+            segment:
+                default: patch
+                description: |
+                    The semver segment to increment 'major' or 'minor' or 'patch'
+                enum:
+                    - major
+                    - minor
+                    - patch
+                type: enum
+            validate:
+                default: true
+                description: |
+                    Boolean for whether or not to do validation on the orb. Default is true.
+                type: boolean
+            workspace-root:
+                default: workspace
+                description: |
+                    Workspace root path that is either an absolute path or a path relative to the working directory. Defaults to '.' (the working directory)
+                type: string
+        steps:
+            - when:
+                condition: << parameters.checkout >>
+                steps:
+                    - checkout
+            - when:
+                condition: << parameters.attach-workspace >>
+                steps:
+                    - attach_workspace:
+                        at: << parameters.workspace-root >>
+            - when:
+                condition: << parameters.validate >>
+                steps:
+                    - validate:
+                        orb-path: << parameters.orb-path >>
+            - increment:
+                orb-path: << parameters.orb-path >>
+                orb-ref: << parameters.orb-ref >>
+                segment: << parameters.segment >>
+                token-variable: << parameters.publish-token-variable >>
+    lint:
+        description: |
+            Lint an orb with yamllint
+        docker:
+            - image: singapore/lint-condo
+        parameters:
+            attach-workspace:
+                default: false
+                description: |
+                    Boolean for whether or not to attach to an existing workspace, default is false
+                type: boolean
+            checkout:
+                default: true
+                description: Checkout as a first step? Default is true
+                type: boolean
+            custom-rules-filepath:
+                default: .yamllint
+                description: |
+                    Location of your custom yamllint configuration file, defaults to .yamllint in the working directory
+                type: string
+            lint-dir:
+                default: .
+                description: |
+                    Directory within which to lint all YAML files, defaults to the working directory (.)
+                type: string
+            use-default-rules:
+                default: true
+                description: |
+                    Use default orb YAML linting rules (extends: relaxed, max line-length: 200, allow-non-breakable-inline-mappings: true). If set to false, you must set use-custom-rules to true and supply a filepath to the custom-rules-filepath parameter.
+                type: boolean
+            workspace-root:
+                default: workspace
+                description: |
+                    Workspace root path that is either an absolute path or a path relative to the working directory
+                type: string
+        resource_class: small
+        steps:
+            - when:
+                condition: <<parameters.checkout>>
+                steps:
+                    - run:
+                        command: |
+                            apk --update add git openssh
+                        name: Install Git and Openssh
+                    - checkout
+            - when:
+                condition: <<parameters.attach-workspace>>
+                steps:
+                    - attach_workspace:
+                        at: <<parameters.workspace-root>>
+            - when:
+                condition: <<parameters.use-default-rules>>
+                steps:
+                    - run:
+                        command: |-
+                            touch .yamllint || true
+                            cat \<< EOF > .yamllint
+                            extends: relaxed
+
+                            rules:
+                                line-length:
+                                    max: 200
+                                    allow-non-breakable-inline-mappings: true
+
+                            EOF
+                        name: output default .yamllint file in the working directory
+                    - run:
+                        command: |
+                            yamllint <<parameters.lint-dir>>
+                        name: yamllint
+            - unless:
+                condition: <<parameters.use-default-rules>>
+                steps:
+                    - run: |
+                        yamllint -c <<parameters.custom-rules-filepath>> <<parameters.lint-dir>>
+    pack:
+        description: |
+            *Experimental* Uses the CLI to pack an orb file structure into a single orb yml.
+        executor: cli/default
+        parameters:
+            artifact-path:
+                default: orb.yml
+                description: |
+                    Path to directory that should be saved as a job artifact. If the default value of blank is provided then this job will not save any artifacts.
+                type: string
+            attach-workspace:
+                default: false
+                description: |
+                    Boolean for whether or not to attach to an existing workspace. Default is false.
+                type: boolean
+            checkout:
+                default: true
+                description: |
+                    Boolean for whether or not to checkout as a first step. Default is true.
+                type: boolean
+            destination-orb-path:
+                default: orb.yml
+                description: |
+                    Path including filename of where the packed orb will be written.
+                type: string
+            persist-to-workspace:
+                default: true
+                description: |
+                    Should this job persist files to a workspace? Defaults to true
+                type: boolean
+            source-dir:
+                default: src
+                description: |
+                    Path to the root of the orb source directory to be packed. (ie: my-orb/src/)
+                type: string
+            store-artifacts:
+                default: true
+                description: |
+                    Store this job store files as job artifacts? Defaults to true
+                type: boolean
+            use-orb-pack:
+                default: false
+                description: Setting this will use the new "orb pack" instead of "config pack"
+                type: boolean
+            validate:
+                default: true
+                description: |
+                    Boolean for whether or not to do validation on the orb. Default is true.
+                type: boolean
+            workspace-path:
+                default: orb.yml
+                description: |
+                    Path of the workspace to persist to relative to workspace-root. Typically this is the same as the destination-orb-path. If the default value of blank is provided then this job will not persist to a workspace.
+                type: string
+            workspace-root:
+                default: .
+                description: |
+                    Workspace root path that is either an absolute path or a path relative to the working directory. Defaults to '.' (the working directory)
+                type: string
+        steps:
+            - when:
+                condition: << parameters.checkout >>
+                steps:
+                    - checkout
+            - when:
+                condition: << parameters.attach-workspace >>
+                steps:
+                    - attach_workspace:
+                        at: << parameters.workspace-root >>
+            - pack:
+                destination: << parameters.destination-orb-path >>
+                source: << parameters.source-dir >>
+                use-orb-pack: << parameters.use-orb-pack >>
+            - when:
+                condition: << parameters.validate >>
+                steps:
+                    - validate:
+                        orb-path: << parameters.destination-orb-path >>
+            - when:
+                condition: << parameters.persist-to-workspace >>
+                steps:
+                    - persist_to_workspace:
+                        paths:
+                            - << parameters.workspace-path >>
+                        root: << parameters.workspace-root >>
+            - when:
+                condition: << parameters.store-artifacts >>
+                steps:
+                    - store_artifacts:
+                        path: << parameters.artifact-path >>
+    publish:
+        description: |
+            Uses the CLI to publish an orb to the registry.
+        executor: cli/default
+        parameters:
+            attach-workspace:
+                default: false
+                description: |
+                    Boolean for whether or not to attach to an existing workspace. Default is false.
+                type: boolean
+            checkout:
+                default: true
+                description: |
+                    Boolean for whether or not to checkout as a first step. Default is true.
+                type: boolean
+            orb-path:
+                default: workspace/orb.yml
+                description: Path of the orb file to publish.
+                type: string
+            orb-ref:
+                description: A full orb-ref in the form of <namespace>/<orbname>@<semver>
+                type: string
+            publish-token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of environment variable containing your CircleCI API token
+                type: env_var_name
+            validate:
+                default: true
+                description: |
+                    Boolean for whether or not to do validation on the orb. Default is true.
+                type: boolean
+            workspace-root:
+                default: workspace
+                description: |
+                    Workspace root path that is either an absolute path or a path relative to the working directory. Defaults to '.' (the working directory)
+                type: string
+        steps:
+            - when:
+                condition: << parameters.checkout >>
+                steps:
+                    - checkout
+            - when:
+                condition: << parameters.attach-workspace >>
+                steps:
+                    - attach_workspace:
+                        at: << parameters.workspace-root >>
+            - when:
+                condition: << parameters.validate >>
+                steps:
+                    - validate:
+                        orb-path: << parameters.orb-path >>
+            - publish:
+                orb-path: << parameters.orb-path >>
+                orb-ref: << parameters.orb-ref >>
+                token-variable: << parameters.publish-token-variable >>
+    publish-dev:
+        description: |
+            Publish multiple dev versions of an orb simultaneously Intended to be used for orb integration testing and eventual promotion to a production/semantic release
+        executor: cli/default
+        parameters:
+            alpha-version-ref:
+                default: dev:alpha
+                description: |
+                    Dev:reference to use for orb alpha version, defaults to 'dev:alpha'
+                type: string
+            attach-workspace:
+                default: true
+                description: |
+                    Boolean for whether or not to attach to an existing workspace. Default is true.
+                type: boolean
+            branch-sha-version-ref:
+                default: dev:$CIRCLE_BRANCH-${CIRCLE_SHA1:0:7}
+                description: |
+                    Dev:reference to use for third dev version of the orb, defaults to 'dev:$CIRCLE_BRANCH-${CIRCLE_SHA1:0:7}' (evaluates to the git branch plus the first 7 characters of the job's commit hash)
+                type: string
+            checkout:
+                default: false
+                description: |
+                    Boolean for whether or not to checkout as a first step. Default is false.
+                type: boolean
+            orb-name:
+                description: |
+                    Semver-less name of an orb, e.g. circleci/orb-tools
+                type: string
+            orb-path:
+                default: workspace/orb.yml
+                description: Path of the orb file to publish.
+                type: string
+            publish-alpha-version:
+                default: true
+                description: |
+                    Publish a dev:alpha version, intended to be used as part of an orb integration testing workflow
+                type: boolean
+            publish-branch-sha-version:
+                default: false
+                description: |
+                    Publish a third dev version of the orb, by-default tagged with the CircleCI job's git branch and commit hash
+                type: boolean
+            publish-sha-version:
+                default: true
+                description: |
+                    Publish a second dev version of the orb, with a job's $CIRCLE_SHA, intended to be used for promotion to a semantic release at the conclusion of an integration testing and deployment workflow
+                type: boolean
+            publish-token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of environment variable containing your CircleCI API token
+                type: env_var_name
+            sha-version-ref:
+                default: dev:${CIRCLE_SHA1:0:7}
+                description: |
+                    Dev:reference to use for second dev version of the orb, defaults to 'dev:${CIRCLE_SHA1:0:7}' (evaluates to the first 7 characters of the job's commit hash)
+                type: string
+            store-artifact:
+                default: true
+                description: |
+                    Store the orb's orb.yml file as a job artifact?
+                type: boolean
+            validate:
+                default: false
+                description: |
+                    Validate the orb? Defaults to false, as this job is intended to fit into an automated orb development flow wherein it would have previously been packed and validated
+                type: boolean
+            workspace-root:
+                default: workspace
+                description: |
+                    Workspace root path that is either an absolute path or a path relative to the working directory.
+                type: string
+        steps:
+            - when:
+                condition: <<parameters.checkout>>
+                steps:
+                    - checkout
+            - when:
+                condition: <<parameters.attach-workspace>>
+                steps:
+                    - attach_workspace:
+                        at: <<parameters.workspace-root>>
+            - when:
+                condition: <<parameters.validate>>
+                steps:
+                    - validate:
+                        orb-path: <<parameters.orb-path>>
+            - when:
+                condition: <<parameters.publish-alpha-version>>
+                steps:
+                    - publish:
+                        orb-path: <<parameters.orb-path>>
+                        orb-ref: <<parameters.orb-name>>@<<parameters.alpha-version-ref>>
+                        token-variable: <<parameters.publish-token-variable>>
+            - when:
+                condition: <<parameters.publish-sha-version>>
+                steps:
+                    - publish:
+                        orb-path: <<parameters.orb-path>>
+                        orb-ref: <<parameters.orb-name>>@<<parameters.sha-version-ref>>
+                        token-variable: <<parameters.publish-token-variable>>
+            - when:
+                condition: <<parameters.publish-branch-sha-version>>
+                steps:
+                    - publish:
+                        orb-path: <<parameters.orb-path>>
+                        orb-ref: <<parameters.orb-name>>@<<parameters.branch-sha-version-ref>>
+                        token-variable: <<parameters.publish-token-variable>>
+            - when:
+                condition: <<parameters.store-artifact>>
+                steps:
+                    - store_artifacts:
+                        path: <<parameters.orb-path>>
+    trigger-integration-tests-workflow:
+        description: |
+            Trigger an integration-testing workflow for a just-published alpha version of an orb using CircleCI v2 API. See examples for further usage details.
+        docker:
+            - image: cimg/base:edge
+        parameters:
+            checkout:
+                default: true
+                description: |
+                    Checkout as a first step? Default is true
+                type: boolean
+            circleci-api-host:
+                default: https://circleci.com
+                description: |
+                    Host URL of CircleCI API
+                type: string
+            circleci-app-host:
+                default: https://app.circleci.com
+                description: |
+                    Host URL of CircleCI Web UI
+                type: string
+            pipeline-param-map:
+                default: '{\"run-integration-tests\": true, \"dev-orb-version\": \"dev:${CIRCLE_SHA1:0:7}\"}'
+                description: |
+                    Map of pipeline parameters that the new pipeline will be invoked with. Make use of this to target the integration workflow that should be triggered and exclude other workflows from being triggered.
+                type: string
+            token-variable:
+                default: CIRCLE_TOKEN
+                description: |
+                    Name of environment variable containing your personal CircleCI API token
+                type: env_var_name
+        steps:
+            - trigger-integration-tests-workflow:
+                checkout: <<parameters.checkout>>
+                circleci-api-host: <<parameters.circleci-api-host>>
+                circleci-app-host: <<parameters.circleci-app-host>>
+                pipeline-param-map: <<parameters.pipeline-param-map>>
+                token-variable: <<parameters.token-variable>>
+examples:
+    full:
+        description: A full example of running integration tests and publishing a new orb version.
+        usage:
+            version: "2.1"
+            orbs:
+                orb-tools: circleci/orb-tools@10
+                your-orb: your-namespace/your-orb@<<pipeline.parameters.dev-orb-version>>
+            jobs:
+                integration-tests-for-your-orb:
+                    executor: orb-tools/ubuntu
+                    steps:
+                        - checkout
+            workflows:
+                integration-test_deploy:
+                    jobs:
+                        - integration-tests-for-your-orb
+                        - orb-tools/dev-promote-prod-from-commit-subject:
+                            add-pr-comment: false
+                            fail-if-semver-not-indicated: false
+                            filters:
+                                branches:
+                                    only: master
+                            orb-name: your-namespace/your-orb
+                            publish-version-tag: false
+                            requires:
+                                - integration-tests-for-your-orb
+                    when: << pipeline.parameters.run-integration-tests >>
+                test-pack:
+                    jobs:
+                        - orb-tools/lint
+                        - orb-tools/pack
+                        - orb-tools/publish-dev:
+                            orb-name: your-namespace/your-orb-name
+                            requires:
+                                - orb-tools/lint
+                                - orb-tools/pack
+                        - orb-tools/trigger-integration-tests-workflow:
+                            name: trigger-integration-dev
+                            requires:
+                                - orb-tools/publish-dev
+                    unless: << pipeline.parameters.run-integration-tests >>
+    orb-dev-workflows:
+        description: |
+            Use the lint, pack, publish-dev, and trigger-integration-tests-workflow jobs to lint a destructured orb's YAML source code, pack it into a single orb.yml file, release a @dev:${CIRCLE_SHA1:0:7} version of the orb, and trigger an integration testing workflow that will run against the new dev release of the orb. After running integration tests, use the orb's dev-promote-prod-from-commit-subject job to promote the orb's @dev:${CIRCLE_SHA1:0:7} release to a production release. See the orb's GitHub README for a version of this example with extensive usage and context comments: https://github.com/circleci-public/orb-tools-orb#examples
+        usage:
+            version: "2.1"
+            orbs:
+                orb-tools: circleci/orb-tools@10
+                your-orb: your-namespace/your-orb@<<pipeline.parameters.dev-orb-version>>
+            jobs:
+                integration-tests-for-your-orb:
+                    executor: orb-tools/ubuntu
+                    steps:
+                        - checkout
+            workflows:
+                integration-test_deploy:
+                    jobs:
+                        - integration-tests-for-your-orb
+                        - orb-tools/dev-promote-prod-from-commit-subject:
+                            add-pr-comment: false
+                            fail-if-semver-not-indicated: false
+                            filters:
+                                branches:
+                                    only: master
+                            orb-name: your-namespace/your-orb
+                            publish-version-tag: false
+                            requires:
+                                - integration-tests-for-your-orb
+                    when: << pipeline.parameters.run-integration-tests >>
+                test-pack:
+                    jobs:
+                        - orb-tools/lint
+                        - orb-tools/pack
+                        - orb-tools/publish-dev:
+                            orb-name: your-namespace/your-orb-name
+                            requires:
+                                - orb-tools/lint
+                                - orb-tools/pack
+                        - orb-tools/trigger-integration-tests-workflow:
+                            name: trigger-integration-dev
+                            requires:
+                                - orb-tools/publish-dev
+                    unless: << pipeline.parameters.run-integration-tests >>
+    orb-dev-workflows-git-tag:
+        description: |
+            Use the lint, pack, publish-dev, and trigger-integration-tests-workflow jobs to lint a destructured orb's YAML source code, pack it into a single orb.yml file, release a @dev:${CIRCLE_SHA1:0:7} version of the orb, and trigger an integration testing workflow that will run against the new dev release of the orb. After the integration tests succeed, trigger the orb's dev-promote-prod-from-git-tag job to promote the orb's @dev:${CIRCLE_SHA1:0:7} release to a production release. See the orb's GitHub README for a version of this example with extensive usage and context comments: https://github.com/circleci-public/orb-tools-orb#examples
+        usage:
+            version: "2.1"
+            orbs:
+                orb-tools: circleci/orb-tools@10
+                your-orb: your-namespace/your-orb@<<pipeline.parameters.dev-orb-version>>
+            jobs:
+                integration-tests-for-your-orb:
+                    executor: orb-tools/ubuntu
+                    steps:
+                        - checkout
+            workflows:
+                integration-tests:
+                    jobs:
+                        - integration-tests-for-your-orb
+                    when: << pipeline.parameters.run-integration-tests >>
+                tag-triggered-orb-publishing:
+                    jobs:
+                        - hold-for-approval:
+                            filters:
+                                branches:
+                                    ignore: /.*/
+                                tags:
+                                    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+                            type: approval
+                        - orb-tools/dev-promote-prod-from-git-tag:
+                            add-pr-comment: true
+                            bot-token-variable: YOUR_BOT_TOKEN
+                            bot-user: your-bot-username
+                            filters:
+                                branches:
+                                    ignore: /.*/
+                                tags:
+                                    only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+                            orb-name: your-namespace/your-orb-name
+                            requires:
+                                - hold-for-approval
+                    unless: << pipeline.parameters.run-integration-tests >>
+                test-pack:
+                    jobs:
+                        - orb-tools/lint
+                        - orb-tools/pack
+                        - orb-tools/publish-dev:
+                            orb-name: your-namespace/your-orb-name
+                            requires:
+                                - orb-tools/lint
+                                - orb-tools/pack
+                        - orb-tools/trigger-integration-tests-workflow:
+                            name: trigger-integration-dev
+                            requires:
+                                - orb-tools/publish-dev
+                    unless: << pipeline.parameters.run-integration-tests >>
+
