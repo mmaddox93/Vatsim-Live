@@ -15,7 +15,7 @@ jobs:
     steps:
       - checkout
       - run: |
-          npm start 
+          npm install  
 
 workflows:
   my-custom-workflow:
